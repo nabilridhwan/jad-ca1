@@ -10,7 +10,7 @@ public class DatabaseConnection {
 			Class.forName("com.mysql.jdbc.Driver");  //can be omitted for newer version of drivers
 
 	        // Step 2: Define Connection URL
-	        String connURL = "jdbc:mysql://localhost/db1?user=root&password=root&serverTimezone=UTC";
+	        String connURL = "jdbc:mysql://localhost/sp_tour?user=root&password=root&serverTimezone=UTC";
 
 	        // Step 3: Establish connection to URL
 	        conn = DriverManager.getConnection(connURL); 

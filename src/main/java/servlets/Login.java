@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class Login
  */
-@WebServlet("/Login")
+@WebServlet("/login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -42,7 +42,7 @@ public class Login extends HttpServlet {
 		Connection conn = DatabaseConnection.getConnection();
 		
 		try {
-			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM \"user\" WHERE email = ? AND password = ?");
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM user WHERE email = ? AND password = ?");
 			
 //			Set the variables
 			pstmt.setString(1, email);
@@ -58,13 +58,18 @@ public class Login extends HttpServlet {
 //				Set in the session
 				HttpSession session = request.getSession(true);
 				session.setAttribute("userID", userID);
+				
+//				Redirect
+				response.sendRedirect("/CA1-Preparation/views/index.jsp");
 			}else {
 //				TODO: If there is no user, dispatch the page back to the login page
+				response.sendRedirect("/CA1-Preparation/views/user/login.jsp?error=invalid_credentials");
 				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			response.sendRedirect("/CA1-Preparation/views/user/login.jsp?error=sql_error");
 		}
 		
 		

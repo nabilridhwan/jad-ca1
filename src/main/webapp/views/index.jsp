@@ -8,5 +8,11 @@
 </head>
 <body>
 
+	<%
+		int userID = (int) session.getAttribute("userID");
+			out.println("Signed in " + userID);
+		
+	%>
+
 </body>
 </html>

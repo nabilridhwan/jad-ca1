@@ -8,5 +8,11 @@
 </head>
 <body>
 
+	<form action="/CA1-Preparation/login" method="POST">
+		<input type="email" required name="email" />
+		<input type="password" required name="password" />
+		<button>Login</button>
+	</form>
+
 </body>
 </html>
