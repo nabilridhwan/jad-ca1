@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+	@apply w-11/12 mx-auto my-5;
+}
+
+input{
+	@apply w-full px-4 py-2 border-black/30 rounded-lg border outline-none my-1;
+}
+
+.btn{
+  @apply py-2 px-4 font-semibold rounded-lg;
+}
+
+button{
+	@apply btn mt-2 transition flex  items-center justify-center shadow-sm bg-purple-500 text-white w-full;
+}
+
+button.inversed{
+	@apply btn mt-2 transition flex  items-center justify-center shadow-sm bg-purple-200 text-purple-500 w-full;
+}
+
+.login-card{
+	@apply rounded-2xl bg-purple-500 py-48 text-white px-10;
+}
+
+.login-card input{
+	@apply text-purple-500;
+}
+
+.inline-error{
+	@apply bg-red-500 px-2 py-3 my-2 rounded-lg text-white font-bold;
+}
+
+/*Jumbotron Area*/
+
+.jumbotron h1{
+	@apply font-extrabold text-6xl;	
+}
+
+.jumbotron h3{
+	@apply text-lg text-black/50 mb-5;	
+}
+
+.jumbotron{
+	@apply py-48 text-center;
+}
