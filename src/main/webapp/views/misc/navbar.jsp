@@ -1,12 +1,22 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
-</html>
+<nav>
+	<ul>
+		<li>
+			<a href="/CA1-Preparation/views/index.jsp">
+				Home
+			</a>
+		</li>
+		
+		<li>
+			<a href="/CA1-Preparation/views/user/login.jsp">
+				Log In
+			</a>
+		</li>
+		
+		<li>
+			<a href="/CA1-Preparation/views/user/signup.jsp">
+				Sign Up
+			</a>
+		</li>
+		
+	</ul>
+</nav>
