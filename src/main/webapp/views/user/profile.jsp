@@ -1,3 +1,5 @@
+<%@page import="models.UserModel"%>
+<%@page import="org.bouncycastle.crypto.generators.BCrypt"%>
 <%@page import="servlets.DatabaseConnection, java.sql.*"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -33,7 +35,7 @@
 	//		Set the variables
 			pstmt.setInt(1, userID);
 			
-			ResultSet rs = pstmt.executeQuery();
+			ResultSet rs = UserModel.getUserByUserID(userID);
 			
 	//		Check if the user exist
 			if(rs.next()) {
@@ -58,11 +60,12 @@
 			e.printStackTrace();
 			
 			response.sendRedirect("/CA1-Preparation/views/user/login.jsp?error=sql_error");
+			
 		}
 	%>
 	
 	<div class="text-center">
-		<img class="rounded-full" src="<%=profilePicUrl %>" />
+		<img class="w-48 rounded-full" src="<%=profilePicUrl %>" />
 	
 		<h1 class="text-4xl font-extrabold">
 			<%=fullName %>
