@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.registry.infomodel.User;
+
+import models.UserModel;
 
 /**
  * Servlet implementation class Login
@@ -43,16 +46,10 @@ public class Login extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
-		Connection conn = DatabaseConnection.getConnection();
-		
 		try {
-			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM user WHERE email = ? AND password = ?");
 			
-//			Set the variables
-			pstmt.setString(1, email);
-			pstmt.setString(2, password);
 			
-			ResultSet rs = pstmt.executeQuery();
+			ResultSet rs = UserModel.getUserByEmailAndPassword(email, password);
 			
 //			Check if the user exist
 			if(rs.next()) {

@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.UserModel;
+
 /**
  * Servlet implementation class SignUp
  */
@@ -62,20 +64,8 @@ public class SignUp extends HttpServlet {
 					return;
 				}
 				
-				Connection conn = DatabaseConnection.getConnection();
-				
 				try {
-					PreparedStatement pstmt = conn.prepareStatement("INSERT INTO user(full_name, email, password, profile_pic_url) VALUES(?, ?, ?, ?)");
-					
-//					Set the variables
-					pstmt.setString(1, name);
-					pstmt.setString(2, email);
-					pstmt.setString(3, password);
-					
-//					Default profile picture image
-					pstmt.setString(4, "https://via.placeholder.com/400");
-					
-					int rowsAffected = pstmt.executeUpdate();
+					int rowsAffected = UserModel.insertNewUser(name, email, password);
 					
 //					Check if the user is inserted
 					if(rowsAffected > 0) {

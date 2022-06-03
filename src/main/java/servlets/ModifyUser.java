@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.UserModel;
+
 /**
  * Servlet implementation class ModifyUser
  */
@@ -48,7 +50,6 @@ public class ModifyUser extends HttpServlet {
 		
 		
 		HttpSession session = request.getSession(false);
-		Connection conn = DatabaseConnection.getConnection();
 		
 		// Check if userID is null
 		if(session.getAttribute("userID") != null){
@@ -59,26 +60,17 @@ public class ModifyUser extends HttpServlet {
 			return;
 		}
 		
+		int affectedRows = -1;
+		
 		try {
-			PreparedStatement pstmt = null;
 			
 			if(password.isEmpty()) {
-				pstmt = conn.prepareStatement("UPDATE user SET full_name = ?, email = ? WHERE user_id = ?");
-				pstmt.setString(1, full_name);
-				pstmt.setString(2, email);
-				pstmt.setInt(3, userID);
+				affectedRows = UserModel.updateUserWithoutPassword(full_name, email, userID);
 			}else {
-				pstmt = conn.prepareStatement("UPDATE user SET full_name = ?, email = ?, password = ? WHERE user_id = ?");
-				pstmt.setString(1, full_name);
-				pstmt.setString(2, email);
-				pstmt.setString(3, password);
-				pstmt.setInt(4, userID);
-				
+				affectedRows = UserModel.updateUserWithPassword(full_name, email, password, userID);
 //				Because password changed, so remove session
 				session.removeAttribute("userID");
 			}
-			
-			int affectedRows = pstmt.executeUpdate();
 			
 	//		Check if the user exist
 			if(affectedRows > 0) {
