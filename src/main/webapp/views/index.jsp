@@ -10,11 +10,6 @@
 
 </head>
 <body>
-
-	<%
-		int userID = (int) session.getAttribute("userID");
-			out.println("Signed in " + userID);
-	%>
 	
 	<%@ include file = "misc/navbar.jsp" %>
 	
