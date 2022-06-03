@@ -51,7 +51,7 @@
 			<div>
 			
 				<h1 class="text-3xl font-extrabold">
-					Login
+					Log In
 				</h1>
 				
 				<%if(!error.isEmpty()){%>

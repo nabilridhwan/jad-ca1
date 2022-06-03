@@ -1,8 +1,7 @@
 package servlets;
-import java.io.IOException;
-import java.sql.*;
 
-import javax.servlet.RequestDispatcher;
+import java.sql.*;
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,16 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class Login
+ * Servlet implementation class ModifyUser
  */
-@WebServlet("/login")
-public class Login extends HttpServlet {
+@WebServlet("/modifyUser")
+public class ModifyUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Login() {
+    public ModifyUser() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,8 +30,6 @@ public class Login extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
-		
 	}
 
 	/**
@@ -40,40 +37,53 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+//		Get the full name, email and password
+		
+		String full_name = request.getParameter("full_name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
+		int userID = -1;
+		
+		
+		HttpSession session = request.getSession(false);
 		Connection conn = DatabaseConnection.getConnection();
 		
+		// Check if userID is null
+		if(session.getAttribute("userID") != null){
+			userID = (int) session.getAttribute("userID");
+		}else{
+			// Send a redirect to login page
+			response.sendRedirect("/CA1-Preparation/views/user/login.jsp");
+			return;
+		}
+		
 		try {
-			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM user WHERE email = ? AND password = ?");
+			PreparedStatement pstmt = null;
 			
-//			Set the variables
-			pstmt.setString(1, email);
-			pstmt.setString(2, password);
-			
-			ResultSet rs = pstmt.executeQuery();
-			
-//			Check if the user exist
-			if(rs.next()) {
-//				Get the user ID
-				int userID = rs.getInt("user_id");
-				
-//				Set in the session
-				HttpSession session = request.getSession(true);
-				session.setAttribute("userID", userID);
-				
-//				Redirect
-				response.sendRedirect("/CA1-Preparation/views/index.jsp");
+			if(password.isEmpty()) {
+				pstmt = conn.prepareStatement("UPDATE user SET full_name = ?, email = ? WHERE user_id = ?");
+				pstmt.setString(1, full_name);
+				pstmt.setString(2, email);
+				pstmt.setInt(3, userID);
 			}else {
-//				If there is no user, dispatch the page back to the login page
+				pstmt = conn.prepareStatement("UPDATE user SET full_name = ?, email = ?, password = ? WHERE user_id = ?");
+				pstmt.setString(1, full_name);
+				pstmt.setString(2, email);
+				pstmt.setString(3, password);
+				pstmt.setInt(4, userID);
 				
-//				Set the attribute of error to invalid_credentials
-				request.setAttribute("error", "invalid_credentials");
-				
-//				Dispatch
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/views/user/login.jsp?error=invalid_credentials");
-				dispatcher.forward(request, response);
+//				Because password changed, so remove session
+				session.removeAttribute("userID");
+			}
+			
+			int affectedRows = pstmt.executeUpdate();
+			
+	//		Check if the user exist
+			if(affectedRows > 0) {
+	//			Redirect to profile page again
+				response.sendRedirect("/CA1-Preparation/views/user/profile.jsp");
 				
 			}
 		} catch (SQLException e) {
@@ -83,9 +93,6 @@ public class Login extends HttpServlet {
 			response.sendRedirect("/CA1-Preparation/views/user/login.jsp?error=sql_error");
 		}
 		
-		
-		
-		doGet(request, response);
 	}
 
 }

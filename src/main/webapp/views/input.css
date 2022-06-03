@@ -15,7 +15,11 @@ input{
 }
 
 button{
-	@apply btn mt-2 transition flex  items-center justify-center shadow-sm bg-purple-500 text-white w-full;
+	@apply btn mt-2 transition flex  items-center justify-center shadow-sm bg-purple-500 text-white;
+}
+
+button.full{
+	@apply w-full;
 }
 
 button.inversed{
