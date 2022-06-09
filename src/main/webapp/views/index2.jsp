@@ -1,3 +1,4 @@
+<%@page import="models.CategoryModel"%>
 <%@page import="models.TourModel"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -250,13 +251,25 @@
                         <div
                             class="destination-slider owl-carousel ftco-animate"
                         >
-                            <div class="item">
+                        
+                        <%
+								ResultSet catRs = CategoryModel.getCategoriesWithListingCount();
+                            	
+                            	
+                            	while(catRs.next()){
+                            		int category_id = catRs.getInt(1);
+                                	String category_name = catRs.getString(2);
+                                	String desc = catRs.getString(3);
+                                	String image = catRs.getString(4);
+                                	int count = catRs.getInt(5);
+                            	%>
+                            	<div class="item">
                                 <div class="destination">
                                     <a
                                         href="#"
                                         class="img d-flex justify-content-center align-items-center"
                                         style="
-                                            background-image: url(images/destination-1.jpg);
+                                            background-image: url(<%=image %>);
                                         "
                                     >
                                         <div
@@ -266,118 +279,19 @@
                                         </div>
                                     </a>
                                     <div class="text p-3">
-                                        <h3><a href="#">Paris, Italy</a></h3>
-                                        <span class="listing">15 Listing</span>
+                                        <h3><a href="#"><%=category_name %></a></h3>
+                                        <span class="listing"><%=desc %></span>
+                                        
+                                        <br />
+                                        <span class="listing"><%=count %> Listing</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="item">
-                                <div class="destination">
-                                    <a
-                                        href="#"
-                                        class="img d-flex justify-content-center align-items-center"
-                                        style="
-                                            background-image: url(images/destination-2.jpg);
-                                        "
-                                    >
-                                        <div
-                                            class="icon d-flex justify-content-center align-items-center"
-                                        >
-                                            <span class="icon-search2"></span>
-                                        </div>
-                                    </a>
-                                    <div class="text p-3">
-                                        <h3>
-                                            <a href="#">San Francisco, USA</a>
-                                        </h3>
-                                        <span class="listing">20 Listing</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="destination">
-                                    <a
-                                        href="#"
-                                        class="img d-flex justify-content-center align-items-center"
-                                        style="
-                                            background-image: url(images/destination-3.jpg);
-                                        "
-                                    >
-                                        <div
-                                            class="icon d-flex justify-content-center align-items-center"
-                                        >
-                                            <span class="icon-search2"></span>
-                                        </div>
-                                    </a>
-                                    <div class="text p-3">
-                                        <h3><a href="#">Lodon, UK</a></h3>
-                                        <span class="listing">10 Listing</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="destination">
-                                    <a
-                                        href="#"
-                                        class="img d-flex justify-content-center align-items-center"
-                                        style="
-                                            background-image: url(images/destination-4.jpg);
-                                        "
-                                    >
-                                        <div
-                                            class="icon d-flex justify-content-center align-items-center"
-                                        >
-                                            <span class="icon-search2"></span>
-                                        </div>
-                                    </a>
-                                    <div class="text p-3">
-                                        <h3><a href="#">Lion, Singapore</a></h3>
-                                        <span class="listing">3 Listing</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="destination">
-                                    <a
-                                        href="#"
-                                        class="img d-flex justify-content-center align-items-center"
-                                        style="
-                                            background-image: url(images/destination-5.jpg);
-                                        "
-                                    >
-                                        <div
-                                            class="icon d-flex justify-content-center align-items-center"
-                                        >
-                                            <span class="icon-search2"></span>
-                                        </div>
-                                    </a>
-                                    <div class="text p-3">
-                                        <h3><a href="#">Australia</a></h3>
-                                        <span class="listing">3 Listing</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="destination">
-                                    <a
-                                        href="#"
-                                        class="img d-flex justify-content-center align-items-center"
-                                        style="
-                                            background-image: url(images/destination-6.jpg);
-                                        "
-                                    >
-                                        <div
-                                            class="icon d-flex justify-content-center align-items-center"
-                                        >
-                                            <span class="icon-search2"></span>
-                                        </div>
-                                    </a>
-                                    <div class="text p-3">
-                                        <h3><a href="#">Paris, Italy</a></h3>
-                                        <span class="listing">3 Listing</span>
-                                    </div>
-                                </div>
-                            </div>
+                                <%}%>
+                                
+                           
+                            
+                            
                         </div>
                     </div>
                 </div>
