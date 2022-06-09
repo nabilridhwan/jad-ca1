@@ -46,7 +46,7 @@
 
         <div
             class="hero-wrap js-fullheight"
-            style="background-image: url('images/bg_1.jpg')"
+            style="background-image: url('/CA1-Preparation/images/bg_1.jpg')"
         >
             <div class="overlay"></div>
             <div class="container">
