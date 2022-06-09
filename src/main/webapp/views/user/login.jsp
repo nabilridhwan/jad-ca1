@@ -36,7 +36,7 @@
 
         <link rel="stylesheet" href="/CA1-Preparation/css/flaticon.css" />
         <link rel="stylesheet" href="/CA1-Preparation/css/icomoon.css" />
-        <link rel="stylesheet" href="/CA1-Preparation/scss/style.css" />
+        <link rel="stylesheet" href="/CA1-Preparation/css/style.css" />
     </head>
     <body>
     
