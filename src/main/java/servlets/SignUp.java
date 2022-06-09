@@ -22,67 +22,71 @@ import models.UserModel;
 @WebServlet("/signup")
 public class SignUp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public SignUp() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public SignUp() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/user/signup.jsp");
-		
-		// TODO Auto-generated method stub
-				String name = request.getParameter("name");
-				String email = request.getParameter("email");
-				String password = request.getParameter("password");
-				String confirmPassword = request.getParameter("confirm_password");
-				
-				System.out.println(password);
-				System.out.println(confirmPassword);
-				
-				if(!password.equals(confirmPassword)) {
-					// Set the attribute of error to invalid_credentials
-					request.setAttribute("error", "password_match");
-					
-//					Dispatch
-					dispatcher.forward(request, response);
-					return;
-				}
-				
-				try {
-					int rowsAffected = UserModel.insertNewUser(name, email, password);
-					
-//					Check if the user is inserted
-					if(rowsAffected > 0) {
-						// Redirect to login page
-						response.sendRedirect("/CA1-Preparation/views/user/login.jsp");
-					}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-				} catch (SQLException e) {
-					System.out.println("SQL Error has occured");
-					// e.printStackTrace();
-					
-//					Set the attribute of error to invalid_credentials
-					request.setAttribute("error", "user_exists");
-					
-//					Dispatch
-					dispatcher.forward(request, response);
-				}
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/user/signup.jsp");
+
+		// TODO Auto-generated method stub
+		String name = request.getParameter("name");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		String confirmPassword = request.getParameter("confirm_password");
+
+		System.out.println(password);
+		System.out.println(confirmPassword);
+
+		if (!password.equals(confirmPassword)) {
+			// Set the attribute of error to invalid_credentials
+			request.setAttribute("error", "password_match");
+
+			// Dispatch
+			dispatcher.forward(request, response);
+			return;
+		}
+
+		try {
+			int rowsAffected = UserModel.insertNewUser(name, email, password);
+
+			// Check if the user is inserted
+			if (rowsAffected > 0) {
+				// Redirect to login page
+				response.sendRedirect("/CA1-Preparation/views/user/login.jsp");
+			}
+
+		} catch (SQLException e) {
+			System.out.println("SQL Error has occured");
+			// e.printStackTrace();
+
+			// Set the attribute of error to invalid_credentials
+			request.setAttribute("error", "user_exists");
+
+			// Dispatch
+			dispatcher.forward(request, response);
+		}
 	}
 
 }

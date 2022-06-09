@@ -12,7 +12,7 @@
 <body>
 	
 	<%@ include file = "misc/navbar.jsp" %>
-	
+
 	<div class="jumbotron">
 		<h1>
 			Tours R Us
