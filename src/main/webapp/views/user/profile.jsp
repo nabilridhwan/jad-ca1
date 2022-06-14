@@ -1,86 +1,81 @@
 <%@page import="models.UserModel" %>
 <%@ page import="utils.DatabaseConnection" %>
-<%@ page import="java.sql.Connection" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page import="dataStructures.User" %>
+<%@ page contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="ISO-8859-1">
     <title>Insert title here</title>
-    <link href="/CA1-Preparation/views/output.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/views/output.css" rel="stylesheet"/>
 </head>
 <body>
 
-<%--todo--%>
 <%
-    Connection conn = new DatabaseConnection().get();
-    int userID = -1;
-
     String fullName = "";
     String profilePicUrl = "";
     String email = "";
 
     // Check if userID is null
-    if (session.getAttribute("userID") != null) {
-        userID = (int) session.getAttribute("userID");
-    } else {
+    if (session.getAttribute("userID") == null) {
         // Send a redirect to login page
-        response.sendRedirect("/CA1-Preparation/views/user/login.jsp");
+        response.sendRedirect("${pageContext.request.contextPath}/views/user/login.jsp");
+        return;
+    }
+    int userID = (int) session.getAttribute("userID");
+
+    DatabaseConnection connection = new DatabaseConnection();
+    User[] users = UserModel.getUserByUserID(userID).query(connection);
+    connection.close();
+
+    if (users == null) {
+        response.sendRedirect("${pageContext.request.contextPath}/views/user/login.jsp?error=sql_error");
         return;
     }
 
-    try {
-        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM user WHERE user_id = ?;");
+    if (users.length == 1) {
+        User user = users[0];
+        //			Get the user ID
+        fullName = user.getFullName();
+        profilePicUrl = user.getPfpUrl();
+        email = user.getEmail();
 
-        //		Set the variables
-        pstmt.setInt(1, userID);
+    } else {
+        //			If there is no user, dispatch the page back to the login page
 
-        ResultSet rs = UserModel.getUserByUserID(userID);
+        //			Set the attribute of error to invalid_credentials
+        request.setAttribute("error", "invalid_credentials");
 
-        //		Check if the user exist
-        if (rs.next()) {
-            //			Get the user ID
-            fullName = rs.getString("full_name");
-            profilePicUrl = rs.getString("profile_pic_url");
-            email = rs.getString("email");
-
-        } else {
-            //			If there is no user, dispatch the page back to the login page
-
-            //			Set the attribute of error to invalid_credentials
-            request.setAttribute("error", "invalid_credentials");
-
-            //			Dispatch
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/user/login.jsp?error=invalid_credentials");
-            dispatcher.forward(request, response);
-
-        }
-    } catch (SQLException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-
-        response.sendRedirect("/CA1-Preparation/views/user/login.jsp?error=sql_error");
+        //			Dispatch
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/user/login.jsp?error=invalid_credentials");
+        dispatcher.forward(request, response);
 
     }
 %>
 
 <div class="text-center">
-    <img class="w-48 rounded-full" src="<%=profilePicUrl %>"/>
+    <img class="w-48 rounded-full" src="<%=profilePicUrl %>" alt=""/>
 
     <h1 class="text-4xl font-extrabold">
         <%=fullName %>
     </h1>
 
-    <form method="POST" action="/CA1-Preparation/modifyUser">
+    <form method="POST" action="${pageContext.request.contextPath}/modifyUser">
         <label>Full Name</label>
-        <input type="text" value="<%=fullName%>" name="full_name"/>
+        <label>
+            <input type="text" value="<%=fullName%>" name="full_name"/>
+        </label>
 
         <label>Email</label>
-        <input type="text" value="<%=email%>" name="email"/>
+        <label>
+            <input type="text" value="<%=email%>" name="email"/>
+        </label>
 
         <label>Password</label>
-        <input type="password" value="" name="password"/>
+        <label>
+            <input type="password" value="" name="password"/>
+        </label>
 
         <button>Submit</button>
     </form>
