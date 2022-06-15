@@ -4,9 +4,22 @@
 <%@ page contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <!DOCTYPE html>
 <html>
+<%
+    DatabaseConnection connection = new DatabaseConnection();
+    String category = request.getParameter("category_name");
+    Category[] categories = CategoryModel.getCategoryFromName(category).query(connection);
+    boolean renderCategoryList = (categories == null || categories.length != 0);
+%>
 <head>
-    <title>Insert title here</title>
-    <meta charset="utf-8" />
+    <%
+        if (renderCategoryList) {
+    %>
+    <title>List of Categories</title>
+    <% } else { %>
+    <title><%=category%>
+    </title>
+    <% } %>
+    <meta charset="utf-8"/>
     <meta
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
@@ -43,13 +56,7 @@
 <%@ include file="../misc/navbar.jsp" %>
 <%--Get Category name from url param--%>
 <%
-    DatabaseConnection connection = new DatabaseConnection();
-    String category = request.getParameter("category_name");
-    Category[] categories = CategoryModel.getCategoryFromName(category).query(connection);
-    boolean RenderCategoryList = (categories == null || categories.length != 0);
-
-
-    if (RenderCategoryList) {
+    if (renderCategoryList) {
         //Category List
         categories = CategoryModel.getCategoriesWithListingCount().query(connection);
 %>
