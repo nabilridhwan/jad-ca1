@@ -251,7 +251,7 @@
                     <div class="item">
                         <div class="destination">
                             <a
-                                    href="#"
+                                    href="./tour/categories.jsp?category_name=<%= category_name %>"
                                     class="img d-flex justify-content-center align-items-center"
                                     style="background-image: url(<%=image %>);"
                             >
@@ -260,12 +260,12 @@
                                 </div>
                             </a>
                             <div class="text p-3">
-                                <h3><a href="#"><%=category_name %>
+                                <h3><a href="./tour/categories.jsp?category_name=<%= category_name %>"><%=category_name%>
                                 </a></h3>
-                                <span class="listing"><%=desc %></span>
+                                <span class="listing"><%=desc%></span>
 
                                 <br/>
-                                <span class="listing"><%=count %> Listing</span>
+                                <span class="listing"><%=count%> Listing</span>
                             </div>
                         </div>
                     </div>
@@ -298,13 +298,12 @@
                     String tour_brief_desc = tour.getTour_brief_desc();
                     double tour_price = tour.getTour_price();
                     String tour_location = tour.getTour_location();
-
             %>
             <div class="col-sm col-md-6 col-lg ftco-animate">
                 <div class="destination">
 
                     <a
-                            href="#"
+                            href="./tour/detail.jsp?tour_id=<%=tour.getTour_id()%>"
                             class="img img-2 d-flex justify-content-center align-items-center"
                             style="background-image: url(<%=tour_image_url %>)"
                     >
@@ -318,7 +317,7 @@
                     <div class="text p-3">
                         <div class="d-flex">
                             <div class="one">
-                                <h3><a href="#"><%=tour_name %>
+                                <h3><a href="./tour/detail.jsp?tour_id=<%=tour.getTour_id()%>"><%=tour_name %>
                                 </a></h3>
                                 <p class="rate">
                                     <i class="icon-star"></i>
