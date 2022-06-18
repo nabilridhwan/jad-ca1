@@ -49,7 +49,7 @@
     // Check if userID is null
     if (session.getAttribute("userID") == null) {
         // Send a redirect to login page
-        response.sendRedirect("${pageContext.request.contextPath}/views/user/login.jsp");
+        response.sendRedirect("login.jsp");
         return;
     }
     int userID = (int) session.getAttribute("userID");
@@ -59,7 +59,7 @@
     connection.close();
 
     if (users == null) {
-        response.sendRedirect("${pageContext.request.contextPath}/views/user/login.jsp?error=sql_error");
+        response.sendRedirect("login.jsp?error=sql_error");
         return;
     }
 

@@ -68,7 +68,7 @@ public class ModifyUser extends HttpServlet {
 //        Get the user
         User[] results = UserModel.getUserByUserID(userID).query(connection);
         
-        if(results.length == 0) {
+        if(results.length == 0 || results == null) {
         	return;
         }
 
@@ -76,8 +76,10 @@ public class ModifyUser extends HttpServlet {
         //populate user object
         User user = results[0];
         
-        user.setEmail(email);
-        user.setFullName(full_name);
+        User newUpdateUser = new User(userID);
+        
+        newUpdateUser.setEmail(email);
+        newUpdateUser.setFullName(full_name);
         
         
         if (!password.isEmpty() && !old_password.isEmpty() && !password.isEmpty() && !confirm_password.isEmpty()) {
@@ -97,12 +99,12 @@ public class ModifyUser extends HttpServlet {
         	}
         	
 //        	Set the password
-            user.setPassword(password);
+        	newUpdateUser.setPassword(password);
             session.removeAttribute("userID");
         }
 
         //update
-        int affectedRows = UserModel.updateUser(user).update(connection);
+        int affectedRows = UserModel.updateUser(newUpdateUser).update(connection);
         connection.close();
         
         System.out.println(affectedRows);
