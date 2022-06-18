@@ -76,67 +76,49 @@ public class UserModel {
         };
     }
 
-    public static IDatabaseUpdate updateUser(User user) {
+    public static IDatabaseUpdate updateUser(int userId, String fullName, String email, String password) {
         return databaseConnection -> {
 //            SQL Reference "UPDATE user SET full_name = ?, email = ?, password = ?, profile_pic_url = ? WHERE user_id = ?";
-            if (user.IsFromDatabase()) return 0;
-            boolean firstVariable = true;
-            StringBuilder sql = new StringBuilder("Update user SET ");
-            if (user.getFullName() != null) {
-                sql.append("full_name = ? ");
-//                if (firstVariable) sql.append(", "); //first one is always false
-                firstVariable = false;
-            }
-            if (user.getEmail() != null) {
-                if (!firstVariable) sql.append(", ");
-                sql.append("email = ? ");
-                firstVariable = false;
-            }
-            if (user.getPfpUrl() != null) {
-                if (!firstVariable) sql.append(", ");
-                sql.append("profile_pic_url = ? ");
-                firstVariable = false;
-            }
-            if (user.getRole() != null) {
-                if (!firstVariable) sql.append(", ");
-                sql.append("role = ? ");
-                firstVariable = false;
-            }
-            if (user.getPassword() != null) {
-                if (!firstVariable) sql.append(", ");
-                sql.append("password = ? ");
-                firstVariable = false;
-            }
-            sql.append("WHERE user_id = ? ");
-
-            //todo might want to return -1 instead
-            if (firstVariable) return 0; //no variables were set therefore no change;
 
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement prepStatement = conn.prepareStatement(sql.toString());
+                PreparedStatement prepStatement = conn.prepareStatement("UPDATE user " +
+                        "SET " +
+                        "full_name = ?," +
+                        "email = ?," +
+                        "password =? " +
+                        "WHERE user_id = ?");
 
-                int variableCount = 1;
-                if (user.getFullName() != null) {
-                    prepStatement.setString(variableCount, user.getFullName());
-                    variableCount++;
-                }
-                if (user.getEmail() != null) {
-                    prepStatement.setString(variableCount, user.getEmail());
-                    variableCount++;
-                }
-                if (user.getPfpUrl() != null) {
-                    prepStatement.setString(variableCount, user.getPfpUrl());
-                    variableCount++;
-                }
-                if (user.getRole() != null) {
-                    prepStatement.setString(variableCount, user.getRole());
-                    variableCount++;
-                }
-                if (user.getPassword() != null) {
-                    prepStatement.setString(variableCount, user.getPassword());
-//                    variableCount++;
-                }
+
+                prepStatement.setString(1, fullName);
+                prepStatement.setString(2, email);
+                prepStatement.setString(3, password);
+                prepStatement.setInt(4, userId);
+
+                return prepStatement.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        };
+    }
+
+    public static IDatabaseUpdate updateUser(int userId, String fullName, String email) {
+        return databaseConnection -> {
+//            SQL Reference "UPDATE user SET full_name = ?, email = ?, password = ?, profile_pic_url = ? WHERE user_id = ?";
+
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement prepStatement = conn.prepareStatement("UPDATE user " +
+                        "SET " +
+                        "full_name = ?," +
+                        "email = ?," +
+                        "WHERE user_id = ?");
+
+
+                prepStatement.setString(1, fullName);
+                prepStatement.setString(2, email);
+                prepStatement.setInt(3, userId);
                 return prepStatement.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();

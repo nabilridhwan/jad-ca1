@@ -1,8 +1,8 @@
 package servlets;
 
-import dataStructures.User;
 import models.UserModel;
 import utils.DatabaseConnection;
+import utils.IDatabaseUpdate;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,14 +41,7 @@ public class ModifyUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO Auto-generated method stub
 
-//		Get the full name, email and password
-
-        String full_name = request.getParameter("full_name");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
         HttpSession session = request.getSession(false);
-
         // Check if userID is null
         if (session.getAttribute("userID") == null) {
             // Send a redirect to login page
@@ -58,19 +51,21 @@ public class ModifyUser extends HttpServlet {
 
         int userID = (int) session.getAttribute("userID");
 
+//		Get the full name, email and password
 
-        //populate user object
-        User user = new User(userID);
-        user.setEmail(email);
-        user.setFullName(full_name);
-        if (!password.isEmpty()) {
-            user.setPassword(password);
-            session.removeAttribute("userID");
-        }
+        String full_name = request.getParameter("full_name");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        IDatabaseUpdate databaseUpdate = password.isEmpty() ?
+                UserModel.updateUser(userID, full_name, email) :
+                UserModel.updateUser(userID, full_name, email, password);
+
+        session.invalidate();
 
         //update
         DatabaseConnection connection = new DatabaseConnection();
-        int affectedRows = UserModel.updateUser(user).update(connection);
+        int affectedRows = databaseUpdate.update(connection);
         connection.close();
 
         // Check if user was updated

@@ -13,14 +13,10 @@
 <body>
 
 <%
-    String fullName = "";
-    String profilePicUrl = "";
-    String email = "";
-
     // Check if userID is null
     if (session.getAttribute("userID") == null) {
         // Send a redirect to login page
-        response.sendRedirect("${pageContext.request.contextPath}/views/user/login.jsp");
+        response.sendRedirect("/views/user/login.jsp");
         return;
     }
     int userID = (int) session.getAttribute("userID");
@@ -30,18 +26,11 @@
     connection.close();
 
     if (users == null) {
-        response.sendRedirect("${pageContext.request.contextPath}/views/user/login.jsp?error=sql_error");
+        response.sendRedirect("/views/user/login.jsp?error=sql_error");
         return;
     }
 
-    if (users.length == 1) {
-        User user = users[0];
-        //			Get the user ID
-        fullName = user.getFullName();
-        profilePicUrl = user.getPfpUrl();
-        email = user.getEmail();
-
-    } else {
+    if (users.length != 1) {
         //			If there is no user, dispatch the page back to the login page
 
         //			Set the attribute of error to invalid_credentials
@@ -50,8 +39,12 @@
         //			Dispatch
         RequestDispatcher dispatcher = request.getRequestDispatcher("/views/user/login.jsp?error=invalid_credentials");
         dispatcher.forward(request, response);
-
     }
+    User user = users[0];
+    //			Get the user ID
+    String fullName = user.getFullName();
+    String profilePicUrl = user.getPfpUrl();
+    String email = user.getEmail();
 %>
 
 <div class="text-center">
