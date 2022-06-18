@@ -260,7 +260,7 @@
                                 </div>
                             </a>
                             <div class="text p-3">
-                                <h3><a href="./tour/categories.jsp?category_name=<%= category_name %>"><%=category_name%>
+                                <h3><a href="${pageContext.request.contextPath}/views/tour/categories.jsp?category_name=<%= category_name %>"><%=category_name%>
                                 </a></h3>
                                 <span class="listing"><%=desc%></span>
 
@@ -303,7 +303,7 @@
                 <div class="destination">
 
                     <a
-                            href="./tour/detail.jsp?tour_id=<%=tour.getTour_id()%>"
+                            href="${pageContext.request.contextPath}/views/tour/detail.jsp?tour_id=<%=tour.getTour_id()%>"
                             class="img img-2 d-flex justify-content-center align-items-center"
                             style="background-image: url(<%=tour_image_url %>)"
                     >
