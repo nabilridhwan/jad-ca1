@@ -78,38 +78,39 @@ public class UserModel {
 
     public static IDatabaseUpdate updateUser(User user) {
         return databaseConnection -> {
+//            SQL Reference "UPDATE user SET full_name = ?, email = ?, password = ?, profile_pic_url = ? WHERE user_id = ?";
             if (user.IsFromDatabase()) return 0;
-            boolean firstVariable = false;
+            boolean firstVariable = true;
             StringBuilder sql = new StringBuilder("Update user SET ");
             if (user.getFullName() != null) {
-                sql.append("full_name = ?");
+                sql.append("full_name = ? ");
 //                if (firstVariable) sql.append(", "); //first one is always false
-                firstVariable = true;
+                firstVariable = false;
             }
             if (user.getEmail() != null) {
-                sql.append("email = ?");
-                if (firstVariable) sql.append(", ");
-                firstVariable = true;
+                if (!firstVariable) sql.append(", ");
+                sql.append("email = ? ");
+                firstVariable = false;
             }
             if (user.getPfpUrl() != null) {
-                sql.append("profile_pic_url = ?");
-                if (firstVariable) sql.append(", ");
-                firstVariable = true;
+                if (!firstVariable) sql.append(", ");
+                sql.append("profile_pic_url = ? ");
+                firstVariable = false;
             }
             if (user.getRole() != null) {
-                sql.append("role = ?");
-                if (firstVariable) sql.append(", ");
-                firstVariable = true;
+                if (!firstVariable) sql.append(", ");
+                sql.append("role = ? ");
+                firstVariable = false;
             }
             if (user.getPassword() != null) {
-                sql.append("role = ?");
-                if (firstVariable) sql.append(", ");
-                firstVariable = true;
+                if (!firstVariable) sql.append(", ");
+                sql.append("password = ? ");
+                firstVariable = false;
             }
-            sql.append("WHERE user_id = ?");
+            sql.append("WHERE user_id = ? ");
 
             //todo might want to return -1 instead
-            if (!firstVariable) return 0; //no variables were set therefore no change;
+            if (firstVariable) return 0; //no variables were set therefore no change;
 
             Connection conn = databaseConnection.get();
             try {
