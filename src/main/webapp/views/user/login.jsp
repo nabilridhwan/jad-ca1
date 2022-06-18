@@ -92,28 +92,25 @@
 
                                 <!-- Form -->
                                 <form action="${pageContext.request.contextPath}/login" method="POST">
-                                    <div class="form-group">
-                                        <label>
+                                        
+                                        <div class="form-group">
                                             <input
-                                                    type="text"
-                                                    class="form-control"
-                                                    placeholder="Email"
-                                                    name="email"
-                                                    value="<%=email %>"
+                                                type="text"
+                                                class="form-control"
+                                                placeholder="Email"
+                                                required name="email" value="<%=email %>"
                                             />
-                                        </label>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>
+                                        </div>
+                                        
+                                        <div class="form-group">
                                             <input
-                                                    type="password"
-                                                    class="form-control"
-                                                    placeholder="Password"
-                                                    name="password"
-                                                    value="<%=password %>"
+                                                type="password"
+                                                class="form-control"
+                                                placeholder="Password"
+                                                required name="password" value="<%=password %>"
                                             />
-                                        </label>
-                                    </div>
+                                        </div>
+                                        
                                     <div class="form-group">
                                         <input
                                                 type="submit"
@@ -125,7 +122,7 @@
                                     <div class="form-group text-dark">
                                             <p>
                                                 Don't have an account?
-                                                <a href="">Sign Up</a>
+                                                <a href="${pageContext.request.contextPath}/views/user/signup.jsp">Sign Up</a>
                                             </p>
                                         </div>
                                     </form>
@@ -315,20 +312,20 @@
             </svg>
         </div>
 
-    <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery-migrate-3.0.1.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/popper.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery.easing.1.3.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery.waypoints.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery.stellar.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/owl.carousel.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery.magnific-popup.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/aos.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery.animateNumber.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/bootstrap-datepicker.js"></script>
-    <script src="${pageContext.request.contextPath}/js/jquery.timepicker.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/scrollax.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/main.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/jquery-migrate-3.0.1.min.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/popper.min.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/jquery.easing.1.3.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/jquery.waypoints.min.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/jquery.stellar.min.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/owl.carousel.min.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/jquery.magnific-popup.min.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/aos.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/jquery.animateNumber.min.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/bootstrap-datepicker.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/jquery.timepicker.min.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/scrollax.min.js"></script>
+	    <script src="${pageContext.request.contextPath}/js/main.js"></script>
     </body>
 </html>

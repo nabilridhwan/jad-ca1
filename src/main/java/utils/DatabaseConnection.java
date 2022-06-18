@@ -2,7 +2,7 @@ package utils;
 
 import java.sql.*;
 
-public class DatabaseConnection extends DatabaseConnectionConfig implements AutoCloseable {
+public class DatabaseConnection extends _DatabaseConnectionConfig implements AutoCloseable {
 
     private final Connection connection;
 
