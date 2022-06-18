@@ -7,7 +7,7 @@ and rename this file and class name to DatabaseConnectionConfig (without the _)
  */
 public class _DatabaseConnectionConfig {
 
-    protected static final String databaseName = "jad";
+    protected static final String databaseName = "sp_tour";
     protected static final String user = "root";
-    protected static final String password = "1234";
+    protected static final String password = "root";
 }
