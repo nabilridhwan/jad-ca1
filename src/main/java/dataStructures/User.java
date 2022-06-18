@@ -10,6 +10,7 @@ public class User {
     private String pfpUrl;
     private String email;
     private String role;
+    private String password;
 
 
     public User(ResultSet rs) {
@@ -19,6 +20,7 @@ public class User {
             pfpUrl = rs.getString("profile_pic_url");
             email = rs.getString("email");
             role = rs.getString("role");
+            password = rs.getString("password");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -44,5 +46,30 @@ public class User {
 
     public String getRole() {
         return role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setPfpUrl(String pfpUrl) {
+        this.pfpUrl = pfpUrl;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
