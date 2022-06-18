@@ -78,7 +78,7 @@ public class UserModel {
 
     public static IDatabaseUpdate updateUser(User user) {
         return databaseConnection -> {
-            if (user.IsFromDatabase()) return 0;
+            // if (user.IsFromDatabase()) return 0;
             boolean firstVariable = false;
             StringBuilder sql = new StringBuilder("Update user SET ");
             if (user.getFullName() != null) {

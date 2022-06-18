@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 
 public class User {
 
-    private final boolean fromDatabase;
+    private boolean fromDatabase;
     private int userID;
     private String fullName;
     private String pfpUrl;
@@ -23,7 +23,7 @@ public class User {
             pfpUrl = rs.getString("profile_pic_url");
             email = rs.getString("email");
             role = rs.getString("role");
-            password = null;
+            password = rs.getString("password");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,6 +62,7 @@ public class User {
     public String getPassword() {
         return password;
     }
+    
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
