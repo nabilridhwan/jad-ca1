@@ -14,21 +14,21 @@ public class TourModel {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("SELECT t.*, a.price, b.url, b.alt_text\r\n"
-                        + "FROM tour t"
-                        + "LEFT JOIN ("
-                        + "	SELECT DISTINCT t.name, td.tour_id, td.price"
-                        + "    FROM tour_date td"
-                        + "    LEFT JOIN tour t ON td.tour_id = t.tour_id"
-                        + "    WHERE td.show_tour = 1"
-                        + "    ORDER BY td.price"
-                        + ") a ON a.tour_id = t.tour_id"
-                        + "LEFT JOIN ("
-                        + "	SELECT DISTINCT tti.tour_id, ti.alt_text, ti.url"
-                        + "    FROM tour_tour_image tti"
-                        + "    LEFT JOIN tour_image ti ON ti.tour_image_id = tti.tour_image_id"
-                        + ") b  ON b.tour_id = t.tour_id LIMIT 5;");
-                ResultSet rs = pstmt.executeQuery();
+                PreparedStatement prepStatement = conn.prepareStatement("SELECT t.*, a.price, b.url, b.alt_text\r\n"
+                        + " FROM tour t"
+                        + " LEFT JOIN ("
+                        + " 	SELECT DISTINCT t.name, td.tour_id, td.price"
+                        + "     FROM tour_date td"
+                        + "     LEFT JOIN tour t ON td.tour_id = t.tour_id"
+                        + "     WHERE td.show_tour = 1"
+                        + "     ORDER BY td.price"
+                        + " ) a ON a.tour_id = t.tour_id"
+                        + " LEFT JOIN ("
+                        + " 	SELECT DISTINCT tti.tour_id, ti.alt_text, ti.url"
+                        + "     FROM tour_tour_image tti"
+                        + "     LEFT JOIN tour_image ti ON ti.tour_image_id = tti.tour_image_id"
+                        + " ) b  ON b.tour_id = t.tour_id LIMIT 5;");
+                ResultSet rs = prepStatement.executeQuery();
 
                 ArrayList<Tour> list = new ArrayList<>();
 
@@ -55,23 +55,23 @@ public class TourModel {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("SELECT t.*, a.price, b.url, b.alt_text\r\n"
-                        + "FROM tour t"
-                        + "LEFT JOIN ("
-                        + "	SELECT DISTINCT t.name, td.tour_id, td.price"
-                        + "    FROM tour_date td"
-                        + "    LEFT JOIN tour t ON td.tour_id = t.tour_id"
-                        + "    WHERE td.show_tour = 1"
-                        + ") a ON a.tour_id = t.tour_id"
-                        + "LEFT JOIN ("
-                        + "	SELECT DISTINCT tti.tour_id, ti.alt_text, ti.url"
-                        + "    FROM tour_tour_image tti"
-                        + "    LEFT JOIN tour_image ti ON ti.tour_image_id = tti.tour_image_id"
-                        + ") b  ON b.tour_id = t.tour_id LIMIT 5;"
+                PreparedStatement prepStatement = conn.prepareStatement("SELECT t.*, a.price, b.url, b.alt_text\r\n"
+                        + " FROM tour t"
+                        + " LEFT JOIN ("
+                        + " 	SELECT DISTINCT t.name, td.tour_id, td.price"
+                        + "     FROM tour_date td"
+                        + "     LEFT JOIN tour t ON td.tour_id = t.tour_id"
+                        + "     WHERE td.show_tour = 1"
+                        + " ) a ON a.tour_id = t.tour_id"
+                        + " LEFT JOIN ("
+                        + " 	SELECT DISTINCT tti.tour_id, ti.alt_text, ti.url"
+                        + "     FROM tour_tour_image tti"
+                        + "     LEFT JOIN tour_image ti ON ti.tour_image_id = tti.tour_image_id"
+                        + " ) b  ON b.tour_id = t.tour_id LIMIT 5;"
                         + "WHERE t.tour_id = ?;");
 
-                pstmt.setInt(1, tourId);
-                ResultSet rs = pstmt.executeQuery();
+                prepStatement.setInt(1, tourId);
+                ResultSet rs = prepStatement.executeQuery();
 
                 ArrayList<Tour> list = new ArrayList<>();
 
