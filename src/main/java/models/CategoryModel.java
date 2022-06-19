@@ -2,10 +2,12 @@ package models;
 
 import dataStructures.Category;
 import utils.IDatabaseQuery;
+import utils.IDatabaseUpdate;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CategoryModel {
@@ -55,6 +57,51 @@ public class CategoryModel {
                 e.printStackTrace();
                 return null;
             }
+        };
+    }
+
+    public static IDatabaseUpdate insertNewCategory(String img_url, String name, String desc) {
+        return databaseConnection -> {
+        	
+        	String input_img_url;
+
+        	
+        	if(img_url.isEmpty()) {
+        		input_img_url = null;
+        	}else {
+        		input_img_url = img_url;
+        	}
+        	
+            if (name == null) return 0;
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO category(name, `desc`, image) VALUES(?,?,?);");
+                pstmt.setString(1, name);
+                pstmt.setString(2, desc);
+                pstmt.setString(3, input_img_url);
+                
+                System.out.println("Inserting Category");
+                System.out.println(pstmt.toString());
+                
+                
+                int affectedRows = pstmt.executeUpdate();
+                
+                
+
+                return affectedRows;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }finally {
+            	try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+            
+            
         };
     }
 
