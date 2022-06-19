@@ -3,6 +3,7 @@ package servlets;
 import models.UserModel;
 import utils.DatabaseConnection;
 import utils.IDatabaseUpdate;
+import utils.Util;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import dataStructures.User;
+
 import java.io.IOException;
 
 /**
@@ -42,27 +46,41 @@ public class ModifyUser extends HttpServlet {
         // TODO Auto-generated method stub
     	
     	DatabaseConnection connection = new DatabaseConnection();
+    	
+    	HttpSession session = request.getSession(false);
+        
+        int userID = Util.getUserIDFromSession(session);
+        // Check if userID is null
+        if (userID == -1) {
+            // Send a redirect to login page
+            response.sendRedirect("/CA1-Preparation/views/user/login.jsp");
+            return;
+        }
 
 //		Get the full name, email and password
 
-        String full_name = request.getParameter("full_name");
+        String full_name = request.getParameter("name");
         String email = request.getParameter("email");
         
         String password = request.getParameter("password");
         String old_password = request.getParameter("old_password");
         String confirm_password = request.getParameter("confirm_password");
         
+        String finalPassword = null;
+        
+        System.out.println(userID);
+        System.out.println(full_name);
+        System.out.println(email);
+        System.out.println(password);
+        System.out.println(old_password);
+        System.out.println(confirm_password);
+        
+        
+        
         
 
-        HttpSession session = request.getSession(false);
-        // Check if userID is null
-        if (session.getAttribute("userID") == null) {
-            // Send a redirect to login page
-            response.sendRedirect("/CA1-Preparation/views/user/login.jsp");
-            return;
-        }
-
-        int userID = (int) session.getAttribute("userID");
+        
+        
         
 //        Get the user
         User[] results = UserModel.getUserByUserID(userID).query(connection);
@@ -70,22 +88,43 @@ public class ModifyUser extends HttpServlet {
         if(results.length == 0 || results == null) {
         	return;
         }
+        
+        User user = results[0];
+        
+        
+        // Set the finalPassword initially
+        finalPassword = user.getPassword();
+        
+        // Check if old_passowrd, password or confirm_password is empty
+        if(!old_password.isEmpty() && !password.isEmpty() && !confirm_password.isEmpty()) {
+        	
+        	// Check if old_password matches the old user password
+        	if(!old_password.equals(user.getPassword())) {
+        		response.sendRedirect("/CA1-Preparation/views/user/profile.jsp?message=You have entered an incorrect password!");
+        		return;
+        	}
+        	
+        	// Check if password and confirm_password is empty
+        	if(!password.equals(confirm_password)) {
+        		response.sendRedirect("/CA1-Preparation/views/user/profile.jsp?message=You passwords does not match!");
+        		return;
+        	}
+        	
+        	// Set final password to be password
+        	finalPassword = password;
+        	
+        	
+        }
+        
+        // Invalidate session when user change email or password
+        if(!user.getEmail().equals(email) || !finalPassword.equals(user.getPassword())) {
+        	session.invalidate();
+        }
 
-//		Get the full name, email and password
 
+        IDatabaseUpdate databaseUpdate = UserModel.updateUser(userID, full_name, email, finalPassword);
+                
 
-        String full_name = request.getParameter("full_name");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        IDatabaseUpdate databaseUpdate = password.isEmpty() ?
-                UserModel.updateUser(userID, full_name, email) :
-                UserModel.updateUser(userID, full_name, email, password);
-
-        session.invalidate();
-
-        //update
-        DatabaseConnection connection = new DatabaseConnection();
         int affectedRows = databaseUpdate.update(connection);
         connection.close();
         

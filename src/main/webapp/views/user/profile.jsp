@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="utils.Util"%>
 <%@page import="dataStructures.User"%>
 <%@page import="models.UserModel"%>
 <%@page import="utils.DatabaseConnection"%>
@@ -42,19 +43,19 @@
 
 <%
     // Check if userID is null
-    if (session.getAttribute("userID") == null) {
-        // Send a redirect to login page
-        response.sendRedirect("/views/user/login.jsp");
+    int userID = Util.getUserIDFromSession(session);
+    if (userID == -1) {
+        // TODO: Send a redirect to login page
+        response.sendRedirect("./login.jsp");
         return;
     }
-    int userID = (int) session.getAttribute("userID");
 
     DatabaseConnection connection = new DatabaseConnection();
     User[] users = UserModel.getUserByUserID(userID).query(connection);
     connection.close();
 
     if (users == null) {
-        response.sendRedirect("login.jsp?error=sql_error");
+        response.sendRedirect("./login.jsp?error=sql_error");
 
         return;
     }
@@ -66,7 +67,7 @@
         request.setAttribute("error", "invalid_credentials");
 
         //			Dispatch
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/user/login.jsp?error=invalid_credentials");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("./login.jsp?error=invalid_credentials");
         dispatcher.forward(request, response);
     }
     User user = users[0];

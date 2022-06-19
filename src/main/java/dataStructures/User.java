@@ -10,6 +10,7 @@ public class User {
     private String pfpUrl;
     private String email;
     private String role;
+    private String password;
 
 
     public User(ResultSet rs) {
@@ -27,6 +28,10 @@ public class User {
     }
 
 
+    public String getPassword() {
+        return password;
+    }
+    
     public int getUserID() {
         return userID;
     }
