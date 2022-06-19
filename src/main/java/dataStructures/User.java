@@ -47,6 +47,7 @@ public class User {
     public String getRole() {
         return role;
     }
+<<<<<<< HEAD
 
     public String getPassword() {
         return password;
@@ -72,4 +73,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+=======
+>>>>>>> 8ecdcd52db6a0de2c3162954bae12d3c49c249ab
 }

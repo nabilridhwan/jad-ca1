@@ -73,6 +73,7 @@ public class ModifyUser extends HttpServlet {
 
 //		Get the full name, email and password
 
+<<<<<<< HEAD
         //populate user object
         User user = results[0];
         
@@ -105,6 +106,22 @@ public class ModifyUser extends HttpServlet {
 
         //update
         int affectedRows = UserModel.updateUser(newUpdateUser).update(connection);
+=======
+
+        String full_name = request.getParameter("full_name");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        IDatabaseUpdate databaseUpdate = password.isEmpty() ?
+                UserModel.updateUser(userID, full_name, email) :
+                UserModel.updateUser(userID, full_name, email, password);
+
+        session.invalidate();
+
+        //update
+        DatabaseConnection connection = new DatabaseConnection();
+        int affectedRows = databaseUpdate.update(connection);
+>>>>>>> 8ecdcd52db6a0de2c3162954bae12d3c49c249ab
         connection.close();
         
         System.out.println(affectedRows);

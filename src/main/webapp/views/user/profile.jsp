@@ -12,12 +12,15 @@
         />
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <%
     // Check if userID is null
     if (session.getAttribute("userID") == null) {
         // Send a redirect to login page
         response.sendRedirect("/views/user/login.jsp");
 =======
+=======
+>>>>>>> 8ecdcd52db6a0de2c3162954bae12d3c49c249ab
         <link
             href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"
             rel="stylesheet"
@@ -45,19 +48,21 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/icomoon.css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
     </head>
-    <body>
-    
-    <%
-    String fullName = "";
-    String profilePicUrl = "";
-    String email = "";
-    
 
+<<<<<<< HEAD
     // Check if userID is null
     if (session.getAttribute("userID") == null) {
         // Send a redirect to login page
         response.sendRedirect("login.jsp");
 >>>>>>> ITEM-61
+=======
+
+<%
+    // Check if userID is null
+    if (session.getAttribute("userID") == null) {
+        // Send a redirect to login page
+        response.sendRedirect("/views/user/login.jsp");
+>>>>>>> 8ecdcd52db6a0de2c3162954bae12d3c49c249ab
         return;
     }
     int userID = (int) session.getAttribute("userID");
@@ -68,10 +73,15 @@
 
     if (users == null) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         response.sendRedirect("/views/user/login.jsp?error=sql_error");
 =======
         response.sendRedirect("login.jsp?error=sql_error");
 >>>>>>> ITEM-61
+=======
+        response.sendRedirect("login.jsp?error=sql_error");
+
+>>>>>>> 8ecdcd52db6a0de2c3162954bae12d3c49c249ab
         return;
     }
 
