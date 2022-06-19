@@ -40,6 +40,19 @@ public class ModifyUser extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO Auto-generated method stub
+    	
+    	DatabaseConnection connection = new DatabaseConnection();
+
+//		Get the full name, email and password
+
+        String full_name = request.getParameter("full_name");
+        String email = request.getParameter("email");
+        
+        String password = request.getParameter("password");
+        String old_password = request.getParameter("old_password");
+        String confirm_password = request.getParameter("confirm_password");
+        
+        
 
         HttpSession session = request.getSession(false);
         // Check if userID is null
@@ -50,8 +63,16 @@ public class ModifyUser extends HttpServlet {
         }
 
         int userID = (int) session.getAttribute("userID");
+        
+//        Get the user
+        User[] results = UserModel.getUserByUserID(userID).query(connection);
+        
+        if(results.length == 0 || results == null) {
+        	return;
+        }
 
 //		Get the full name, email and password
+
 
         String full_name = request.getParameter("full_name");
         String email = request.getParameter("email");
@@ -67,6 +88,8 @@ public class ModifyUser extends HttpServlet {
         DatabaseConnection connection = new DatabaseConnection();
         int affectedRows = databaseUpdate.update(connection);
         connection.close();
+        
+        System.out.println(affectedRows);
 
         // Check if user was updated
         if (affectedRows > 0) {

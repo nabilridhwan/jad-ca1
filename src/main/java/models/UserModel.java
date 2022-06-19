@@ -78,6 +78,7 @@ public class UserModel {
 
     public static IDatabaseUpdate updateUser(int userId, String fullName, String email, String password) {
         return databaseConnection -> {
+
 //            SQL Reference "UPDATE user SET full_name = ?, email = ?, password = ?, profile_pic_url = ? WHERE user_id = ?";
 
             Connection conn = databaseConnection.get();

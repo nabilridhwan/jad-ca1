@@ -19,6 +19,7 @@ public class User {
             pfpUrl = rs.getString("profile_pic_url");
             email = rs.getString("email");
             role = rs.getString("role");
+            password = rs.getString("password");
         } catch (Exception e) {
             e.printStackTrace();
         }
