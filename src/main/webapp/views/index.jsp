@@ -239,19 +239,19 @@
                 <div class="destination-slider owl-carousel ftco-animate">
                     <%
                         DatabaseConnection connection = new DatabaseConnection();
-
                         Category[] categories = CategoryModel.getCategoriesWithListingCount().query(connection);
-
-                        for (Category category : categories) {
-                            String image = category.getImage();
-                            String category_name = category.getCategory_name();
-                            String desc = category.getDesc();
-                            int count = category.getCount();
+                        
+                        if (categories != null)
+                            for (Category category : categories) {
+                                String image = category.getImage();
+                                String category_name = category.getCategory_name();
+                                String desc = category.getDesc();
+                                int count = category.getCount();
                     %>
                     <div class="item">
                         <div class="destination">
                             <a
-                                    href="./tour/categories.jsp?category_name=<%= category_name %>"
+                                    href="${pageContext.request.contextPath}/views/tour/categories.jsp?category_name=<%= category_name %>"
                                     class="img d-flex justify-content-center align-items-center"
                                     style="background-image: url(<%=image %>);"
                             >
@@ -260,8 +260,9 @@
                                 </div>
                             </a>
                             <div class="text p-3">
-                                <h3><a href="./tour/categories.jsp?category_name=<%= category_name %>"><%=category_name%>
-                                </a></h3>
+                                <h3>
+                                    <a href="${pageContext.request.contextPath}/views/tour/categories.jsp?category_name=<%= category_name %>"><%=category_name%>
+                                    </a></h3>
                                 <span class="listing"><%=desc%></span>
 
                                 <br/>
@@ -270,7 +271,7 @@
                         </div>
                     </div>
                     <%
-                        }
+                            }
                     %>
                 </div>
             </div>
@@ -292,18 +293,21 @@
 
             <%
                 Tour[] tours = TourModel.getUniqueToursByLowestPriceFirst().query(connection);
-                for (Tour tour : tours) {
-                    String tour_image_url = tour.getTour_image_url();
-                    String tour_name = tour.getTour_name();
-                    String tour_brief_desc = tour.getTour_brief_desc();
-                    double tour_price = tour.getTour_price();
-                    String tour_location = tour.getTour_location();
+                connection.close();
+
+                if (tours != null)
+                    for (Tour tour : tours) {
+                        String tour_image_url = tour.getTour_image_url();
+                        String tour_name = tour.getTour_name();
+                        String tour_brief_desc = tour.getTour_brief_desc();
+                        double tour_price = tour.getTour_price();
+                        String tour_location = tour.getTour_location();
             %>
             <div class="col-sm col-md-6 col-lg ftco-animate">
                 <div class="destination">
 
                     <a
-                            href="./tour/detail.jsp?tour_id=<%=tour.getTour_id()%>"
+                            href="${pageContext.request.contextPath}/views/tour/detail.jsp?tour_id=<%=tour.getTour_id()%>"
                             class="img img-2 d-flex justify-content-center align-items-center"
                             style="background-image: url(<%=tour_image_url %>)"
                     >
@@ -317,8 +321,9 @@
                     <div class="text p-3">
                         <div class="d-flex">
                             <div class="one">
-                                <h3><a href="./tour/detail.jsp?tour_id=<%=tour.getTour_id()%>"><%=tour_name %>
-                                </a></h3>
+                                <h3>
+                                    <a href="${pageContext.request.contextPath}/views/tour/detail.jsp?tour_id=<%=tour.getTour_id()%>"><%=tour_name %>
+                                    </a></h3>
                                 <p class="rate">
                                     <i class="icon-star"></i>
                                     <i class="icon-star"></i>
@@ -345,8 +350,7 @@
                 </div>
             </div>
             <%
-                }
-                connection.close();
+                    }
             %>
 
 
@@ -758,7 +762,8 @@
 <script src="${pageContext.request.contextPath}/js/aos.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery.animateNumber.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap-datepicker.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.timepicker.min.js"></script> //This isn't found anywhere
+<script src="${pageContext.request.contextPath}/js/jquery.timepicker.min.js"></script>
+//This isn't found anywhere
 <script src="${pageContext.request.contextPath}/js/scrollax.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/main.js"></script>
 </body>

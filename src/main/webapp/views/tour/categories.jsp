@@ -6,16 +6,17 @@
 <html>
 <%
     DatabaseConnection connection = new DatabaseConnection();
-    String category = request.getParameter("category_name");
-    Category[] categories = CategoryModel.getCategoryFromName(category).query(connection);
-    if (categories == null || categories.length != 0) {
+    String categoryStr = request.getParameter("category_name");
+    Category[] categories = CategoryModel.getCategoryFromName(categoryStr).query(connection);
+    if (categories == null || categories.length != 1) {
         response.sendRedirect("/tour/categoryListing.jsp");
         return;
     }
+    Category category = categories[0];
 %>
 <head>
 
-    <title><%=category%>
+    <title><%=categoryStr%>
     </title>
 
     <meta charset="utf-8"/>

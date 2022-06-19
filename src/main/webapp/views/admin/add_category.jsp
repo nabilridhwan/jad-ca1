@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<%@page import="dataStructures.User"%>
-<%@page import="models.UserModel"%>
-<%@page import="utils.DatabaseConnection"%>
+<%@page import="utils.Util"%>
 <html lang="en">
     <head>
         <title>DirEngine - Free Bootstrap 4 Template by Colorlib</title>
@@ -37,50 +35,28 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/flaticon.css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/icomoon.css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
+
+        
     </head>
+    <body>
 
 
-<%
-    // Check if userID is null
-    if (session.getAttribute("userID") == null) {
-        // Send a redirect to login page
-        response.sendRedirect("/views/user/login.jsp");
-        return;
-    }
-    int userID = (int) session.getAttribute("userID");
-
-    DatabaseConnection connection = new DatabaseConnection();
-    User[] users = UserModel.getUserByUserID(userID).query(connection);
-    connection.close();
-
-    if (users == null) {
-        response.sendRedirect("login.jsp?error=sql_error");
-
-        return;
-    }
-
-    if (users.length != 1) {
-        //			If there is no user, dispatch the page back to the login page
-
-        //			Set the attribute of error to invalid_credentials
-        request.setAttribute("error", "invalid_credentials");
-
-        //			Dispatch
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/views/user/login.jsp?error=invalid_credentials");
-        dispatcher.forward(request, response);
-    }
-    User user = users[0];
-    //			Get the user ID
-    String fullName = user.getFullName();
-    String profilePicUrl = user.getPfpUrl();
-    String email = user.getEmail();
-%>
-    
         <%@ include file="../misc/navbar.jsp" %>
+        
+        <%
+        	int userID = Util.getUserIDFromSession(session);
+        	if(userID == -1){
+        		response.sendRedirect("/CA1-Preparation/views/index.jsp");
+        	}
+        	
+        	if(!Util.isUserAdmin(userID)){
+        		response.sendRedirect("/CA1-Preparation/views/index.jsp");
+        	}
+        %>
 
         <div class="hero-wrap" style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
             <div class="overlay"></div>
-            <div class="container" style="padding: 7em 0">
+            <div class="container">
                 <div
                     class="row no-gutters js-fullheight align-items-center justify-content-center"
                     data-scrollax-parent="true"
@@ -90,97 +66,52 @@
                     >
                         <div class="container px-5">
                             <div class="row d-flex contact-info">
-                                <div class="col-md-12 mb-4 text-center">
-                                    <h2 class="h3 font-weight-bold">
-                                        Edit your profile
-                                    </h2>
-
-                                    <img
-                                        src="<%=profilePicUrl %>"
-                                        alt="Image"
-                                        class="rounded-circle img-fluid"
-                                        width="150"
-                                    />
-
-                                    <h2 class="h4">Hi, <%=fullName %></h2>
+                                <div class="col-md-12 mb-4">
+                                    <h2 class="h4">Add a new category</h2>
                                 </div>
                                 <div class="w-100"></div>
                                 <div class="col-md-12">
                                     <p class="text-danger">
-                                        <%=request.getParameter("message") %>
+                                        <%String message = request.getParameter("message") != null ? request.getParameter("message") : ""; %>
+                                        <%=message %>
                                     </p>
                                 </div>
                             </div>
 
                             <div class="row block-9">
                                 <div class="col-md-12">
-                                
-                                    <form method="POST" action="${pageContext.request.contextPath}/modifyUser">
-                                        <h2 class="h5">Details</h2>
+
+                                    <form action="${pageContext.request.contextPath}/addNewCategory" method="POST">
                                         <div class="form-group">
-                                            <label for="name">Full Name</label>
                                             <input
                                                 type="text"
                                                 class="form-control"
-                                                placeholder="Full Name"
-                                                name="name"
-                                                value="<%=fullName%>" name="full_name"
+                                                placeholder="Category Image URL"
+                                                name="category_img"
                                             />
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="email">Email</label>
                                             <input
-                                                type="email"
+                                                type="text"
                                                 class="form-control"
-                                                placeholder="Email"
-                                                name="email"
-                                                value="<%=email%>" name="email"
+                                                placeholder="Category Name"
+                                                name="category_name"
+                                                required
                                             />
                                         </div>
-
-                                        <h2 class="h5">Change your password</h2>
-
                                         <div class="form-group">
-                                            <label for="old_password"
-                                                >Old Password</label
-                                            >
                                             <input
-                                                type="password"
+                                            	type="text"
+                                                name="category_desc"
                                                 class="form-control"
-                                                placeholder="Old Password"
-                                                name="old_password"
-                                            />
+                                                placeholder="Description"
+                                                required />
                                         </div>
-
-                                        <div class="form-group">
-                                            <label for="password"
-                                                >Password</label
-                                            >
-                                            <input
-                                                type="password"
-                                                class="form-control"
-                                                placeholder="Password"
-                                                name="password"
-                                            />
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="confirm_password"
-                                                >Confirm Password</label
-                                            >
-                                            <input
-                                                type="password"
-                                                class="form-control"
-                                                placeholder="Confirm Password"
-                                                name="confirm_password"
-                                            />
-                                        </div>
-
                                         <div class="form-group">
                                             <input
                                                 type="submit"
-                                                value="Save Profile"
+                                                value="Add new category"
                                                 class="btn w-100 btn-primary py-3 px-5"
                                             />
                                         </div>
@@ -373,7 +304,7 @@
             </svg>
         </div>
 
-        <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/jquery-migrate-3.0.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/popper.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
@@ -389,5 +320,6 @@
         <script src="${pageContext.request.contextPath}/js/scrollax.min.js"></script>
         
         <script src="${pageContext.request.contextPath}/js/main.js"></script>
+
     </body>
 </html>
