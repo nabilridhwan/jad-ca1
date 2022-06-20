@@ -1,3 +1,9 @@
+<%@page import="utils.DatabaseConnection"%>
+<%@page import="dataStructures.User"%>
+<%@page import="models.UserModel"%>
+<%@page import="utils.Util"%>
+
+<%int navbarUserID = Util.getUserIDFromSession(session); %>
 <nav
             class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-dark"
             id="ftco-navbar"
@@ -18,21 +24,55 @@
 
                 <div class="collapse navbar-collapse" id="ftco-nav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a href="${pageContext.request.contextPath}/views/index.jsp" class="nav-link">Home</a>
                         </li>
-
-                        <li class="nav-item cta">
-                            <a href="${pageContext.request.contextPath}/views/user/login.jsp" class="nav-link"
-                                ><span>Login</span></a
-                            >
+                        
+                        <li class="nav-item">
+                            <a href="${pageContext.request.contextPath}/views/tour/view_all.jsp" class="nav-link">Tours</a>
                         </li>
                         
-                        <li class="nav-item cta">
-                            <a href="${pageContext.request.contextPath}/views/user/signup.jsp" class="nav-link"
-                                ><span>Sign up</span></a
-                            >
-                        </li>
+                        <%
+
+                        	if(navbarUserID == -1){%>
+                        		<li class="nav-item cta">
+		                            <a href="${pageContext.request.contextPath}/views/user/login.jsp" class="nav-link"
+		                                ><span>Login</span></a
+		                            >
+		                        </li>
+		                        
+		                        <li class="nav-item cta">
+		                            <a href="${pageContext.request.contextPath}/views/user/signup.jsp" class="nav-link"
+		                                ><span>Sign up</span></a
+		                            >
+		                        </li>	
+                        <%}else{
+                        	// Get role
+                        	DatabaseConnection navbarConnection = new DatabaseConnection();
+                        	User[] navbarUsers = UserModel.getUserByUserID(navbarUserID).query(navbarConnection);
+                        	
+                        	if(navbarUsers == null || navbarUsers.length == 0){
+                        		navbarUserID = -1;
+                        	}else{
+                        		User navbarUser = navbarUsers[0];
+                        		
+                        		if(navbarUser.getRole().equals("admin")){%>
+                        			<li class="nav-item">
+                            			<a href="${pageContext.request.contextPath}/views/admin/all_tours.jsp" class="nav-link">Admin</a>
+                        			</li>
+                        		<%}%>
+                        		<li class="nav-item">
+			                            <a href="${pageContext.request.contextPath}/views/user/profile.jsp" class="nav-link">Profile</a>
+			                        </li>
+			                        
+			                        <li class="nav-item">
+			                            <a href="${pageContext.request.contextPath}/views/user/wishlist.jsp" class="nav-link">Wishlist</a>
+			                        </li>
+			                  <%}
+                        	}%>
+			                        
+
+                        
                     </ul>
                 </div>
             </div>
