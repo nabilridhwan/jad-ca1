@@ -48,7 +48,7 @@
                         <strong>Categories</strong>
                     </h2>
                     
-                    <a href="#" class="btn btn-primary">
+                    <a href="${pageContext.request.contextPath}/views/admin/add_category.jsp" class="btn btn-primary">
                     	Add Category
                     </a>
                 </div>
@@ -64,6 +64,7 @@
                         
                         if (categories != null)
                             for (Category category : categories) {
+                            	int id = category.getCategory_id();
                                 String image = category.getImage();
                                 String category_name = category.getCategory_name();
                                 String desc = category.getDesc();
@@ -87,11 +88,11 @@
 			
 			                            <div class="row my-3">
 			                                <div class="col-md-12">
-			                                    <a href="#" class="btn btn-primary w-100 mb-1">
+			                                    <a href="${pageContext.request.contextPath}/views/admin/edit_category.jsp?id=<%=id %>" class="btn btn-primary w-100 mb-1">
 			                                        Edit
 			                                    </a>
 			                                    
-			                                    <a href="#" class="btn btn-secondary w-100">
+			                                    <a href="${pageContext.request.contextPath}/deleteCategory?id=<%=id %>" class="btn btn-secondary w-100">
 			                                        Delete
 			                                    </a>
 			                                </div>

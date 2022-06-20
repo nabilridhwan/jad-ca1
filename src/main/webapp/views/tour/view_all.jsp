@@ -54,7 +54,7 @@
 	%>
 
 
-    <%@ include file="../misc/navbar.jsp" %>
+    <%@ include file="../misc/navbar_dark.jsp" %>
 
 	<section class="ftco-section ftco-degree-bg">
 		<div class="container">
