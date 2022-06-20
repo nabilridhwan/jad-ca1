@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import models.UserModel;
 import utils.DatabaseConnection;
+import utils.Password;
 
 /**
  * Servlet implementation class SignUp
@@ -70,6 +71,9 @@ public class SignUp extends HttpServlet {
         }
 
         DatabaseConnection connection = new DatabaseConnection();
+        
+        // Hash the password
+        password = Password.encryptThisString(password);
 
         int rowsAffected = UserModel.insertNewUser(name, email, password).update(connection);
 

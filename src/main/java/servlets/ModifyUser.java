@@ -3,6 +3,7 @@ package servlets;
 import models.UserModel;
 import utils.DatabaseConnection;
 import utils.IDatabaseUpdate;
+import utils.Password;
 import utils.Util;
 
 import javax.servlet.ServletException;
@@ -99,7 +100,7 @@ public class ModifyUser extends HttpServlet {
         if(!old_password.isEmpty() && !password.isEmpty() && !confirm_password.isEmpty()) {
         	
         	// Check if old_password matches the old user password
-        	if(!old_password.equals(user.getPassword())) {
+        	if(!Password.encryptThisString(old_password).equals(user.getPassword())) {
         		response.sendRedirect("/CA1-Preparation/views/user/profile.jsp?message=You have entered an incorrect password!");
         		return;
         	}
@@ -111,7 +112,7 @@ public class ModifyUser extends HttpServlet {
         	}
         	
         	// Set final password to be password
-        	finalPassword = password;
+        	finalPassword = Password.encryptThisString(password);
         	
         	
         }
