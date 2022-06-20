@@ -61,12 +61,18 @@
                             			<a href="${pageContext.request.contextPath}/views/admin/all_tours.jsp" class="nav-link">Admin</a>
                         			</li>
                         		<%}%>
-                        		<li class="nav-item">
-			                            <a href="${pageContext.request.contextPath}/views/user/profile.jsp" class="nav-link">Profile</a>
-			                        </li>
+                        		
 			                        
 			                        <li class="nav-item">
 			                            <a href="${pageContext.request.contextPath}/views/user/wishlist.jsp" class="nav-link">Wishlist</a>
+			                        </li>
+			                        
+			                        <li class="nav-item">
+			                            <a href="${pageContext.request.contextPath}/views/user/profile.jsp" class="nav-link">Profile</a>
+			                        </li>
+			                        
+			                     <li class="nav-item">
+			                            <a href="${pageContext.request.contextPath}/logout" class="nav-link">Logout</a>
 			                        </li>
 			                  <%}
                         	}%>
