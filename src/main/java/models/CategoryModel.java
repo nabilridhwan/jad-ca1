@@ -59,6 +59,27 @@ public class CategoryModel {
             }
         };
     }
+    
+    public static IDatabaseQuery<Category> getCategoryFromId(String id) {
+        return databaseConnection -> {
+            if (id == null) return null;
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM category WHERE category_id = ?;");
+                pstmt.setString(1, id);
+                ResultSet rs = pstmt.executeQuery();
+
+                ArrayList<Category> list = new ArrayList<>();
+
+                if (rs != null) while (rs.next()) list.add(new Category(rs));
+
+                return list.toArray(new Category[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
 
     public static IDatabaseUpdate insertNewCategory(String img_url, String name, String desc) {
         return databaseConnection -> {
@@ -104,5 +125,88 @@ public class CategoryModel {
             
         };
     }
+    
+    public static IDatabaseUpdate updateCategory(String category_id, String img_url, String name, String desc) {
+        return databaseConnection -> {
+        	
+        	String input_img_url;
+
+        	
+        	if(img_url.isEmpty()) {
+        		input_img_url = null;
+        	}else {
+        		input_img_url = img_url;
+        	}
+        	
+            if (name == null) return 0;
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("UPDATE category SET name = ?, `desc` = ?, image = ? WHERE category_id = ?;");
+                pstmt.setString(1, name);
+                pstmt.setString(2, desc);
+                pstmt.setString(3, input_img_url);
+                pstmt.setString(4, category_id);
+                
+                System.out.println("Updating Category");
+                System.out.println(pstmt.toString());
+                
+                
+                int affectedRows = pstmt.executeUpdate();
+                
+                
+
+                return affectedRows;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }finally {
+            	try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+            
+            
+        };
+    }
+    
+    public static IDatabaseUpdate deleteCategory(String category_id) {
+        return databaseConnection -> {
+        	
+
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("DELETE FROM category WHERE category_id = ?;");
+                pstmt.setString(1, category_id);
+
+                
+                System.out.println("Deleting Category");
+                System.out.println(pstmt.toString());
+                
+                
+                int affectedRows = pstmt.executeUpdate();
+                
+                
+
+                return affectedRows;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }finally {
+            	try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+            
+            
+        };
+    }
+    
+    
 
 }
