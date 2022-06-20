@@ -48,7 +48,7 @@
                         <strong>Categories</strong>
                     </h2>
                     
-                    <a href="#" class="btn btn-primary">
+                    <a href="${pageContext.request.contextPath}/views/admin/add_category.jsp" class="btn btn-primary">
                     	Add Category
                     </a>
                 </div>
