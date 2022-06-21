@@ -51,6 +51,8 @@
                         	DatabaseConnection navbarConnection = new DatabaseConnection();
                         	User[] navbarUsers = UserModel.getUserByUserID(navbarUserID).query(navbarConnection);
                         	
+                        	
+                        	
                         	if(navbarUsers == null || navbarUsers.length == 0){
                         		navbarUserID = -1;
                         	}else{

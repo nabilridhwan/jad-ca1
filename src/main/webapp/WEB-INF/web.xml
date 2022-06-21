@@ -1,0 +1,12 @@
+<web-app>
+
+<context-param> 
+   <description>Location to store uploaded file</description> 
+   <param-name>file-upload</param-name> 
+   <param-value>
+      
+      C:\Users\nabri\eclipse-workspace\CA1-Preparation\src\main\webapp\uploaded_images\
+   </param-value> 
+</context-param>
+
+</web-app>
