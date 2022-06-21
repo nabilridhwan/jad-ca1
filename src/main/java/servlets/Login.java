@@ -67,10 +67,13 @@ public class Login extends HttpServlet {
 
 //				Redirect
             String redirect = request.getParameter("redirect");
+            System.out.println(redirect);
             if (redirect == null) {
-                redirect = "/CA1-Preparation/views/index.jsp";
+                redirect = "/views/index.jsp";
             }
+            System.out.println(redirect);
             response.sendRedirect(redirect);
+            return;
         } else {
 //				If there is no user, dispatch the page back to the login page
 

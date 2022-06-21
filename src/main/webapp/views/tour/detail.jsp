@@ -154,11 +154,59 @@
                             class="col-md-12 hotel-single ftco-animate mb-5 mt-4"
                     >
                         <%
-                            if (Util.isUserLoggedIn(session)) {
-                                Tour.Review[] reviews = tour.getReviews();
-                        %>
+                        	boolean isUserLoggedIn = Util.isUserLoggedIn(session);
+                            Tour.Review[] reviews = tour.getReviews();%>
                         <h4 class="mb-4">Reviews</h4>
+                        
+                        <%if (isUserLoggedIn) {%>
+                            	<h5>Leave a review</h5>
+                            	<form action="${pageContext.request.contextPath}/addReview" method="POST" style="margin-bottom: 50px">
+	                                <div class="form-group">
+	                                
+	                                	<input
+	                                        type="text"
+	                                        hidden="true"
+	                                        class="form-control"
+	                                        placeholder="Enter your review"
+	                                        name="tour_id"
+	                                        value="<%=tour_id %>"
+	                                        required
+	                                    />
+	                                
+	                                    <label for="review">Review</label>
+	                                    
+	                                    <input
+	                                        type="text"
+	                                        class="form-control"
+	                                        placeholder="Enter your review"
+	                                        name="text"
+	                                        required
+	                                    />
+	                                </div>
+	
+	                                <div class="form-group">
+	                                    <label for="rating">Rating</label>
+	                                    <input
+	                                        type="number"
+	                                        class="form-control"
+	                                        min="1"
+	                                        max="5"
+	                                        name="rating"
+	                                        required
+	                                    />
+	                                </div>
+	
+	                                <div class="form-group">
+	                                    <button class="btn btn-primary">
+	                                        Submit Review
+	                                    </button>
+	                                </div>
+	                            </form>
+	                         <% }%>
                         <%
+                        	if(reviews.length > 0){
+                        		
+                        	
                             for (Tour.Review review : reviews) {
                         %>
                         	<div class="card" style="margin-bottom: 10px;">
@@ -181,7 +229,11 @@
                                 </div>
                         <%
                                 }
-                            }
+                        	}else{%>
+                        	
+                        	<h5>No reviews yet :(</h5>		
+                        <%}
+                            
                         %>
                     </div>
                     <div
