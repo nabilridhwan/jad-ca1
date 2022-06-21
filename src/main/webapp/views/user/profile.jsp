@@ -108,7 +108,11 @@
                                 <div class="w-100"></div>
                                 <div class="col-md-12">
                                     <p class="text-danger">
-                                        <%=request.getParameter("message") %>
+                                        <%
+                                        	String message = request.getParameter("message") != null ? request.getParameter("message") : "";
+                                        %>
+                                        
+                                        <%=message %>
                                     </p>
                                 </div>
                             </div>

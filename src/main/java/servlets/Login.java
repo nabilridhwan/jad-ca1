@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import dataStructures.User;
 import models.UserModel;
 import utils.DatabaseConnection;
+import utils.Password;
 
 /**
  * Servlet implementation class Login
@@ -46,6 +47,9 @@ public class Login extends HttpServlet {
         // TODO Auto-generated method stub
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        
+        // Hash the password
+        password = Password.encryptThisString(password);
 
         DatabaseConnection connection = new DatabaseConnection();
         User[] users = UserModel.getUserByEmailAndPassword(email, password).query(connection);
