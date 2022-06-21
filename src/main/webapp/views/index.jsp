@@ -69,8 +69,8 @@
                 </p>
                 <div class="block-17 my-4">
                     <form
-                            action=""
-                            method="post"
+                            action="${pageContext.request.contextPath}/views/tour/view_all.jsp"
+                            method="get"
                             class="d-block d-flex"
                     >
                         <div class="fields d-block d-flex">
@@ -79,37 +79,12 @@
                                     <input
                                             type="text"
                                             class="form-control"
-                                            placeholder="Ex: food, service, hotel"
+                                            placeholder="Search Query"
+                                            name="q"
                                     />
                                 </label>
                             </div>
-                            <div class="select-wrap one-third">
-                                <div class="icon">
-                                            <span
-                                                    class="ion-ios-arrow-down"
-                                            ></span>
-                                </div>
-                                <label for=""></label><select
-                                    name=""
-                                    id=""
-                                    class="form-control"
-                                    placeholder="Keyword search"
-                            >
-                                <option value="">Where</option>
-                                <option value="">
-                                    San Francisco USA
-                                </option>
-                                <option value="">
-                                    Berlin Germany
-                                </option>
-                                <option value="">
-                                    Lodon United Kingdom
-                                </option>
-                                <option value="">
-                                    Paris Italy
-                                </option>
-                            </select>
-                            </div>
+                            
                         </div>
                         <input
                                 type="submit"
