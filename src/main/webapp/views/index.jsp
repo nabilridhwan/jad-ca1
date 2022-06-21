@@ -34,7 +34,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
 </head>
 <body>
-<%@ include file="misc/navbar.jsp" %>
+
+<%--   TransparentHeader param Doesnt do anything yet--%>
+<jsp:include page="/views/misc/navbar.jsp">
+    <jsp:param name="transparentHeader" value="true"/>
+</jsp:include>
 <!-- END nav -->
 
 <div
@@ -240,7 +244,7 @@
                     <%
                         DatabaseConnection connection = new DatabaseConnection();
                         Category[] categories = CategoryModel.getCategoriesWithListingCount().query(connection);
-                        
+
                         if (categories != null)
                             for (Category category : categories) {
                                 String image = category.getImage();
@@ -297,10 +301,10 @@
 
                 if (tours != null)
                     for (Tour tour : tours) {
-                        String tour_image_url = tour.getTour_image_url();
+                        Tour.Image tour_image = tour.getImages()[0];
                         String tour_name = tour.getTour_name();
                         String tour_brief_desc = tour.getTour_brief_desc();
-                        double tour_price = tour.getTour_price();
+                        Tour.Date tour_date = tour.getDates()[0];
                         String tour_location = tour.getTour_location();
             %>
             <div class="col-sm col-md-6 col-lg ftco-animate">
@@ -309,7 +313,7 @@
                     <a
                             href="${pageContext.request.contextPath}/views/tour/detail.jsp?tour_id=<%=tour.getTour_id()%>"
                             class="img img-2 d-flex justify-content-center align-items-center"
-                            style="background-image: url(<%=tour_image_url %>)"
+                            style="background-image: url(<%=tour_image.getUrl() %>)"
                     >
                         <div
                                 class="icon d-flex justify-content-center align-items-center"
@@ -334,7 +338,7 @@
                                 </p>
                             </div>
                             <div class="two">
-                                <span class="price">$<%=tour_price %></span>
+                                <span class="price">$<%=tour_date.getPrice() %></span>
                             </div>
                         </div>
                         <p>

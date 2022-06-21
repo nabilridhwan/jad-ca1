@@ -4,21 +4,22 @@
 <%@ page import="dataStructures.Tour" %>
 <%@ page import="models.TourModel" %>
 <%@ page import="utils.IDatabaseQuery" %>
+<%@ page import="utils.Util" %>
 <%@ page contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <!DOCTYPE html>
 <html>
 <%
     String tour_id = request.getParameter("tour_id");
     IDatabaseQuery<Tour> tourQuery = TourModel.getTourById(tour_id);
+    DatabaseConnection connection = new DatabaseConnection();
     if (tourQuery == null) {
-        //tourId is not valid
+        response.sendRedirect("/CA1-Preparation/views/tour/view_all.jsp?error=SQL");
         return;
     }
-    DatabaseConnection connection = new DatabaseConnection();
     Tour[] tours = tourQuery.query(connection);
     connection.close();
     if (tours == null || tours.length != 1) {
-        response.sendRedirect("/CA1-Preparation/views/tour/categoryListing.jsp");
+        response.sendRedirect("/CA1-Preparation/views/tour/view_all.jsp");
         return;
     }
     Tour tour = tours[0];
@@ -62,122 +63,74 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
 </head>
 <body>
-<%@ include file="../misc/navbar.jsp" %>
-
+<%@ include file="../misc/navbar_dark.jsp" %>
 <section class="ftco-section ftco-degree-bg">
     <div class="container">
         <div class="row">
             <!-- Main item -->
-            <div class="col-lg-9">
+            <div class="col-lg-8">
                 <div class="row">
                     <div class="col-md-12 ftco-animate">
                         <div class="single-slider owl-carousel">
+                            <%
+                                Tour.Image[] images = tour.getImages();
+                                for (Tour.Image image : images) {
+                            %>
                             <div class="item">
                                 <div
                                         class="hotel-img"
                                         style="
-                                                background-image: url(${pageContext.request.contextPath}/images/hotel-2.jpg);
+                                                background-image: url(<%=image.getUrl()%>);
                                                 "
                                 ></div>
                             </div>
-                            <div class="item">
-                                <div
-                                        class="hotel-img"
-                                        style="
-                                                background-image: url(${pageContext.request.contextPath}/images/hotel-3.jpg);
-                                                "
-                                ></div>
-                            </div>
-                            <div class="item">
-                                <div
-                                        class="hotel-img"
-                                        style="
-                                                background-image: url(${pageContext.request.contextPath}/images/hotel-4.jpg);
-                                                "
-                                ></div>
-                            </div>
+                            <%
+                                }
+                            %>
                         </div>
                     </div>
                     <div
                             class="col-md-12 hotel-single mt-4 mb-5 ftco-animate"
                     >
-                        <span>Our Best hotels &amp; Rooms</span>
-                        <h2>Luxury Hotel in Paris</h2>
+                        <span>Our Best tours</span>
+                        <h2><%=tour.getTour_name()%>
+                        </h2>
                         <p class="rate mb-5">
                                     <span class="loc"
-                                    ><a href="#"
-                                    ><i class="icon-map"></i> 291 South
-                                            21th Street, Suite 721 New York NY
-                                            10016</a
-                                    ></span
-                                    >
+                                    ><a href="#"><i class="icon-map"></i><%=tour.getTour_location()%>
+                                    </span>
+                            <%
+                                Double rating = tour.getAverage_rating();
+                            %>
                             <span class="star">
+                                <%
+                                    double minFilled = Math.floor(rating);
+                                    for (double i = 0d; i < minFilled; i++) {
+                                %>
                                         <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
-                                        <i class="icon-star"></i>
+                                <%
+                                    }
+                                    double maxEmpty = 5 - minFilled;
+                                    for (double i = 0d; i < maxEmpty; i++) {
+                                %>
                                         <i class="icon-star-o"></i>
-                                        8 Rating</span
-                            >
+                                <%
+                                    }
+                                %>
+                                        <%=rating%> Rating (<%=tour.getReviews().length%> review(s))</span>
+                        </p>
+
+                        <p>
+                            <%=tour.getTour_brief_desc()%>
                         </p>
                         <p>
-                            When she reached the first hills of the
-                            Italic Mountains, she had a last view back
-                            on the skyline of her hometown
-                            Bookmarksgrove, the headline of Alphabet
-                            Village and the subline of her own road, the
-                            Line Lane. Pityful a rethoric question ran
-                            over her cheek, then she continued her way.
-                        </p>
-                        <div class="d-md-flex mt-5 mb-5">
-                            <ul>
-                                <li>
-                                    The Big Oxmox advised her not to do
-                                    so
-                                </li>
-                                <li>
-                                    When she reached the first hills of
-                                    the Italic Mountains
-                                </li>
-                                <li>
-                                    She had a last view back on the
-                                    skyline of her hometown
-                                </li>
-                                <li>
-                                    Bookmarksgrove, the headline of
-                                    Alphabet
-                                </li>
-                            </ul>
-                            <ul class="ml-md-5">
-                                <li>
-                                    Question ran over her cheek, then
-                                    she continued
-                                </li>
-                                <li>Pityful a rethoric question ran</li>
-                                <li>
-                                    Mountains, she had a last view back
-                                    on the skyline
-                                </li>
-                                <li>
-                                    Headline of Alphabet Village and the
-                                    subline
-                                </li>
-                            </ul>
-                        </div>
-                        <p>
-                            When she reached the first hills of the
-                            Italic Mountains, she had a last view back
-                            on the skyline of her hometown
-                            Bookmarksgrove, the headline of Alphabet
-                            Village and the subline of her own road, the
-                            Line Lane. Pityful a rethoric question ran
-                            over her cheek, then she continued her way.
+                            <%=tour.getTour_desc()%>
                         </p>
                     </div>
                     <div
                             class="col-md-12 hotel-single ftco-animate mb-5 mt-4"
                     >
-                        <h4 class="mb-4">Take A dataStructures.Tour</h4>
+                        <h4 class="mb-4">Take A Tour</h4>
                         <div class="block-16">
                             <figure>
                                 <img
@@ -197,173 +150,19 @@
                     <div
                             class="col-md-12 hotel-single ftco-animate mb-5 mt-4"
                     >
-                        <h4 class="mb-4">Review &amp; Ratings</h4>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <form method="post" class="star-rating">
-                                    <div class="form-check">
-                                        <input
-                                                type="checkbox"
-                                                class="form-check-input"
-                                                id="exampleCheck1"
-                                        />
-                                        <label
-                                                class="form-check-label"
-                                                for="exampleCheck1"
-                                        >
-                                            <p class="rate">
-                                                        <span
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i>
-                                                            100 Ratings</span
-                                                        >
-                                            </p>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input
-                                                type="checkbox"
-                                                class="form-check-input"
-                                                id="exampleCheck1"
-                                        />
-                                        <label
-                                                class="form-check-label"
-                                                for="exampleCheck1"
-                                        >
-                                            <p class="rate">
-                                                        <span
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star-o"
-                                                        ></i>
-                                                            30 Ratings</span
-                                                        >
-                                            </p>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input
-                                                type="checkbox"
-                                                class="form-check-input"
-                                                id="exampleCheck1"
-                                        />
-                                        <label
-                                                class="form-check-label"
-                                                for="exampleCheck1"
-                                        >
-                                            <p class="rate">
-                                                        <span
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star-o"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star-o"
-                                                        ></i>
-                                                            5 Ratings</span
-                                                        >
-                                            </p>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input
-                                                type="checkbox"
-                                                class="form-check-input"
-                                                id="exampleCheck1"
-                                        />
-                                        <label
-                                                class="form-check-label"
-                                                for="exampleCheck1"
-                                        >
-                                            <p class="rate">
-                                                        <span
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star-o"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star-o"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star-o"
-                                                        ></i>
-                                                            0 Ratings</span
-                                                        >
-                                            </p>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input
-                                                type="checkbox"
-                                                class="form-check-input"
-                                                id="exampleCheck1"
-                                        />
-                                        <label
-                                                class="form-check-label"
-                                                for="exampleCheck1"
-                                        >
-                                            <p class="rate">
-                                                        <span
-                                                        ><i
-                                                                class="icon-star"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star-o"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star-o"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star-o"
-                                                        ></i
-                                                        ><i
-                                                                class="icon-star-o"
-                                                        ></i>
-                                                            0 Ratings</span
-                                                        >
-                                            </p>
-                                        </label>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        <%
+                            if (Util.isUserLoggedIn(session)) {
+                                Tour.Review[] reviews = tour.getReviews();
+                        %>
+                        <h4 class="mb-4">Reviews</h4>
+                        <%
+                            for (Tour.Review review : reviews) {
+                        %>
+                        Review by <%=review.getUser_id()%>
+                        <%
+                                }
+                            }
+                        %>
                     </div>
                     <div
                             class="col-md-12 hotel-single ftco-animate mb-5 mt-5"
@@ -587,10 +386,10 @@
             <!-- .col-md-8 -->
 
             <!-- Sidebar -->
-            <div class="col-lg-3 sidebar">
+            <div class="col-lg-4 sidebar">
                 <div class="sidebar-wrap bg-light ftco-animate">
                     <h3 class="heading mb-4">Book for tour</h3>
-                    <form action="#">
+                    <form action="${pageContext.request.contextPath}/RegisterForTour" method="POST">
                         <div class="fields">
                             <div class="form-group">
                                 <div class="select-wrap one-third">
@@ -599,42 +398,90 @@
                                                         class="ion-ios-arrow-down"
                                                 ></span>
                                     </div>
-                                    <label for=""></label><select
-                                        name=""
-                                        id=""
-                                        class="form-control"
-                                        placeholder="Keyword search"
-                                >
-                                    <option value="">
-                                        Select Date
-                                    </option>
-                                    <option value="">
-                                        San Francisco USA
-                                    </option>
-                                    <option value="">
-                                        Berlin Germany
-                                    </option>
-                                    <option value="">
-                                        Lodon United Kingdom
-                                    </option>
-                                    <option value="">
-                                        Paris Italy
-                                    </option>
-                                </select>
+                                    <label for="date"></label>
+                                    <select
+                                            required
+                                            name="date"
+                                            id="date"
+                                            class="form-control"
+                                            placeholder="Keyword search"
+                                    >
+                                        <%
+                                            Tour.Date[] dates = tour.getDates();
+
+                                            if (dates.length > 0) {
+                                        %>
+                                        <option value="placeholder" selected="selected" disabled>
+                                            Select Date
+                                        </option>
+                                        <%
+                                        } else {
+                                        %>
+                                        <option value="placeholder" selected="selected" disabled>
+                                            No Dates Available
+                                        </option>
+                                        <%
+                                            }
+                                            for (Tour.Date date : dates) {
+                                                if (!date.isShown())
+                                                    continue;
+                                        %>
+                                        <option value="<%=date.getId()%>"
+                                                <%
+                                                    if (date.getAvail_slot() == 0) {
+                                                %>
+                                                disabled
+                                                <%
+                                                    }
+                                                %>
+                                        >
+                                            <%=date.getStartString()%> - <%=date.getEndString()%>
+                                        </option>
+                                        <%
+                                            }
+                                        %>
+                                    </select>
                                 </div>
                             </div>
+                            <%
+                                if (request.getParameter("InvalidDate") != null) {
+                            %>
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Please select a valid date</strong>
+                            </div>
+                            <%
+                                }
+                            %>
 
                             <div class="form-group">
-                                <label>
+                                <div class="select-wrap">
+                                    <label for="pax"></label>
                                     <input
+                                            id="pax"
+                                            required
+                                            name="pax"
                                             type="number"
                                             class="form-control"
                                             placeholder="Pax (Max 5)"
                                             min="1"
                                             max="5"
+                                            <%
+                                                if (request.getParameter("pax") != null) {
+                                            %>
+                                            value="<%=request.getParameter("pax")%>"
+                                            <%
+                                                }
+                                            %>
                                     />
-                                </label>
+                                </div>
                             </div>
+
+                            <label for="id"></label>
+                            <input id="id"
+                                   required
+                                   name="id"
+                                   hidden
+                                   value="<%=tour.getTour_id()%>">
 
                             <div class="form-group">
                                 <input

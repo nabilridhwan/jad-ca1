@@ -50,7 +50,7 @@ public class ModifyUser extends HttpServlet {
     	
     	HttpSession session = request.getSession(false);
         
-        int userID = Util.getUserIDFromSession(session);
+        int userID = Util.getUserID(session);
         // Check if userID is null
         if (userID == -1) {
             // Send a redirect to login page

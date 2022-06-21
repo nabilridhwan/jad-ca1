@@ -66,7 +66,11 @@ public class Login extends HttpServlet {
             session.setAttribute("userID", userID);
 
 //				Redirect
-            response.sendRedirect("/CA1-Preparation/views/index.jsp");
+            String redirect = request.getParameter("redirect");
+            if (redirect == null) {
+                redirect = "/CA1-Preparation/views/index.jsp";
+            }
+            response.sendRedirect(redirect);
         } else {
 //				If there is no user, dispatch the page back to the login page
 
@@ -74,7 +78,10 @@ public class Login extends HttpServlet {
             request.setAttribute("error", "invalid_credentials");
 
 //				Dispatch
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/user/login.jsp?error=invalid_credentials");
+            String redirect = request.getParameter("redirect");
+            RequestDispatcher dispatcher = (redirect == null) ?
+                    request.getRequestDispatcher("/views/user/login.jsp?error=invalid_credentials") :
+                    request.getRequestDispatcher("/views/user/login.jsp?error=invalid_credentials&redirect=" + redirect);
             dispatcher.forward(request, response);
 
         }

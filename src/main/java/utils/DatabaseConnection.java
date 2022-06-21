@@ -2,12 +2,14 @@ package utils;
 
 import java.sql.*;
 
-public class DatabaseConnection extends _DatabaseConnectionConfig implements AutoCloseable {
+public class DatabaseConnection extends DatabaseConnectionConfig implements AutoCloseable {
 
     private final Connection connection;
 
     public DatabaseConnection() {
         connection = getConnection();
+        if (connection == null) new Exception("Connection is cant initialize").printStackTrace();
+
     }
 
     public Connection get() {

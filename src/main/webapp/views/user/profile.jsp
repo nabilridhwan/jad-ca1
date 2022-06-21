@@ -43,7 +43,7 @@
 
 <%
     // Check if userID is null
-    int userID = Util.getUserIDFromSession(session);
+    int userID = Util.getUserID(session);
     if (userID == -1) {
         // TODO: Send a redirect to login page
         response.sendRedirect("./login.jsp");
