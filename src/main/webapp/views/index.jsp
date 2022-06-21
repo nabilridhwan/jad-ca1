@@ -93,35 +93,7 @@
                         />
                     </form>
                 </div>
-                <p>Or browse the highlights</p>
-                <p class="browse d-md-flex">
-                            <span
-                                    class="d-flex justify-content-md-center align-items-md-center"
-                            ><a href="#"
-                            ><i class="flaticon-fork"></i>Restaurant</a
-                            ></span
-                            >
-                    <span
-                            class="d-flex justify-content-md-center align-items-md-center"
-                    ><a href="#"
-                    ><i class="flaticon-hotel"></i>Hotel</a
-                    ></span
-                    >
-                    <span
-                            class="d-flex justify-content-md-center align-items-md-center"
-                    ><a href="#"
-                    ><i class="flaticon-meeting-point"></i
-                    >Places</a
-                    ></span
-                    >
-                    <span
-                            class="d-flex justify-content-md-center align-items-md- center"
-                    ><a href="#"
-                    ><i class="flaticon-shopping-bag"></i
-                    >Shopping</a
-                    ></span
-                    >
-                </p>
+                
             </div>
         </div>
     </div>
