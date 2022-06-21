@@ -57,7 +57,9 @@
         }
     %>
 
-    <%@ include file="../misc/navbar.jsp" %>
+    <jsp:include page="/views/misc/navbar.jsp">
+        <jsp:param name="transparentHeader" value="UwU"/>
+    </jsp:include>
 
 
     <div class="hero-wrap" style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
@@ -92,7 +94,14 @@
 
                                 <!-- Form -->
                                 <form action="${pageContext.request.contextPath}/login" method="POST">
-                                        
+
+                                    <input
+                                        type="hidden"
+                                        hidden
+                                        name="redirect"
+                                        value=<%=request.getParameter("redirect")%>
+                                    />
+
                                         <div class="form-group">
                                             <input
                                                 type="text"

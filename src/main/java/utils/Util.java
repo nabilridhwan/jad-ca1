@@ -1,58 +1,68 @@
 package utils;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dataStructures.User;
 import models.UserModel;
 
-public class Util {
-	
-	public static boolean isUserLoggedIn(HttpSession session) {
-		Integer user = (Integer) session.getAttribute("userID");
-		
-		System.out.println(user);
-		
-		if(user == null) {
-			return false;
-		}
-		
-		return true;
-	}
-	
-	public static int getUserIDFromSession(HttpSession session) {
-		Integer userID = -1;
-		
-		if(isUserLoggedIn(session)) {
-			userID = (Integer) session.getAttribute("userID");
-		};
-		
-		return userID;
-	}
-	
-	public static boolean isUserAdmin(int userID) {
-		DatabaseConnection connection = new DatabaseConnection();
-		
-		User[] results = UserModel.getUserByUserID(userID).query(connection);
-		connection.close();
-		
-		if(results == null) {
-			return false;
-		}
-		
-		if(results.length == 0) {
-			return false;
-		}
-		
-		// Get first user
-		
-		User user = results[0];
-		
-		System.out.println(user.getRole());
-		
-		
-		return user.getRole().equals("admin");
-		
-		
-	}
+import java.io.IOException;
 
+public class Util {
+
+    public static boolean isUserLoggedIn(HttpSession session) {
+        Integer user = (Integer) session.getAttribute("userID");
+        System.out.println(user);
+        return user != null;
+    }
+
+    public static int getUserID(HttpSession session) {
+        Integer userID = (Integer) session.getAttribute("userID");
+        if (userID == null) userID = -1;
+        return userID;
+    }
+
+    public static boolean isUserAdmin(int userID) {
+        DatabaseConnection connection = new DatabaseConnection();
+        User[] results = UserModel.getUserByUserID(userID).query(connection);
+        connection.close();
+
+        if (results == null || results.length != 1) return false;
+
+        // Get first user
+        User user = results[0];
+        String role = user.getRole();
+
+        System.out.println(role);
+        return role.equals("admin");
+    }
+
+    public static int forceLogin(HttpSession session, HttpServletResponse response, String redirectUrl) throws ServletException, IOException {
+        int userid = getUserID(session);
+        if (userid > 0) return userid;
+        response.sendRedirect("/CA1-Preparation/views/user/login.jsp?redirect=" + redirectUrl);
+        return -1;
+    }
+
+    public static int forceLogin(HttpSession session, HttpServletResponse response) throws ServletException, IOException {
+        int userid = getUserID(session);
+        if (userid > 0) return userid;
+        response.sendRedirect("/CA1-Preparation/views/user/login.jsp");
+        return -1;
+    }
+
+    public static int forceAdmin(HttpSession session, HttpServletResponse response, String redirectUrl) throws IOException {
+        int userid = getUserID(session);
+        if (userid > 0 && isUserAdmin(userid)) return userid;
+        response.sendRedirect("/CA1-Preparation/views/user/login.jsp?redirect=" + redirectUrl);
+        return -1;
+    }
+
+    public static int forceAdmin(HttpSession session, HttpServletResponse response) throws IOException {
+        int userid = getUserID(session);
+        if (userid > 0 && isUserAdmin(userid)) return userid;
+        response.sendRedirect("/CA1-Preparation/views/user/login.jsp");
+        return -1;
+    }
 }

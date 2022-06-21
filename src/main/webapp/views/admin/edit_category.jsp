@@ -47,7 +47,7 @@
         
         <%
         	
-        	int userID = Util.getUserIDFromSession(session);
+        	int userID = Util.getUserID(session);
         	if(userID == -1){
         		response.sendRedirect("/CA1-Preparation/views/index.jsp");
         		return;
