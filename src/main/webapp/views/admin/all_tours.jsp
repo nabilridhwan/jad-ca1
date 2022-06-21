@@ -138,10 +138,10 @@
 
                 if (tours != null)
                     for (Tour tour : tours) {
-                        String tour_image_url = tour.getTour_image_url();
+                        String tour_image_url = tour.getImages()[0].getUrl();
                         String tour_name = tour.getTour_name();
                         String tour_brief_desc = tour.getTour_brief_desc();
-                        double tour_price = tour.getTour_price();
+                        double tour_price = 25.0;
                         String tour_location = tour.getTour_location();
             %>
             <!-- Begin Card -->
