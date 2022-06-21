@@ -1,3 +1,5 @@
+<%@page import="dataStructures.User"%>
+<%@page import="models.UserModel"%>
 <%@ page import="dataStructures.Category" %>
 <%@ page import="utils.DatabaseConnection" %>
 <%@ page import="models.CategoryModel" %>
@@ -17,7 +19,7 @@
         return;
     }
     Tour[] tours = tourQuery.query(connection);
-    connection.close();
+    
     if (tours == null || tours.length != 1) {
         response.sendRedirect("/CA1-Preparation/views/tour/view_all.jsp");
         return;
@@ -101,6 +103,7 @@
                                     </span>
                             <%
                                 Double rating = tour.getAverage_rating();
+                            
                             %>
                             <span class="star">
                                 <%
@@ -158,7 +161,24 @@
                         <%
                             for (Tour.Review review : reviews) {
                         %>
-                        Review by <%=review.getUser_id()%>
+                        	<div class="card" style="margin-bottom: 10px;">
+                        			
+                                    <div class="card-body">
+                                        <span>
+	                                        <%for(int i = 0; i < review.getRating(); i++){%>
+	                        				 	<i class="icon-star"></i>
+	                        				<%} %>
+                                        </span>
+
+                                        <p class="font-weight-bold"><%=review.getReview_text() %></p>
+                                        
+                                        <%
+                                        	// Get the name of the user
+                                        	User[] users = UserModel.getUserByUserID(review.getUser_id()).query(connection);
+                                        %>
+                                        <p class="muted">By <%= users[0].getFullName()%></p>
+                                    </div>
+                                </div>
                         <%
                                 }
                             }
@@ -497,6 +517,8 @@
         </div>
     </div>
 </section>
+
+<%connection.close(); %>
 <!-- .section -->
 
 <footer class="ftco-footer ftco-bg-dark ftco-section">
