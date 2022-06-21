@@ -47,10 +47,12 @@
         	int userID = Util.getUserID(session);
         	if(userID == -1){
         		response.sendRedirect("/CA1-Preparation/views/index.jsp");
+        		return;
         	}
         	
         	if(!Util.isUserAdmin(userID)){
         		response.sendRedirect("/CA1-Preparation/views/index.jsp");
+        		return;
         	}
         %>
 
@@ -81,13 +83,13 @@
                             <div class="row block-9">
                                 <div class="col-md-12">
 
-                                    <form action="${pageContext.request.contextPath}/addNewCategory" method="POST">
+                                    <form enctype="multipart/form-data" action="${pageContext.request.contextPath}/addNewCategory" method="POST">
                                         <div class="form-group">
                                             <input
-                                                type="text"
+                                                type="file"
                                                 class="form-control"
-                                                placeholder="Category Image URL"
-                                                name="category_img"
+                                                placeholder="Category Image"
+                                                name="file"
                                             />
                                         </div>
 
