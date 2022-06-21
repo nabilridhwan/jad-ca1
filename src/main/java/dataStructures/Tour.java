@@ -192,5 +192,21 @@ public class Tour {
                 e.printStackTrace();
             }
         }
+
+        public int getUser_id() {
+            return user_id;
+        }
+
+        public String getReview_text() {
+            return review_text;
+        }
+
+        public int getRating() {
+            return rating;
+        }
+
+        public int getHelpful_score() {
+            return helpful_score;
+        }
     }
 }
