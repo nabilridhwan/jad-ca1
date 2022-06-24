@@ -174,6 +174,10 @@ public class Tour {
         public int getMax_slot() {
             return max_slot;
         }
+
+        public String getDuration() {
+            return String.format("%02d", (int) ((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))) + " days";
+        }
     }
 
     public static class Review {
