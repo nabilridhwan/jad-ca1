@@ -47,8 +47,12 @@
              data-scrollax-parent="true">
             <div class="col-md-9 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
                 <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }"><span
-                        class="mr-2"><a href="index.html">Home</a></span> <span>Hotel</span></p>
-                <h1 class="mb-3 bread" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Hotels</h1>
+                        class="mr-2"><a
+                        href="${pageContext.request.contextPath}/views/tour/view_all.jsp">Tour</a></span> <span>Categories</span>
+                </p>
+                <h1 class="mb-3 bread"
+                    data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Categories
+                </h1>
             </div>
         </div>
     </div>
