@@ -53,7 +53,7 @@
              data-scrollax-parent="true">
             <div class="col-md-9 ftco-animate text-center" data-scrollax=" properties: { translateY: '70%' }">
                 <p class="breadcrumbs" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">
-                    <span class="mr-2">Tour</span>
+                    <span class="mr-2">Tours</span>
                     <span>
                         <a href="${pageContext.request.contextPath}/views/tour/categoryListing.jsp">Categories</a>
                     </span>
