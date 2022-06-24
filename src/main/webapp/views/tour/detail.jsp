@@ -100,7 +100,10 @@
                                     ><a href="#"><i class="icon-map"></i><%=tour.getTour_location()%>
                                     </span>
                             <%
-                                Double rating = tour.getAverage_rating();
+                                if (tour.getReviews().length != 0) {
+
+
+                                    Double rating = tour.getAverage_rating();
                             %>
                             <span class="star">
                                 <%
@@ -118,6 +121,13 @@
                                     }
                                 %>
                                         <%=rating%> Rating (<%=tour.getReviews().length%> review(s))</span>
+                            <%
+                            } else {
+                            %>
+                            No ratings yet
+                            <%
+                                }
+                            %>
                         </p>
 
                         <p>
