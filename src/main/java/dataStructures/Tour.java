@@ -176,7 +176,8 @@ public class Tour {
         }
 
         public String getDuration() {
-            return String.format("%02d", (int) ((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))) + " days";
+            // add 1 day to include the start day
+            return String.format("%02d", (int) ((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1) + " days";
         }
     }
 
