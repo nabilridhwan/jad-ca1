@@ -1,5 +1,6 @@
 package models;
 
+import dataStructures.Category;
 import dataStructures.Tour;
 import utils.IDatabaseQuery;
 import utils.IDatabaseUpdate;
@@ -259,6 +260,27 @@ public class TourModel {
             if (addUserToTour.update(databaseConnection) == 1 &&
                     addPaxToTour.update(databaseConnection) == 1) return 1;
             return -1;
+        };
+    }
+
+    public static IDatabaseQuery<Tour> getToursFromCategory(Category category) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement preparedStatement = conn.prepareStatement(
+                        "SELECT t.*  FROM tour t,tour_category tc WHERE t.tour_id = tc.tour_id And tc.category_id = ?;");
+                preparedStatement.setInt(1, category.getCategory_id());
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                ArrayList<Tour> list = new ArrayList<>();
+
+                if (resultSet != null) while (resultSet.next()) list.add(new Tour(resultSet));
+
+                return list.toArray(new Tour[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         };
     }
 }
