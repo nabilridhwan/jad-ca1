@@ -83,14 +83,14 @@
 			                <div class="col-sm col-md-2 ftco-animate">
 			                    <div class="item">
 			                        <div class="destination">
-			                            <a href="#" class="img d-flex justify-content-center align-items-center" style="
+			                            <a href="${pageContext.request.contextPath}/views/tour/categories.jsp?category_name=<%=category_name %>" class="img d-flex justify-content-center align-items-center" style="
 			                                    background-image: url(<%=image%>;">
 			                                <div class="icon d-flex justify-content-center align-items-center">
 			                                    <span class="icon-search2"></span>
 			                                </div>
 			                            </a>
 			                            <div class="text p-3">
-			                                <h3><a href="#"><%=category_name %></a></h3>
+			                                <h3><a href="${pageContext.request.contextPath}/views/tour/categories.jsp?category_name=<%=category_name %>"><%=category_name %></a></h3>
 			                                <span class="listing"><%=desc %></span>
 			                                <span class="listing"><%=count %> Listing</span>
 			                            </div>
