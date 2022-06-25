@@ -75,13 +75,15 @@ public class Tour {
     }
 
     public Image getFirstOrDefaultImage() {
-        if (images.length > 0) {
+        if (!refreshed) refreshTour();
+        if ( images.length > 0) {
             return images[0];
         }
         return new Image();
     }
 
     public Tour.Date getFirstOrDefaultDate() {
+        if (!refreshed) refreshTour();
         if (dates.length > 0) {
             return dates[0];
         }
