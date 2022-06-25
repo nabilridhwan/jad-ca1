@@ -12,13 +12,13 @@ import java.util.ArrayList;
 
 public class WishlistModel {
 
-    public static IDatabaseQuery<Wishlist> getUserWishlistItems(int userId) {
+    public static IDatabaseQuery<Wishlist> getUserWishlistItems(int user_id) {
 
         return databaseConnection -> {
             try {
                 Connection conn = databaseConnection.get();
                 PreparedStatement prepStatement = conn.prepareStatement("SELECT * FROM wishlist WHERE user_id = ?;");
-                prepStatement.setInt(1, userId);
+                prepStatement.setInt(1, user_id);
                 
                 ResultSet rs = prepStatement.executeQuery();
 
@@ -34,13 +34,13 @@ public class WishlistModel {
         };
     }
     
-    public static IDatabaseUpdate addTourToWishlist(int userId, int tour_id) {
+    public static IDatabaseUpdate addTourToWishlist(int user_id, int tour_id) {
 
         return databaseConnection -> {
             try {
                 Connection conn = databaseConnection.get();
                 PreparedStatement prepStatement = conn.prepareStatement("INSERT INTO wishlist(user_id, tour_id) VALUES(?, ?)");
-                prepStatement.setInt(1, userId);
+                prepStatement.setInt(1, user_id);
                 prepStatement.setInt(2, tour_id);
                 
                 int affectedRows = prepStatement.executeUpdate();
