@@ -63,6 +63,7 @@
                 DatabaseConnection connection = new DatabaseConnection();
                 Category[] categories = CategoryModel.getCategoriesWithListingCount().query(connection);
 
+
                 if (categories != null)
                     for (Category category : categories) {
                         int id = category.getCategory_id();
