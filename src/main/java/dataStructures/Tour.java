@@ -31,6 +31,18 @@ public class Tour {
         }
     }
 
+    public Tour() {
+        tour_id = 0;
+        tour_name = "";
+        tour_brief_desc = "";
+        tour_desc = "";
+        tour_location = "";
+        images = new Image[0];
+        dates = new Date[0];
+        average_rating = 0;
+        reviews = new Review[0];
+    }
+
     public int getTour_id() {
         return tour_id;
     }
@@ -58,6 +70,20 @@ public class Tour {
 
     public Image[] getImages() {
         return images;
+    }
+
+    public Image getFirstOrDefaultImage() {
+        if (images.length > 0) {
+            return images[0];
+        }
+        return new Image();
+    }
+
+    public Tour.Date getFirstOrDefaultDate() {
+        if (dates.length > 0) {
+            return dates[0];
+        }
+        return new Tour.Date();
     }
 
     public double getAverage_rating() {
@@ -92,6 +118,11 @@ public class Tour {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        public Image() {
+            altText = "";
+            url = "";
         }
 
         public String getAltText() {
@@ -129,6 +160,16 @@ public class Tour {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        public Date() {
+            id = 0;
+            start = new Timestamp(Calendar.getInstance().getTime().getTime());
+            end = new Timestamp(Calendar.getInstance().getTime().getTime());
+            shown = false;
+            price = 0;
+            avail_slot = 0;
+            max_slot = 0;
         }
 
         public Timestamp getStart() {
