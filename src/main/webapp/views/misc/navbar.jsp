@@ -49,6 +49,9 @@
                     <a href="${pageContext.request.contextPath}/views/tour/view_all.jsp" class="nav-link">Tours</a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="${pageContext.request.contextPath}/views/tour/categoryListing.jsp" class="nav-link">Categories</a>
+                </li>
                 <%
 
                     if (navbarUserID == -1) {%>
