@@ -287,6 +287,26 @@ public class TourModel {
             return -1;
         };
     }
+    
+    public static IDatabaseUpdate addReviewToTour(String tour_id, int user_id, int rating, String text) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO review (tour_id, user_id, rating, score, text) "
+                		+ "VALUES (?, ?, ?, ?, ?)");
+                pstmt.setString(1, tour_id);
+                pstmt.setInt(2, user_id);
+                pstmt.setInt(3, rating);
+                pstmt.setInt(4, 0);
+                pstmt.setString(5, text);
+                
+                return pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        };
+    }
 
     public static IDatabaseQuery<Tour.Registrations> getTourRegistrations(int userID) {
         return databaseConnection -> {
