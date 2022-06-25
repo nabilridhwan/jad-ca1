@@ -53,6 +53,25 @@ public class WishlistModel {
             }
         };
     }
+    
+    public static IDatabaseUpdate removeWishlistItem(int wishlist_id) {
+
+        return databaseConnection -> {
+            try {
+                Connection conn = databaseConnection.get();
+                PreparedStatement prepStatement = conn.prepareStatement("DELETE FROM wishlist WHERE wishlist_id = ?");
+                prepStatement.setInt(1, wishlist_id);
+                
+                int affectedRows = prepStatement.executeUpdate();
+
+                return affectedRows > 0 ? affectedRows : -1;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        };
+    }
 
     
 }
