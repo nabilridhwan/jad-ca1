@@ -138,16 +138,18 @@
 
                 if (tours != null)
                     for (Tour tour : tours) {
+                    	int tour_id = tour.getTour_id();
                         String tour_image_url = tour.getImages()[0].getUrl();
                         String tour_name = tour.getTour_name();
                         String tour_brief_desc = tour.getTour_brief_desc();
-                        double tour_price = 25.0;
+                        Tour.Date tour_date = tour.getDates()[0];
+                        double tour_price = tour_date.getPrice();
                         String tour_location = tour.getTour_location();
             %>
             <!-- Begin Card -->
                 <div class="col-sm col-md-6 col-lg ftco-animate">
                     <div class="destination">
-                        <a href="#" class="img img-2 d-flex justify-content-center align-items-center" style="
+                        <a href="/CA1-Preparation/views/tour/detail.jsp?tour_id=<%=tour_id%>" class="img img-2 d-flex justify-content-center align-items-center" style="
                                     background-image: url(<%=tour_image_url%>);
                                 ">
                             <div class="icon d-flex justify-content-center align-items-center">
@@ -157,7 +159,7 @@
                         <div class="text p-3">
                             <div class="d-flex">
                                 <div class="one">
-                                    <h3><a href="#"><%=tour_name %></a></h3>
+                                    <h3><a href="/CA1-Preparation/views/tour/detail.jsp?tour_id=<%=tour_id%>"><%=tour_name %></a></h3>
                                     <p class="rate">
                                         <i class="icon-star"></i>
                                         <i class="icon-star"></i>
@@ -174,7 +176,7 @@
                             <p>
                                 <%=tour_brief_desc %>
                             </p>
-                            <p class="days"><span>2 days 3 nights</span></p>
+
                             <hr />
                             <p class="bottom-area d-flex">
                                 <span><i class="icon-map-o"></i> <%=tour_location %></span>

@@ -1,3 +1,5 @@
+<%@page import="dataStructures.User"%>
+<%@page import="models.UserModel"%>
 <%@ page import="dataStructures.Category" %>
 <%@ page import="utils.DatabaseConnection" %>
 <%@ page import="models.CategoryModel" %>
@@ -13,16 +15,31 @@
     IDatabaseQuery<Tour> tourQuery = TourModel.getTourById(tour_id);
     DatabaseConnection connection = new DatabaseConnection();
     if (tourQuery == null) {
+//        System.out.println(request.getRequestURL().toString());
         response.sendRedirect("/CA1-Preparation/views/tour/view_all.jsp?error=SQL");
         return;
     }
     Tour[] tours = tourQuery.query(connection);
-    connection.close();
+    
     if (tours == null || tours.length != 1) {
         response.sendRedirect("/CA1-Preparation/views/tour/view_all.jsp");
         return;
     }
     Tour tour = tours[0];
+
+    if (request.getParameter("success") != null) {
+        out.print("<div class=\"alert alert-success\" role=\"alert\">");
+        out.print("<strong>Success!</strong> You have successfully registered for this tour.");
+        out.print("</div>");
+    } else if (request.getParameter("alreadyRegistered") != null) {
+        out.print("<div class=\"alert alert-danger\" role=\"alert\">");
+        out.print("<strong>Error!</strong> You have already registered for this tour.");
+        out.print("</div>");
+    } else if (request.getParameter("error") != null) {
+        out.print("<div class=\"alert alert-danger\" role=\"alert\">");
+        out.print("<strong>Error!</strong> There was an error registering for this tour.");
+        out.print("</div>");
+    }
 %>
 <head>
 
@@ -102,7 +119,6 @@
                             <%
                                 if (tour.getReviews().length != 0) {
 
-
                                     Double rating = tour.getAverage_rating();
                             %>
                             <span class="star">
@@ -161,17 +177,86 @@
                             class="col-md-12 hotel-single ftco-animate mb-5 mt-4"
                     >
                         <%
-                            if (Util.isUserLoggedIn(session)) {
-                                Tour.Review[] reviews = tour.getReviews();
-                        %>
+                        	boolean isUserLoggedIn = Util.isUserLoggedIn(session);
+                            Tour.Review[] reviews = tour.getReviews();%>
                         <h4 class="mb-4">Reviews</h4>
+                        
+                        <%if (isUserLoggedIn) {%>
+                            	<h5>Leave a review</h5>
+                            	<form action="${pageContext.request.contextPath}/addReview" method="POST" style="margin-bottom: 50px">
+	                                <div class="form-group">
+	                                
+	                                	<input
+	                                        type="text"
+	                                        hidden="true"
+	                                        class="form-control"
+	                                        placeholder="Enter your review"
+	                                        name="tour_id"
+	                                        value="<%=tour_id %>"
+	                                        required
+	                                    />
+	                                
+	                                    <label for="review">Review</label>
+	                                    
+	                                    <input
+	                                        type="text"
+	                                        class="form-control"
+	                                        placeholder="Enter your review"
+	                                        name="text"
+	                                        required
+	                                    />
+	                                </div>
+	
+	                                <div class="form-group">
+	                                    <label for="rating">Rating</label>
+	                                    <input
+	                                        type="number"
+	                                        class="form-control"
+	                                        min="1"
+	                                        max="5"
+	                                        name="rating"
+	                                        required
+	                                    />
+	                                </div>
+	
+	                                <div class="form-group">
+	                                    <button class="btn btn-primary">
+	                                        Submit Review
+	                                    </button>
+	                                </div>
+	                            </form>
+	                         <% }%>
                         <%
+                        	if(reviews.length > 0){
+                        		
+                        	
                             for (Tour.Review review : reviews) {
                         %>
-                        Review by <%=review.getUser_id()%>
+                        	<div class="card" style="margin-bottom: 10px;">
+                        			
+                                    <div class="card-body">
+                                        <span>
+	                                        <%for(int i = 0; i < review.getRating(); i++){%>
+	                        				 	<i class="icon-star"></i>
+	                        				<%} %>
+                                        </span>
+
+                                        <p class="font-weight-bold"><%=review.getReview_text() %></p>
+                                        
+                                        <%
+                                        	// Get the name of the user
+                                        	User[] users = UserModel.getUserByUserID(review.getUser_id()).query(connection);
+                                        %>
+                                        <p class="muted">By <%= users[0].getFullName()%></p>
+                                    </div>
+                                </div>
                         <%
                                 }
-                            }
+                        	}else{%>
+                        	
+                        	<h5>No reviews yet :(</h5>		
+                        <%}
+                            
                         %>
                     </div>
                     <div
@@ -419,9 +504,18 @@
                                         <%
                                             Tour.Date[] dates = tour.getDates();
 
+                                            boolean havePreviousDate = request.getParameter("date") != null;
                                             if (dates.length > 0) {
                                         %>
-                                        <option value="placeholder" selected="selected" disabled>
+                                        <option value="placeholder"
+                                                <%
+                                                    if (!havePreviousDate) {
+                                                %>
+                                                selected="selected"
+                                                <%
+                                                    }
+                                                %>
+                                                disabled>
                                             Select Date
                                         </option>
                                         <%
@@ -432,6 +526,10 @@
                                         </option>
                                         <%
                                             }
+                                            int prevDateID = 0;
+                                            if (havePreviousDate)
+                                                prevDateID = Integer.parseInt(request.getParameter("date"));
+
                                             for (Tour.Date date : dates) {
                                                 if (!date.isShown())
                                                     continue;
@@ -443,9 +541,15 @@
                                                 disabled
                                                 <%
                                                     }
+                                                    if (date.getId() == prevDateID) {
+                                                %>
+                                                selected="selected"
+                                                <%
+                                                    }
                                                 %>
                                         >
                                             <%=date.getStartString()%> - <%=date.getEndString()%>
+                                            (<%=date.getAvail_slot()%> slots available)
                                         </option>
                                         <%
                                             }
@@ -485,6 +589,15 @@
                                     />
                                 </div>
                             </div>
+                            <%
+                                if (request.getParameter("InvalidPax") != null) {
+                            %>
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Please select a valid number</strong>
+                            </div>
+                            <%
+                                }
+                            %>
 
                             <label for="id"></label>
                             <input id="id"
@@ -507,6 +620,8 @@
         </div>
     </div>
 </section>
+
+<%connection.close(); %>
 <!-- .section -->
 
 <footer class="ftco-footer ftco-bg-dark ftco-section">

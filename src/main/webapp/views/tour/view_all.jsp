@@ -178,7 +178,7 @@
                                 </div>
                                 <p><%=tour_brief_desc %>
                                 </p>
-                                <p class="days"><span>2 days 3 nights</span></p>
+                                <p class="days"><span><%=tour_date.getDuration()%></span></p>
                                 <hr>
                                 <p class="bottom-area d-flex">
                                     <span><i class="icon-map-o"></i> <%=tour_location %></span>
