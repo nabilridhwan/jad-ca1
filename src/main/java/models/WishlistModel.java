@@ -54,13 +54,16 @@ public class WishlistModel {
         };
     }
     
-    public static IDatabaseUpdate removeWishlistItem(int wishlist_id) {
+    public static IDatabaseUpdate removeWishlistItem(int wishlist_id, int user_id) {
 
         return databaseConnection -> {
             try {
                 Connection conn = databaseConnection.get();
-                PreparedStatement prepStatement = conn.prepareStatement("DELETE FROM wishlist WHERE wishlist_id = ?");
+                
+//                There is user ID here as a safeguard the other people can't delete other user's wishlist item
+                PreparedStatement prepStatement = conn.prepareStatement("DELETE FROM wishlist WHERE wishlist_id = ? AND user_id = ?");
                 prepStatement.setInt(1, wishlist_id);
+                prepStatement.setInt(2, user_id);
                 
                 int affectedRows = prepStatement.executeUpdate();
 
