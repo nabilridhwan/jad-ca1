@@ -108,11 +108,17 @@ public class Tour {
     }
 
     public static class Image {
+        public int getId() {
+            return id;
+        }
+
+        int id;
         String altText;
         String url;
 
         public Image(ResultSet rs) {
             try {
+                id = rs.getInt("tour_image_id");
                 altText = rs.getString("alt_text");
                 url = rs.getString("url");
             } catch (Exception e) {
@@ -153,7 +159,7 @@ public class Tour {
                 id = rs.getInt("tour_date_id");
                 start = rs.getTimestamp("tour_start");
                 end = rs.getTimestamp("tour_end");
-                shown = rs.getBoolean("show_tour");
+                shown = rs.getByte("show_tour") == 1;
                 price = rs.getDouble("price");
                 avail_slot = rs.getInt("avail_slot");
                 max_slot = rs.getInt("max_slot");
@@ -201,6 +207,7 @@ public class Tour {
         }
 
         public boolean isShown() {
+            System.out.println(shown);
             return shown;
         }
 
@@ -219,6 +226,11 @@ public class Tour {
         public String getDuration() {
             // add 1 day to include the start day
             return String.format("%02d", (int) ((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1) + " days";
+        }
+
+        @Override
+        public String toString() {
+            return getStartString() + "-" + getEndString() + " (" + getDuration() + ")";
         }
     }
 

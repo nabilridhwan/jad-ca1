@@ -51,38 +51,47 @@
     Util.forceAdmin(session, response);
 
     // Get the category_id from parameter
-    String tour_idStr = request.getParameter("tourId");
+    String tourDateIdStr = request.getParameter("tourDateId");
+    String tourIdStr = request.getParameter("tourId");
 
 
-    if (tour_idStr == null || tour_idStr.isEmpty()) {
-        response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
+    if (tourDateIdStr == null || tourDateIdStr.isEmpty()) {
+        response.sendRedirect("/CA1-Preparation/views/admin/edit_tour.jsp?tourId=" + tourIdStr);
         return;
     }
     DatabaseConnection connection = new DatabaseConnection();
-    Tour[] tours;
-    if (tour_idStr.equals("new")) {
-        tours = new Tour[1];
-        tours[0] = new Tour();
+    Tour.Date[] tourDates;
+    int tourId = Integer.parseInt(tourIdStr);
+    Tour[] tours = TourModel.getTourById(tourId).query(connection);
+    if (tours.length != 1) {
+        response.sendRedirect("/CA1-Preparation/views/admin/edit_tour.jsp");
+        return;
+    }
+    Tour tour = tours[0];
+
+    if (tourDateIdStr.equals("new")) {
+        tourDates = new Tour.Date[1];
+        tourDates[0] = new Tour.Date();
     } else {
-        int tour_id = Integer.parseInt(tour_idStr);
+        int tourDate_id = Integer.parseInt(tourDateIdStr);
         // Get the category from the database
-        tours = TourModel.getTourById(tour_id).query(connection);
+        tourDates = TourModel.getTourDateById(tourDate_id).query(connection);
 
         if (request.getParameter("delete") != null) {
             //Double check if the user really wants to delete the category use an alert box
             if (request.getParameter("delete").equals("confirm")) {
-                TourModel.deleteTour(tour_id).update(connection);
-                response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
+                TourModel.deleteTourDate(tourDate_id).update(connection);
+                response.sendRedirect("/CA1-Preparation/views/admin/edit_tour.jsp?tourId=" + tourId);
                 return;
             }
 %>
 <script>
     //message box to confirm deletion
-    let x = confirm("Are you sure you want to delete this tour?");
+    let x = confirm("Are you sure you want to delete this tour date?");
     if (x) {
-        window.location.href = "/CA1-Preparation/views/admin/edit_tour.jsp?tourId=<%=tour_id%>&delete=confirm";
+        window.location.href = "/CA1-Preparation/views/admin/edit_tourDates.jsp?tourId=<%=tourId%>&tourDateId=<%=tourDate_id%>&delete=confirm";
     } else {
-        window.location.href = "/CA1-Preparation/views/admin/all_tours.jsp";
+        window.location.href = "/CA1-Preparation/views/admin/edit_tourDates.jsp?tourId=<%=tourId%>";
     }
 </script>
 <%
@@ -90,12 +99,12 @@
     }
 
 
-    if (tours == null || tours.length == 0) {
-        response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
+    if (tourDates == null || tourDates.length == 0) {
+        response.sendRedirect("/CA1-Preparation/views/admin/edit_tour.jsp?tourId=" + tourId);
         return;
     }
 
-    Tour tour = tours[0];
+    Tour.Date tourDate = tourDates[0];
 %>
 
 <div class="hero-wrap" style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
@@ -111,7 +120,8 @@
                 <div class="container px-5">
                     <div class="row d-flex contact-info">
                         <div class="col-md-12 mb-4">
-                            <h2 class="h4">Edit <%=tour.getTour_name()%> tour</h2>
+                            <h2 class="h4">Edit tour Date for <%=tour.getTour_name()%>  <%=tourDate%>
+                            </h2>
                         </div>
                         <div class="w-100"></div>
                         <div class="col-md-12">
@@ -124,150 +134,97 @@
 
                     <div class="row block-9">
                         <div class="col-md-12">
-                            <%
-                                if (tour.getTour_id() != 0) {
-//new tours won't be able to see this.
-                            %>
-                            <a href="./edit_tourImages.jsp?tourId=<%=tour.getTour_id()%>&tourImageId=new"
-                               class="btn btn-primary">
-                                Add Image
-                            </a>
 
-                            <div class="col-md-4 ftco-animate">
-                                <%
-                                    Tour.Image[] images = tour.getImages();
-                                    for (Tour.Image image : images) {
-                                %>
-                                <div class="destination">
-                                    <div class="text p-3">
-                                        <p>
+                            <form action="${pageContext.request.contextPath}/editTourDate" method="POST">
 
-                                            <img src="<%=image.getUrl()%>" alt="<%=image.getAltText()%>">
-                                            Alt text: <%=image.getAltText()%>
-                                        </p>
-
-                                        <div class="row my-3">
-                                            <div class="col-md-12">
-                                                <a href="./edit_tourImages.jsp?tourId=<%=tour.getTour_id()%>&tourImageId=<%=image.getId()%>"
-                                                   class=" btn btn-primary w-100 mb-1">
-                                                    Edit
-                                                </a>
-
-                                                <a href="./edit_tourImages.jsp?tourId=<%=tour.getTour_id()%>&tourImageId=<%=image.getId()%>&delete="
-                                                   class="btn btn-secondary w-100">
-                                                    Delete
-                                                </a>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <%
-                                    }
-                                %>
-                            </div>
-                            <a href="./edit_tourDates.jsp?tourId=<%=tour.getTour_id()%>&tourDateId=new"
-                               class="btn btn-primary">
-                                Add Tour
-                            </a>
-
-                            <div class="col-md-4 ftco-animate">
-                                <%
-                                    Tour.Date[] dates = tour.getDates();
-                                    for (Tour.Date date : dates) {
-                                %>
-                                <div class="destination">
-                                    <div class="text p-3">
-                                        <p><%=date %>
-                                        </p>
-                                        <div class="two">
-                                            <span class="price">$<%=date.getPrice() %></span>
-                                        </div>
-                                        <hr>
-                                        <p class="bottom-area d-flex">
-                                            <span><i
-                                                    class="icon-map-o"></i> Slots <%=date.getAvail_slot() %>/<%=date.getMax_slot()%></span>
-                                        </p>
-                                        <div class="row my-3">
-                                            <div class="col-md-12">
-                                                <a href="./edit_tourDates.jsp?tourId=<%=tour.getTour_id()%>&tourDateId=<%=date.getId()%>"
-                                                   class=" btn btn-primary w-100 mb-1">
-                                                    Edit
-                                                </a>
-
-                                                <a href="./edit_tourDates.jsp?tourId=<%=tour.getTour_id()%>&tourDateId=<%=date.getId()%>&delete="
-                                                   class="btn btn-secondary w-100">
-                                                    Delete
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <%
-                                    }
-                                %>
-                            </div>
-                            <%
-                                }
-                            %>
-
-                            <form action="${pageContext.request.contextPath}/editTour" method="POST">
-
+                                <label>
+                                    <input
+                                            class="form-control"
+                                            hidden
+                                            name="dateId"
+                                            type="text"
+                                            value="<%=tourDate.getId() %>"
+                                    />
+                                </label>
                                 <label>
                                     <input
                                             class="form-control"
                                             hidden
                                             name="id"
                                             type="text"
-                                            value="<%=tour.getTour_id() %>"
+                                            value="<%=tour.getTour_id()%>"
                                     />
                                 </label>
                                 <div class="form-group">
-                                    <label>
+                                    <label> Start Date
                                         <input
                                                 type="text"
                                                 class="form-control"
-                                                placeholder="Name"
-                                                name="name"
-                                                value="<%=tour.getTour_name() %>"
+                                                placeholder="start"
+                                                name="start"
+                                                value="<%=tourDate.getStart() %>"
                                         />
                                     </label>
                                 </div>
                                 <div class="form-group">
-                                    <label>
+                                    <label> End Date
                                         <input
                                                 type="text"
                                                 class="form-control"
-                                                placeholder="brief descL"
-                                                name="bDesc"
-                                                value="<%=tour.getTour_brief_desc() %>"
+                                                placeholder="end"
+                                                name="end"
+                                                value="<%=tourDate.getEnd() %>"
                                         />
                                     </label>
                                 </div>
 
                                 <div class="form-group">
-                                    <label>
+                                    <label> Price
                                         <input
-                                                type="text"
+                                                type="number"
                                                 class="form-control"
-                                                placeholder="Description"
-                                                name="desc"
-                                                value="<%=tour.getTour_desc() %>"
+                                                placeholder="Price"
+                                                name="price"
+                                                min="0"
+                                                step="0.1"
+                                                value="<%=tourDate.getPrice()%>"
                                                 required
                                         />
                                     </label>
                                 </div>
                                 <div class="form-group">
-                                    <label>
+                                    <label> Available Slots
                                         <input
-                                                type="text"
-                                                name="location"
+                                                type="number"
+                                                name="emptySlots"
                                                 class="form-control"
-                                                placeholder="Location"
-                                                value="<%=tour.getTour_location() %>"
+                                                placeholder="Available Slots"
+                                                value="<%=tourDate.getAvail_slot() %>"
                                                 required/>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label> Max Slots
+                                        <input
+                                                type="number"
+                                                name="slots"
+                                                class="form-control"
+                                                placeholder="Max Slots"
+                                                min="0"
+                                                value="<%=tourDate.getMax_slot() %>"
+                                                required/>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label> Is Shown
+                                        <input
+                                                type="checkbox"
+                                                name="shown"
+                                                class="form-control"
+                                                placeholder="Is Shown"
+                                                value="shown"
+                                                checked="<%=tourDate.isShown() %>"
+                                        />
                                     </label>
                                 </div>
                                 <div class="form-group">

@@ -5,10 +5,10 @@ import dataStructures.Tour;
 import utils.IDatabaseQuery;
 import utils.IDatabaseUpdate;
 
-import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class TourModel {
@@ -132,6 +132,29 @@ public class TourModel {
                         " WHERE tti.tour_id = ? AND tti.tour_image_id = ti.tour_image_id;");
 
                 prepStatement.setInt(1, tour.getTour_id());
+                ResultSet rs = prepStatement.executeQuery();
+
+                ArrayList<Tour.Image> list = new ArrayList<>();
+
+                if (rs != null) while (rs.next()) list.add(new Tour.Image(rs));
+
+                return list.toArray(new Tour.Image[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
+
+    public static IDatabaseQuery<Tour.Image> getTourImageById(int id) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement prepStatement = conn.prepareStatement("SELECT *" +
+                        " FROM tour_image " +
+                        " WHERE tour_image_id = ?;");
+
+                prepStatement.setInt(1, id);
                 ResultSet rs = prepStatement.executeQuery();
 
                 ArrayList<Tour.Image> list = new ArrayList<>();
@@ -401,6 +424,116 @@ public class TourModel {
                 pstmt.setString(3, description);
                 pstmt.setString(4, location);
                 pstmt.setInt(5, tourID);
+                return pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        };
+    }
+
+    public static IDatabaseUpdate insertNewTourDate(int tourID, String dateStart, String dateEnd, double price, int emptySlots, int maxSlots, boolean show) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO tour_date (tour_id, tour_start, tour_end, max_slot, show_tour, price, avail_slot) "
+                        + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+                pstmt.setInt(1, tourID);
+                pstmt.setString(2, dateStart);
+                pstmt.setString(3, dateEnd);
+                pstmt.setInt(4, maxSlots);
+                pstmt.setByte(5, show ? (byte) 1 : (byte) 0);
+                pstmt.setDouble(6, price);
+                pstmt.setInt(7, emptySlots);
+                return pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        };
+    }
+
+
+    public static IDatabaseUpdate updateTourDate(int tourDateID, String dateStart, String dateEnd, double price, int emptySlots, int maxSlots, boolean show) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("UPDATE tour_date SET tour_start = ?, tour_end = ?, max_slot = ?, show_tour = ?, price = ?, avail_slot = ? WHERE tour_date_id = ?");
+                pstmt.setString(1, dateStart);
+                pstmt.setString(2, dateEnd);
+                pstmt.setInt(3, maxSlots);
+                pstmt.setByte(4, show ? (byte) 1 : (byte) 0);
+                pstmt.setDouble(5, price);
+                pstmt.setInt(6, emptySlots);
+                pstmt.setInt(7, tourDateID);
+                return pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        };
+    }
+
+    public static IDatabaseUpdate deleteTourDate(int tourDate_id) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("DELETE FROM tour_date WHERE tour_date_id = ?");
+                pstmt.setInt(1, tourDate_id);
+                return pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        };
+    }
+
+    public static IDatabaseUpdate deleteTourImage(int tourImage_id) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("DELETE FROM tour_image WHERE tour_image_id = ?");
+                pstmt.setInt(1, tourImage_id);
+                return pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        };
+    }
+
+    public static IDatabaseUpdate insertNewTourImage(int tourID, String url, String alt) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO tour_image (url, alt_text) "
+                        + "VALUES ( ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                pstmt.setString(1, url);
+                pstmt.setString(2, alt);
+                pstmt.executeUpdate();
+                ResultSet rs = pstmt.getGeneratedKeys();
+                if (!rs.next()) return -1;
+                int id = rs.getInt(1);
+                pstmt = conn.prepareStatement("INSERT INTO tour_tour_image (tour_id, tour_image_id) "
+                        + "VALUES ( ?, ?)");
+                pstmt.setInt(1, tourID);
+                pstmt.setInt(2, id);
+                return pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        };
+    }
+
+    public static IDatabaseUpdate updateTourImage(int tourImageId, String url, String alt) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("UPDATE tour_image SET url = ?, alt_text = ? WHERE tour_image_id = ?");
+                pstmt.setString(1, url);
+                pstmt.setString(2, alt);
+                pstmt.setInt(3, tourImageId);
                 return pstmt.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();

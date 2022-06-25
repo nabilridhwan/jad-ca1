@@ -62,7 +62,7 @@ public class EditTour extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/views/admin/all_tours.jsp");
                 return;
             }
-            response.sendRedirect(request.getContextPath() + "/views/admin/edit_tour.jsp?message=Category with that name already exists!");
+            response.sendRedirect(request.getContextPath() + "/views/admin/edit_tour.jsp?message=Tour with that name already exists!");
 
 
             return;
@@ -74,8 +74,7 @@ public class EditTour extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/views/admin/all_tours.jsp");
             return;
         }
-        response.sendRedirect(request.getContextPath() + "/views/admin/edit_tour.jsp?message=Category with that name already exists!");
-        return;
+        response.sendRedirect(request.getContextPath() + "/views/admin/edit_tour.jsp?message=Tour with that name already exists!");
     }
 
 }
