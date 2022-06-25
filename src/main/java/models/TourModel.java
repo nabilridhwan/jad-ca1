@@ -308,7 +308,8 @@ public class TourModel {
                 e.printStackTrace();
                 return null;
             }
-        }
+        };
+    }
     
     public static IDatabaseUpdate addReviewToTour(String tour_id, int user_id, int rating, String text) {
         return databaseConnection -> {
