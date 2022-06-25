@@ -17,6 +17,7 @@ public class Tour {
     Date[] dates;
     double average_rating;
     Review[] reviews;
+    boolean refreshed;
 
     public Tour(ResultSet rs) {
         try {
@@ -25,7 +26,6 @@ public class Tour {
             tour_brief_desc = rs.getString("brief_desc");
             tour_desc = rs.getString("detail_desc");
             tour_location = rs.getString("location");
-            refreshTour();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,18 +53,22 @@ public class Tour {
 
 
     public Date[] getDates() {
+        if (!refreshed) refreshTour();
         return dates;
     }
 
     public Image[] getImages() {
+        if (!refreshed) refreshTour();
         return images;
     }
 
     public double getAverage_rating() {
+        if (!refreshed) refreshTour();
         return average_rating;
     }
 
     public Review[] getReviews() {
+        if (!refreshed) refreshTour();
         return reviews;
     }
 
@@ -73,6 +77,7 @@ public class Tour {
         images = TourModel.getTourImages(this).query(conn);
         reviews = TourModel.getTourReviews(this).query(conn);
         average_rating = TourModel.getTourReviewAverage(this).query(conn)[0];
+        refreshed = true;
     }
 
     public void refreshTour() {
@@ -239,7 +244,7 @@ public class Tour {
 
         public Registrations(ResultSet rs) {
             try {
-                id = rs.getInt("id");
+                id = rs.getInt("tour_registration_id");
                 user_id = rs.getInt("user_id");
                 tour_date_id = rs.getInt("tour_date_id");
                 pax = rs.getByte("pax");
