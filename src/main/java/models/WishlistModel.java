@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class WishlistModel {
 
-    public static IDatabaseQuery<Wishlist> getUserWishlistItem(int userId) {
+    public static IDatabaseQuery<Wishlist> getUserWishlistItems(int userId) {
 
         return databaseConnection -> {
             try {
