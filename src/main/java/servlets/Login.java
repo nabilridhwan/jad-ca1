@@ -72,9 +72,18 @@ public class Login extends HttpServlet {
 //				Set in the session
             HttpSession session = request.getSession(true);
             session.setAttribute("userID", userID);
+            
+//				Redirect
+
+            System.out.println(redirect);
+            if (redirect == null) {
+                redirect = "/views/index.jsp";
+            }
+            System.out.println(redirect);
 
             if (redirect == null || redirect.equals("null")) redirect = "/CA1-Preparation/views/index.jsp";
             response.sendRedirect(redirect);
+            return;
         } else {
 //				If there is no user, dispatch the page back to the login page
 
