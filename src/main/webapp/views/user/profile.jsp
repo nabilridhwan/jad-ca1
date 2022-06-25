@@ -157,7 +157,6 @@
         </div>
     </div>
 
-
     <%--    Profile--%>
     <div class="container" style="padding: 7em 0">
         <div
@@ -411,6 +410,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <div class="row">
             <div class="col-md-12 text-center">
