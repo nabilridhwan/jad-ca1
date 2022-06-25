@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="utils.Util"%>
 <%@page import="models.TourModel"%>
 <%@page import="dataStructures.Tour"%>
 <%@page import="dataStructures.Category"%>
@@ -34,6 +35,14 @@
 </head>
 
 <body>
+
+	<%
+		int user_id = Util.getUserID(session);
+		if (user_id == -1) {
+	        response.sendRedirect("../user/login.jsp");
+	        return;
+	    }
+	%>
     
     <%@ include file="../misc/navbar_dark.jsp" %>
 
