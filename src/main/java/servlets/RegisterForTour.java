@@ -1,5 +1,6 @@
 package servlets;
 
+import dataStructures.Tour;
 import models.TourModel;
 import utils.DatabaseConnection;
 import utils.Util;
@@ -40,33 +41,68 @@ public class RegisterForTour extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO Auto-generated method stub
         String date = request.getParameter("date");
-        int pax = Integer.parseInt(request.getParameter("pax"));
-        String previousURL = request.getHeader("Referer") + "?pax=" + pax;
+        String paxStr = request.getParameter("pax");
+
+        String baseUrl = request.getHeader("Referer");
+        //remove all the parameters from the url
+        baseUrl = baseUrl.substring(0, baseUrl.indexOf("?"));
+
+        String originalURL = baseUrl + "?tour_id=" + request.getParameter("id");
+        String previousURL = originalURL;
+        if (paxStr == null) {
+            previousURL += "&InvalidPax=true";
+            response.sendRedirect(previousURL);
+            return;
+        }
+        int pax = Integer.parseInt(paxStr);
+        previousURL += "&pax=" + pax;
 
         if (date == null || date.equals("placeholder")) {
             previousURL += "&InvalidDate=";
             response.sendRedirect(previousURL);
             return;
         }
-
+        previousURL += "&date=" + date;
         int tourDateID = Integer.parseInt(date);
 
-        //Debug
-//        response.getWriter().append("Tour ID: ").append(tour_id).append("\n").append("Date ID: ").append(date).append("\n").append("Pax: ").append(pax);
-
-
         int userID = Util.forceLogin(request.getSession(), response, previousURL);
+        if (userID == -1) {
+            return;
+        } //doesn't work sometimes if you don't return
 
         DatabaseConnection conn = new DatabaseConnection();
+
+        Tour.Date[] tourDate = TourModel.getTourDateById(tourDateID).query(conn);
+
+        System.out.println("length:" + tourDate.length);
+        System.out.println("id: " + tourDateID);
+        if (tourDate.length != 1) {
+            response.sendRedirect(previousURL + "&InvalidDate=");
+            return;
+        }
+
+        if (tourDate[0].getAvail_slot() < pax) {
+            response.sendRedirect(previousURL + "&InvalidPax=");
+            return;
+        }
+
+        boolean registered = TourModel.getPaxForTour(userID, tourDateID).query(conn).length > 0;
         boolean success = TourModel.registerUserForTour(userID, tourDateID, pax).update(conn) == 1;
         conn.close();
 
-        if (success) {
-            response.getWriter().append("You have successfully registered for this tour\n");
-        } else {
-            response.getWriter().append("There was an error registering for this tour\n");
+        if (registered) {
+            previousURL += "&alreadyRegistered=";
+            response.sendRedirect(previousURL);
+            return;
         }
 
+        if (!success) {
+            originalURL += "&error=";
+            response.sendRedirect(originalURL);
+            return;
+        }
+        originalURL += "&success=";
+        response.sendRedirect(originalURL);
     }
 
 }

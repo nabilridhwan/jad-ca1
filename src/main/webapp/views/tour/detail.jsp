@@ -13,6 +13,7 @@
     IDatabaseQuery<Tour> tourQuery = TourModel.getTourById(tour_id);
     DatabaseConnection connection = new DatabaseConnection();
     if (tourQuery == null) {
+//        System.out.println(request.getRequestURL().toString());
         response.sendRedirect("/CA1-Preparation/views/tour/view_all.jsp?error=SQL");
         return;
     }
@@ -23,6 +24,20 @@
         return;
     }
     Tour tour = tours[0];
+
+    if (request.getParameter("success") != null) {
+        out.print("<div class=\"alert alert-success\" role=\"alert\">");
+        out.print("<strong>Success!</strong> You have successfully registered for this tour.");
+        out.print("</div>");
+    } else if (request.getParameter("alreadyRegistered") != null) {
+        out.print("<div class=\"alert alert-danger\" role=\"alert\">");
+        out.print("<strong>Error!</strong> You have already registered for this tour.");
+        out.print("</div>");
+    } else if (request.getParameter("error") != null) {
+        out.print("<div class=\"alert alert-danger\" role=\"alert\">");
+        out.print("<strong>Error!</strong> There was an error registering for this tour.");
+        out.print("</div>");
+    }
 %>
 <head>
 
@@ -419,9 +434,18 @@
                                         <%
                                             Tour.Date[] dates = tour.getDates();
 
+                                            boolean havePreviousDate = request.getParameter("date") != null;
                                             if (dates.length > 0) {
                                         %>
-                                        <option value="placeholder" selected="selected" disabled>
+                                        <option value="placeholder"
+                                                <%
+                                                    if (!havePreviousDate) {
+                                                %>
+                                                selected="selected"
+                                                <%
+                                                    }
+                                                %>
+                                                disabled>
                                             Select Date
                                         </option>
                                         <%
@@ -432,6 +456,10 @@
                                         </option>
                                         <%
                                             }
+                                            int prevDateID = 0;
+                                            if (havePreviousDate)
+                                                prevDateID = Integer.parseInt(request.getParameter("date"));
+
                                             for (Tour.Date date : dates) {
                                                 if (!date.isShown())
                                                     continue;
@@ -443,9 +471,15 @@
                                                 disabled
                                                 <%
                                                     }
+                                                    if (date.getId() == prevDateID) {
+                                                %>
+                                                selected="selected"
+                                                <%
+                                                    }
                                                 %>
                                         >
                                             <%=date.getStartString()%> - <%=date.getEndString()%>
+                                            (<%=date.getAvail_slot()%> slots available)
                                         </option>
                                         <%
                                             }
@@ -485,6 +519,15 @@
                                     />
                                 </div>
                             </div>
+                            <%
+                                if (request.getParameter("InvalidPax") != null) {
+                            %>
+                            <div class="alert alert-danger" role="alert">
+                                <strong>Please select a valid number</strong>
+                            </div>
+                            <%
+                                }
+                            %>
 
                             <label for="id"></label>
                             <input id="id"
