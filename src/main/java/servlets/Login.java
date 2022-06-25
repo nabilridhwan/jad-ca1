@@ -47,7 +47,7 @@ public class Login extends HttpServlet {
         // TODO Auto-generated method stub
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        
+
         // Hash the password
         password = Password.encryptThisString(password);
 
@@ -55,7 +55,15 @@ public class Login extends HttpServlet {
         User[] users = UserModel.getUserByEmailAndPassword(email, password).query(connection);
         connection.close();
 
+//				Redirect
+        String redirect = request.getParameter("redirect");
 //			Check if the user exist
+
+        System.out.println("================================");
+        System.out.println(users.length);
+        System.out.println(email);
+        System.out.println(password);
+        System.out.println("================================");
         if (users.length == 1) {
             User user = users[0];
 //				Get the user ID
@@ -64,14 +72,16 @@ public class Login extends HttpServlet {
 //				Set in the session
             HttpSession session = request.getSession(true);
             session.setAttribute("userID", userID);
-
+            
 //				Redirect
-            String redirect = request.getParameter("redirect");
+
             System.out.println(redirect);
             if (redirect == null) {
                 redirect = "/views/index.jsp";
             }
             System.out.println(redirect);
+
+            if (redirect == null || redirect.equals("null")) redirect = "/CA1-Preparation/views/index.jsp";
             response.sendRedirect(redirect);
             return;
         } else {
@@ -81,12 +91,9 @@ public class Login extends HttpServlet {
             request.setAttribute("error", "invalid_credentials");
 
 //				Dispatch
-            String redirect = request.getParameter("redirect");
-            RequestDispatcher dispatcher = (redirect == null) ?
-                    request.getRequestDispatcher("/views/user/login.jsp?error=invalid_credentials") :
-                    request.getRequestDispatcher("/views/user/login.jsp?error=invalid_credentials&redirect=" + redirect);
-            dispatcher.forward(request, response);
-
+            String url = "/views/user/login.jsp?error=invalid_credentials";
+            if (redirect != null) url += "&redirect=" + redirect;
+            request.getRequestDispatcher(url).forward(request, response);
         }
         doGet(request, response);
     }

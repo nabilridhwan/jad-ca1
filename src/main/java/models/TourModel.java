@@ -98,6 +98,30 @@ public class TourModel {
         };
     }
 
+    public static IDatabaseQuery<Tour.Date> getTourDateById(int tourDateID) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement prepStatement = conn.prepareStatement("SELECT *" +
+                        " FROM tour_date" +
+                        " WHERE tour_date_id = ?;"
+                );
+
+                prepStatement.setInt(1, tourDateID);
+                ResultSet rs = prepStatement.executeQuery();
+
+                ArrayList<Tour.Date> list = new ArrayList<>();
+
+                if (rs != null) while (rs.next()) list.add(new Tour.Date(rs));
+
+                return list.toArray(new Tour.Date[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
+
     public static IDatabaseQuery<Tour.Image> getTourImages(Tour tour) {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
@@ -230,13 +254,15 @@ public class TourModel {
         };
     }
 
+
     public static IDatabaseUpdate registerUserForTour(int userID, int tourDateID, int pax) {
         IDatabaseUpdate addUserToTour = databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO tour_registration (user_id, tour_date_id) VALUES (?, ?)");
+                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO tour_registration (user_id, tour_date_id, pax) VALUES (?, ?,?)");
                 pstmt.setInt(1, userID);
                 pstmt.setInt(2, tourDateID);
+                pstmt.setInt(3, pax);
                 return pstmt.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -280,6 +306,46 @@ public class TourModel {
                 return -1;
             }
         };
+    }
 
+    public static IDatabaseQuery<Tour.Registrations> getTourRegistrations(int userID) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM tour_registration WHERE user_id = ?");
+                pstmt.setInt(1, userID);
+
+                ResultSet rs = pstmt.executeQuery();
+                ArrayList<Tour.Registrations> list = new ArrayList<>();
+
+                if (rs != null) while (rs.next()) list.add(new Tour.Registrations(rs));
+
+                return list.toArray(new Tour.Registrations[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
+
+    public static IDatabaseQuery<Integer> getPaxForTour(int userID, int tourDataID) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("SELECT pax FROM tour_registration WHERE user_id = ? AND tour_date_id = ?");
+                pstmt.setInt(1, userID);
+                pstmt.setInt(2, tourDataID);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    Integer[] pax = new Integer[1];
+                    pax[0] = rs.getInt(1);
+                    return pax;
+                }
+                return new Integer[0];
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
     }
 }

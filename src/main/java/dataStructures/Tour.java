@@ -174,6 +174,11 @@ public class Tour {
         public int getMax_slot() {
             return max_slot;
         }
+
+        public String getDuration() {
+            // add 1 day to include the start day
+            return String.format("%02d", (int) ((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1) + " days";
+        }
     }
 
     public static class Review {
@@ -207,6 +212,40 @@ public class Tour {
 
         public int getHelpful_score() {
             return helpful_score;
+        }
+    }
+
+    public static class Registrations {
+        public int getId() {
+            return id;
+        }
+
+        public int getUser_id() {
+            return user_id;
+        }
+
+        public int getTour_date_id() {
+            return tour_date_id;
+        }
+
+        public byte getPax() {
+            return pax;
+        }
+
+        private int id;
+        private int user_id;
+        private int tour_date_id;
+        private byte pax;
+
+        public Registrations(ResultSet rs) {
+            try {
+                id = rs.getInt("id");
+                user_id = rs.getInt("user_id");
+                tour_date_id = rs.getInt("tour_date_id");
+                pax = rs.getByte("pax");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
