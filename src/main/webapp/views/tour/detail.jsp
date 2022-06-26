@@ -324,10 +324,10 @@
                                             placeholder="Keyword search"
                                     >
                                         <%
-                                            Tour.Date[] dates = tour.getDates();
-
+                                            Tour.Date[] dates = TourModel.getShownTourDates(tour).query(connection);
                                             boolean havePreviousDate = request.getParameter("date") != null;
-                                            if (dates.length > 0) {
+                                            boolean HaveDates = dates.length > 0;
+                                            if (HaveDates) {
                                         %>
                                         <option value="placeholder"
                                                 <%
@@ -353,8 +353,6 @@
                                                 prevDateID = Integer.parseInt(request.getParameter("date"));
 
                                             for (Tour.Date date : dates) {
-                                                if (!date.isShown())
-                                                    continue;
                                         %>
                                         <option value="<%=date.getId()%>"
                                                 <%
@@ -398,13 +396,28 @@
                                             name="pax"
                                             type="number"
                                             class="form-control"
+                                            <%
+                                                if (!HaveDates) {
+                                            %>
+                                            placeholder="No Dates Available"
+                                            <%
+                                            } else {
+                                            %>
                                             placeholder="Pax (Max 5)"
+                                            <%
+                                                }
+                                            %>
                                             min="1"
                                             max="5"
                                             <%
                                                 if (request.getParameter("pax") != null) {
                                             %>
                                             value="<%=request.getParameter("pax")%>"
+                                            <%
+                                                }
+                                                if (!HaveDates) {
+                                            %>
+                                            disabled
                                             <%
                                                 }
                                             %>
@@ -433,6 +446,13 @@
                                         type="submit"
                                         value="Book"
                                         class="btn btn-primary py-3 px-5"
+                                        <%
+                                            if (!HaveDates) {
+                                        %>
+                                        disabled
+                                        <%
+                                            }
+                                        %>
                                 />
                             </div>
                         </div>

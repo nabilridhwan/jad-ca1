@@ -89,6 +89,30 @@ public class TourModel {
             }
         };
     }
+    public static IDatabaseQuery<Tour.Date> getShownTourDates(Tour tour) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement prepStatement = conn.prepareStatement("SELECT *" +
+                        " FROM tour_date" +
+                        " WHERE tour_id = ? AND show_tour = 1;"
+                );
+
+                prepStatement.setInt(1, tour.getTour_id());
+                ResultSet rs = prepStatement.executeQuery();
+
+                ArrayList<Tour.Date> list = new ArrayList<>();
+
+                if (rs != null) while (rs.next()) list.add(new Tour.Date(rs));
+
+                return list.toArray(new Tour.Date[0]);
+            } catch (Exception e) {
+                System.out.println("Error in getShownTourDates");
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
 
     public static IDatabaseQuery<Tour.Date> getTourDateById(int tourDateID) {
         return databaseConnection -> {
