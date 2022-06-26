@@ -3,7 +3,7 @@
 <html>
     <head>
     <meta charset="ISO-8859-1">
-        <title>DirEngine - Free Bootstrap 4 Template by Colorlib</title>
+        <title>Login</title>
         <meta charset="utf-8" />
         <meta
             name="viewport"
