@@ -82,28 +82,8 @@
     </div>
 </div>
 
-
-<div class="col-lg-9">
-    <div class="row"> <!-- Start tour body -->
-        <div class="col-lg-3 sidebar">
-
-            <%--            Search todo--%>
-            <%--                <div class="sidebar-wrap bg-light ftco-animate">--%>
-            <%--                    <h3 class="heading mb-4">Find Category</h3>--%>
-            <%--                    <form action="${pageContext.request.contextPath}/views/tour/categoryListing.jsp" method="GET">--%>
-            <%--                        <div class="fields">--%>
-            <%--                            <div class="form-group">--%>
-            <%--                                <input type="text" class="form-control" placeholder="Category" name = "search">--%>
-            <%--                            </div>--%>
-            <%--                            <div class="form-group">--%>
-            <%--                                <input type="submit" value="Search" class="btn btn-primary py-3 px-5">--%>
-            <%--                            </div>--%>
-            <%--                        </div>--%>
-            <%--                    </form>--%>
-            <%--                </div>--%>
-        </div>
-        <div class="col-lg-9">
-            <div class="row"> <!-- Start tour body -->
+<div class="container">
+            <div class="row my-3"> <!-- Start tour body -->
 
                 <%
                     if (tours.length == 0) {%>
@@ -188,10 +168,7 @@
                     }
                 %>
             </div> <!-- End tour body -->
-        </div>
-    </div>
-
-</div> <!-- .col-md-8 -->
+            </div>
 
 <footer class="ftco-footer ftco-bg-dark ftco-section">
     <div class="container">

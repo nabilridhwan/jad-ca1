@@ -85,7 +85,7 @@ public class UserModel {
             try {
                 PreparedStatement prepStatement = conn.prepareStatement("UPDATE user " +
                         "SET " +
-                		"profile_pic_url = ?" +
+                		"profile_pic_url = ?," +
                         "full_name = ?," +
                         "email = ?," +
                         "password =? " +
@@ -96,6 +96,8 @@ public class UserModel {
                 prepStatement.setString(3, email);
                 prepStatement.setString(4, password);
                 prepStatement.setInt(5, userId);
+                
+                System.out.println(prepStatement.toString());
 
                 return prepStatement.executeUpdate();
             } catch (Exception e) {

@@ -44,8 +44,17 @@
 
 
 <%
+
+	if(!Util.isUserLoggedIn(session)){
+		response.sendRedirect("./login.jsp");
+	    return;
+	}
+
+	
     // Check if userID is null
     int userID = Util.forceLogin(session, response);
+
+
 
     DatabaseConnection connection = new DatabaseConnection();
     User[] users = UserModel.getUserByUserID(userID).query(connection);
@@ -55,15 +64,9 @@
         return;
     }
 
-    if (users.length != 1) {
-        //			If there is no user, dispatch the page back to the login page
-
-        //			Set the attribute of error to invalid_credentials
-        request.setAttribute("error", "invalid_credentials");
-
-        //			Dispatch
-        RequestDispatcher dispatcher = request.getRequestDispatcher("./login.jsp?error=invalid_credentials");
-        dispatcher.forward(request, response);
+    if (users.length != 1) {        
+        response.sendRedirect("./login.jsp");
+        return;
     }
     User user = users[0];
     //			Get the user ID
@@ -76,86 +79,6 @@
 <body>
 <div class="hero-wrap" style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
     <div class="overlay"></div>
-
-    <%--    Tours--%>
-    <div class="container" style="padding: 7em 0">
-        <div
-                class="row no-gutters js-fullheight align-items-center justify-content-center"
-                data-scrollax-parent="true"
-        >
-            <section
-                    class="ftco-section contact-section ftco-degree-bg bg-white rounded"
-            >
-                <div class="container px-5">
-                    <div class="row d-flex contact-info">
-                        <div class="col-md-12 mb-4 text-center">
-                            <h2 class="h3 font-weight-bold">
-                                Your Tours
-                            </h2>
-                            <%
-                                Tour[] tours = TourModel.getTourRegistrationsByUser(userID).query(connection);
-                                if (tours.length == 0) {
-                            %>
-                            <h3>You have not registered for any tours</h3>
-                            <%
-                            } else {
-                            %>
-                            <h3>Your registered tours</h3>
-                            <%
-                                for (Tour tour : tours) {
-                                    Tour.Registrations[] registrations = TourModel.getTourRegistrations(userID, tour.getTour_id()).query(connection);
-                                    if (registrations.length == 0) continue;
-                            %>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h4>
-                                        <%= tour.getTour_name() %>
-                                    </h4>
-                                    <p>
-                                        <%= tour.getTour_brief_desc() %>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <%
-
-                                for (Tour.Registrations registration : registrations) {
-                                    int tourDateId = registration.getTour_date_id();
-                                    Tour.Date[] tourDates = TourModel.getTourDateById(tourDateId).query(connection);
-                                    if (tourDates == null || tourDates.length == 0) {
-                            %>
-                            There was an error retrieving this entry.
-                            <%
-                                    continue;
-                                }
-
-                                Tour.Date tourDate = tourDates[0];
-                                if (!tourDate.isShown()) continue;
-                            %>
-                            <div>
-                                Date: <%= tourDate.getStartString() %> - <%= tourDate.getEndString() %>
-                                (<%= tourDate.getDuration() %>)
-                                Pax: <%= registration.getPax() %>
-                                <br>
-                            </div>
-                            <%
-                                }
-                            %>
-
-                            <br>
-                            <br>
-                            <br>
-                            <%
-                                    }
-                                }
-                            %>
-                        </div>
-                    </div>
-                </div>
-
-            </section>
-        </div>
-    </div>
 
     <%--    Profile--%>
     <div class="container" style="padding: 7em 0">
@@ -288,6 +211,86 @@
         </div>
     </div>
 </div>
+
+    <%--    Tours--%>
+    <div class="container py-2">
+        <div
+                class="row no-gutters js-fullheight align-items-center justify-content-center"
+                data-scrollax-parent="true"
+        >
+            <section
+                    class="ftco-section card contact-section ftco-degree-bg bg-white rounded"
+            >
+                <div class="container px-5">
+                    <div class="row d-flex contact-info">
+                        <div class="col-md-12 mb-4 text-center">
+                            <h2 class="h3 font-weight-bold">
+                                Your Tours
+                            </h2>
+                            <%
+                                Tour[] tours = TourModel.getTourRegistrationsByUser(userID).query(connection);
+                                if (tours.length == 0) {
+                            %>
+                            <h3>You have not registered for any tours</h3>
+                            <%
+                            } else {
+                            %>
+                            <h3>Your registered tours</h3>
+                            <%
+                                for (Tour tour : tours) {
+                                    Tour.Registrations[] registrations = TourModel.getTourRegistrations(userID, tour.getTour_id()).query(connection);
+                                    if (registrations.length == 0) continue;
+                            %>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4>
+                                        <%= tour.getTour_name() %>
+                                    </h4>
+                                    <p>
+                                        <%= tour.getTour_brief_desc() %>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <%
+
+                                for (Tour.Registrations registration : registrations) {
+                                    int tourDateId = registration.getTour_date_id();
+                                    Tour.Date[] tourDates = TourModel.getTourDateById(tourDateId).query(connection);
+                                    if (tourDates == null || tourDates.length == 0) {
+                            %>
+                            There was an error retrieving this entry.
+                            <%
+                                    continue;
+                                }
+
+                                Tour.Date tourDate = tourDates[0];
+                                if (!tourDate.isShown()) continue;
+                            %>
+                            <div>
+                                Date: <%= tourDate.getStartString() %> - <%= tourDate.getEndString() %>
+                                (<%= tourDate.getDuration() %>)
+                                Pax: <%= registration.getPax() %>
+                                <br>
+                            </div>
+                            <%
+                                }
+                            %>
+
+                            <br>
+                            <br>
+                            <br>
+                            <%
+                                    }
+                                }
+                            %>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </div>
 
 <!-- loader -->
 <div id="ftco-loader" class="show fullscreen">
