@@ -94,16 +94,17 @@ public class RegisterForTour extends HttpServlet {
         }
 
         boolean registered = TourModel.getPaxForTour(userID, tourDateID).query(conn).length > 0;
-        conn.close();
 
         if (registered) {
+            conn.close();
             previousURL += "&alreadyRegistered=";
             response.sendRedirect(previousURL);
             return;
         }
 
         boolean success = TourModel.registerUserForTour(userID, tourDateID, pax).update(conn) == 1;
-        
+        conn.close();
+
         if (!success) {
             originalURL += "&error=";
             response.sendRedirect(originalURL);
