@@ -5,7 +5,7 @@
 <%@ page import="utils.DatabaseConnection" %>
 <html lang="en">
 <head>
-    <title>DirEngine - Free Bootstrap 4 Template by Colorlib</title>
+    <title>Edit Tour</title>
     <meta charset="utf-8"/>
     <meta
             name="viewport"
@@ -44,7 +44,7 @@
 <body>
 
 
-<%@ include file="../misc/navbar_dark.jsp" %>
+<%@ include file="../misc/navbar.jsp" %>
 
 <%
 
@@ -126,9 +126,7 @@
                         </div>
                     </div>
 
-                    <h4>
-                        Tour Images
-                    </h4>
+
 
                     <div class="row block-9">
                         <div class="col-md-12">
@@ -136,7 +134,9 @@
                                 if (tour.getTour_id() != 0) {
 //new tours won't be able to see this.
                             %>
-
+                            <h4>
+                                Tour Categories
+                            </h4>
                             <div class="col-lg-12 my-3">
                                 <a href="./edit_tourCategories.jsp?tourId=<%=tour.getTour_id()%>"
                                    class="btn btn-primary">
@@ -144,7 +144,9 @@
                                 </a>
                             </div>
 
-
+                            <h4>
+                                Tour Images
+                            </h4>
                             <div class="col-lg-12 my-3">
                                 <a href="./edit_tourImages.jsp?tourId=<%=tour.getTour_id()%>&tourImageId=new"
                                    class="btn btn-primary">

@@ -5,7 +5,7 @@
 <%@ page import="utils.DatabaseConnection" %>
 <html lang="en">
 <head>
-    <title>DirEngine - Free Bootstrap 4 Template by Colorlib</title>
+    <title>Edit Tour Date</title>
     <meta charset="utf-8"/>
     <meta
             name="viewport"
@@ -44,7 +44,7 @@
 <body>
 
 
-<%@ include file="../misc/navbar_dark.jsp" %>
+<%@ include file="../misc/navbar.jsp" %>
 
 <%
 
@@ -137,97 +137,97 @@
 
                             <form action="${pageContext.request.contextPath}/editTourDate" method="POST">
 
-									<input
-                                            class="form-control"
-                                            hidden
-                                            name="dateId"
-                                            type="text"
-                                            value="<%=tourDate.getId() %>"
-                                    />
-                                    
-                                    <input
-                                            class="form-control"
-                                            hidden
-                                            name="id"
-                                            type="text"
-                                            value="<%=tour.getTour_id()%>"
-                                    />
+                                <input
+                                        class="form-control"
+                                        hidden
+                                        name="dateId"
+                                        type="text"
+                                        value="<%=tourDate.getId() %>"
+                                />
+
+                                <input
+                                        class="form-control"
+                                        hidden
+                                        name="id"
+                                        type="text"
+                                        value="<%=tour.getTour_id()%>"
+                                />
 
 
                                 <div class="form-group">
                                     <label> Start Date</label>
-                                        <input
-                                                type="text"
-                                                class="form-control"
-                                                placeholder="start"
-                                                name="start"
-                                                value="<%=tourDate.getStart() %>"
-                                        />
-                                    
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="start"
+                                            name="start"
+                                            value="<%=tourDate.getStart() %>"
+                                    />
+
                                 </div>
                                 <div class="form-group">
                                     <label> End Date</label>
-                                        <input
-                                                type="text"
-                                                class="form-control"
-                                                placeholder="end"
-                                                name="end"
-                                                value="<%=tourDate.getEnd() %>"
-                                        />
-                                    
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="end"
+                                            name="end"
+                                            value="<%=tourDate.getEnd() %>"
+                                    />
+
                                 </div>
 
                                 <div class="form-group">
                                     <label> Price</label>
-                                        <input
-                                                type="number"
-                                                class="form-control"
-                                                placeholder="Price"
-                                                name="price"
-                                                min="0"
-                                                step="0.1"
-                                                value="<%=tourDate.getPrice()%>"
-                                                required
-                                        />
-                                    
+                                    <input
+                                            type="number"
+                                            class="form-control"
+                                            placeholder="Price"
+                                            name="price"
+                                            min="0"
+                                            step="0.1"
+                                            value="<%=tourDate.getPrice()%>"
+                                            required
+                                    />
+
                                 </div>
                                 <div class="form-group">
                                     <label> Available Slots</label>
-                                        <input
-                                                type="number"
-                                                name="emptySlots"
-                                                class="form-control"
-                                                placeholder="Available Slots"
-                                                value="<%=tourDate.getAvail_slot() %>"
-                                                required/>
-                                    
+                                    <input
+                                            type="number"
+                                            name="emptySlots"
+                                            class="form-control"
+                                            placeholder="Available Slots"
+                                            value="<%=tourDate.getAvail_slot() %>"
+                                            required/>
+
                                 </div>
                                 <div class="form-group">
                                     <label> Max Slots</label>
-                                        <input
-                                                type="number"
-                                                name="slots"
-                                                class="form-control"
-                                                placeholder="Max Slots"
-                                                min="0"
-                                                value="<%=tourDate.getMax_slot() %>"
-                                                required/>
-                                    
+                                    <input
+                                            type="number"
+                                            name="slots"
+                                            class="form-control"
+                                            placeholder="Max Slots"
+                                            min="0"
+                                            value="<%=tourDate.getMax_slot() %>"
+                                            required/>
+
                                 </div>
-                                
+
                                 <h5>Tour Date Visibility</h5>
                                 <div class="form-check">
-                                        <input
-                                                type="checkbox"
-                                                id="shown"
-                                                name="shown"
-                                                class="form-check-input"
-                                                placeholder="Visible?"
-                                                value="shown"
-                                                checked="<%=tourDate.isShown() %>"
-                                        />
-                                        <label class="form-check-label" for="shown"> Make tour date visible</label>
-                                    
+                                    <input
+                                            type="checkbox"
+                                            id="shown"
+                                            name="shown"
+                                            class="form-check-input"
+                                            placeholder="Visible?"
+                                            value="shown"
+                                            checked="<%=tourDate.isShown() %>"
+                                    />
+                                    <label class="form-check-label" for="shown"> Make tour date visible</label>
+
                                 </div>
                                 <div class="form-group">
                                     <input

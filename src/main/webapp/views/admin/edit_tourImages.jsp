@@ -5,7 +5,7 @@
 <%@ page import="utils.DatabaseConnection" %>
 <html lang="en">
 <head>
-    <title>DirEngine - Free Bootstrap 4 Template by Colorlib</title>
+    <title>Edit Tour Image</title>
     <meta charset="utf-8"/>
     <meta
             name="viewport"
@@ -44,7 +44,7 @@
 <body>
 
 
-<%@ include file="../misc/navbar_dark.jsp" %>
+<%@ include file="../misc/navbar.jsp" %>
 
 <%
 
@@ -106,7 +106,6 @@
 
     Tour.Image tourImage = tourImages[0];
 %>
-
 <div class="hero-wrap" style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
     <div class="overlay"></div>
     <div class="container">
@@ -114,6 +113,19 @@
                 class="row no-gutters js-fullheight align-items-center justify-content-center"
                 data-scrollax-parent="true"
         >
+            <br>
+            <br>
+            <br>
+            <br>
+            <br><br>
+            <br>
+            <br>
+            <br>
+            <br><br>
+            <br>
+            <br>
+            <br>
+            <br>
             <section
                     class="ftco-section contact-section ftco-degree-bg bg-white rounded"
             >

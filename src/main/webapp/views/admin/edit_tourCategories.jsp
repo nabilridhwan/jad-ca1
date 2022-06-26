@@ -7,7 +7,7 @@
 <%@ page import="models.CategoryModel" %>
 <html lang="en">
 <head>
-    <title>DirEngine - Free Bootstrap 4 Template by Colorlib</title>
+    <title>Edit Tour Category</title>
     <meta charset="utf-8"/>
     <meta
             name="viewport"
@@ -46,7 +46,7 @@
 <body>
 
 
-<%@ include file="../misc/navbar_dark.jsp" %>
+<%@ include file="../misc/navbar.jsp" %>
 
 <%
 
