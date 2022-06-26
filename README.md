@@ -11,6 +11,12 @@ Folder Name: CA1-Preparation (Not jad-ca1)
 DB Name: sp_tour
 DB User: root
 DB Password: root
+
+Admin Email: amy@admin.com
+Admin Password: secret
+
+User Email: test@test.com
+User Password: secret
 ```
 
 ## Change the path of upload images in `web.xml` found in `webapp/WEB-INF`
