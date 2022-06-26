@@ -94,7 +94,6 @@ public class RegisterForTour extends HttpServlet {
         }
 
         boolean registered = TourModel.getPaxForTour(userID, tourDateID).query(conn).length > 0;
-        boolean success = TourModel.registerUserForTour(userID, tourDateID, pax).update(conn) == 1;
         conn.close();
 
         if (registered) {
@@ -103,6 +102,8 @@ public class RegisterForTour extends HttpServlet {
             return;
         }
 
+        boolean success = TourModel.registerUserForTour(userID, tourDateID, pax).update(conn) == 1;
+        
         if (!success) {
             originalURL += "&error=";
             response.sendRedirect(originalURL);
