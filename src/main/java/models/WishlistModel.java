@@ -19,7 +19,7 @@ public class WishlistModel {
                 Connection conn = databaseConnection.get();
                 PreparedStatement prepStatement = conn.prepareStatement("SELECT * FROM wishlist WHERE user_id = ?;");
                 prepStatement.setInt(1, user_id);
-                
+
                 ResultSet rs = prepStatement.executeQuery();
 
                 ArrayList<Wishlist> list = new ArrayList<>();
@@ -33,7 +33,7 @@ public class WishlistModel {
             }
         };
     }
-    
+
     public static IDatabaseUpdate addTourToWishlist(int user_id, int tour_id) {
 
         return databaseConnection -> {
@@ -42,7 +42,7 @@ public class WishlistModel {
                 PreparedStatement prepStatement = conn.prepareStatement("INSERT INTO wishlist(user_id, tour_id) VALUES(?, ?)");
                 prepStatement.setInt(1, user_id);
                 prepStatement.setInt(2, tour_id);
-                
+
                 int affectedRows = prepStatement.executeUpdate();
 
                 return affectedRows > 0 ? affectedRows : -1;
@@ -53,18 +53,18 @@ public class WishlistModel {
             }
         };
     }
-    
+
     public static IDatabaseUpdate removeWishlistItem(int wishlist_id, int user_id) {
 
         return databaseConnection -> {
             try {
                 Connection conn = databaseConnection.get();
-                
+
 //                There is user ID here as a safeguard the other people can't delete other user's wishlist item
                 PreparedStatement prepStatement = conn.prepareStatement("DELETE FROM wishlist WHERE wishlist_id = ? AND user_id = ?");
                 prepStatement.setInt(1, wishlist_id);
                 prepStatement.setInt(2, user_id);
-                
+
                 int affectedRows = prepStatement.executeUpdate();
 
                 return affectedRows > 0 ? affectedRows : -1;
@@ -76,5 +76,27 @@ public class WishlistModel {
         };
     }
 
-    
+    public static IDatabaseQuery<Wishlist> getWishlist(int user_id, int tour_id) {
+        return databaseConnection -> {
+            try {
+                Connection conn = databaseConnection.get();
+                PreparedStatement prepStatement = conn.prepareStatement("SELECT * FROM wishlist WHERE user_id = ? AND tour_id = ?");
+                prepStatement.setInt(1, user_id);
+                prepStatement.setInt(2, tour_id);
+
+                ResultSet rs = prepStatement.executeQuery();
+
+                ArrayList<Wishlist> list = new ArrayList<>();
+
+                if (rs != null) while (rs.next()) list.add(new Wishlist(rs));
+
+                return list.toArray(new Wishlist[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
+
+
 }

@@ -5,18 +5,23 @@
 <%@ page import="models.TourModel" %>
 <%@ page import="utils.IDatabaseQuery" %>
 <%@ page import="utils.Util" %>
+<%@ page import="models.WishlistModel" %>
+<%@ page import="dataStructures.Wishlist" %>
 <%@ page contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <!DOCTYPE html>
 <html>
 <%
-    String tour_id = request.getParameter("tour_id");
-    IDatabaseQuery<Tour> tourQuery = TourModel.getTourById(tour_id);
-    DatabaseConnection connection = new DatabaseConnection();
-    if (tourQuery == null) {
-//        System.out.println(request.getRequestURL().toString());
-        response.sendRedirect("/CA1-Preparation/views/tour/view_all.jsp?error=SQL");
+    String tour_idStr = request.getParameter("tour_id");
+    int tour_id;
+    try {
+        tour_id = Integer.parseInt(tour_idStr);
+    } catch (NumberFormatException e) {
+        response.sendRedirect("/CA1-Preparation/views/tour/view_all.jsp");
         return;
     }
+    IDatabaseQuery<Tour> tourQuery = TourModel.getTourById(tour_id);
+    DatabaseConnection connection = new DatabaseConnection();
+
     Tour[] tours = tourQuery.query(connection);
 
     if (tours == null || tours.length != 1) {
@@ -37,6 +42,14 @@
         out.print("<div class=\"alert alert-danger\" role=\"alert\">");
         out.print("<strong>Error!</strong> There was an error registering for this tour.");
         out.print("</div>");
+    }
+    {
+        String msg = request.getParameter("message");
+        if (msg != null) {
+            out.print("<div class=\"alert alert-danger\" role=\"alert\">");
+            out.print("<strong>Error!</strong> " + msg);
+            out.print("</div>");
+        }
     }
 %>
 <head>
@@ -142,8 +155,31 @@
                             <%
                                 }
                             %>
+                            <br>
+                            <%
+                                int userId = Util.getUserID(session);
+                                boolean isUserLoggedIn = userId != -1;
+                                if (isUserLoggedIn) {
+                                    Wishlist[] wishlists = WishlistModel.getWishlist(userId, tour_id).query(connection);
+                                    if (wishlists.length == 0) {
+                            %>
+                            <a href="${pageContext.request.contextPath}/TourPageAddWishlist?tourId=<%=tour_id%>">
+                                <i class="icon-heart-o"> Add to wishlist </i>
+                            </a><%
+                        } else {
+                            Wishlist wishlist = wishlists[0];
+                        %>
+                            <a href="${pageContext.request.contextPath}/TourPageRemoveWishlist?wishlistId=<%=wishlist.getWishlist_id()%>">
+                                <i class="icon-heart"> Remove from wishlist </i>
+                            </a><%
+                            }
+                        } else {
+                        %>
+                            You must be logged in to add this tour to your wishlist.
+                            <%
+                                }
+                            %>
                         </p>
-
                         <p>
                             <%=tour.getTour_brief_desc()%>
                         </p>
@@ -174,11 +210,13 @@
                             class="col-md-12 hotel-single ftco-animate mb-5 mt-4"
                     >
                         <%
-                            boolean isUserLoggedIn = Util.isUserLoggedIn(session);
-                            Tour.Review[] reviews = tour.getReviews();%>
+                            Tour.Review[] reviews = tour.getReviews();
+                        %>
                         <h4 class="mb-4">Reviews</h4>
 
-                        <%if (isUserLoggedIn) {%>
+                        <%
+                            if (isUserLoggedIn) {
+                        %>
                         <h5>Leave a review</h5>
                         <form action="${pageContext.request.contextPath}/addReview" method="POST"
                               style="margin-bottom: 50px">
