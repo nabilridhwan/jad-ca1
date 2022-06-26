@@ -2,7 +2,7 @@
 <%@page import="utils.Util"%>
 <html lang="en">
     <head>
-        <title>DirEngine - Free Bootstrap 4 Template by Colorlib</title>
+        <title>Add Category</title>
         <meta charset="utf-8" />
         <meta
             name="viewport"

@@ -7,7 +7,7 @@
 <%@ page import="models.TourModel" %>
 <html lang="en">
 <head>
-    <title>DirEngine - Free Bootstrap 4 Template by Colorlib</title>
+    <title>Profile</title>
     <meta charset="utf-8"/>
     <meta
             name="viewport"
