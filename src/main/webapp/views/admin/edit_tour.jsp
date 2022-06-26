@@ -100,7 +100,7 @@
 
 <div class="hero-wrap" style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
     <div class="overlay"></div>
-    <div class="container">
+    <div class="container" style="padding: 7em 0">
         <div
                 class="row no-gutters js-fullheight align-items-center justify-content-center"
                 data-scrollax-parent="true"
@@ -108,7 +108,7 @@
             <section
                     class="ftco-section contact-section ftco-degree-bg bg-white rounded"
             >
-                <div class="container px-5">
+                <div class="container px-5 ">
                     <div class="row d-flex contact-info">
                         <div class="col-md-12 mb-4">
                             <%

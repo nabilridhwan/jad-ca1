@@ -109,7 +109,7 @@
 
 <div class="hero-wrap" style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
     <div class="overlay"></div>
-    <div class="container">
+    <div class="container" style="padding: 7em 0">
         <div
                 class="row no-gutters js-fullheight align-items-center justify-content-center"
                 data-scrollax-parent="true"
