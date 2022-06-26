@@ -44,8 +44,17 @@
 
 
 <%
+
+	if(!Util.isUserLoggedIn(session)){
+		response.sendRedirect("./login.jsp");
+	    return;
+	}
+
+	
     // Check if userID is null
     int userID = Util.forceLogin(session, response);
+
+
 
     DatabaseConnection connection = new DatabaseConnection();
     User[] users = UserModel.getUserByUserID(userID).query(connection);
@@ -55,15 +64,9 @@
         return;
     }
 
-    if (users.length != 1) {
-        //			If there is no user, dispatch the page back to the login page
-
-        //			Set the attribute of error to invalid_credentials
-        request.setAttribute("error", "invalid_credentials");
-
-        //			Dispatch
-        RequestDispatcher dispatcher = request.getRequestDispatcher("./login.jsp?error=invalid_credentials");
-        dispatcher.forward(request, response);
+    if (users.length != 1) {        
+        response.sendRedirect("./login.jsp");
+        return;
     }
     User user = users[0];
     //			Get the user ID
