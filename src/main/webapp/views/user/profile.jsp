@@ -200,6 +200,18 @@
 
                             <form method="POST" action="${pageContext.request.contextPath}/modifyUser">
                                 <h2 class="h5">Details</h2>
+                                
+                                <div class="form-group">
+                                    <label for="image">Image URL</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Image URL"
+                                            name="image"
+                                            value="<%=profilePicUrl%>" name="image"
+                                    />
+                                </div>
+                                
                                 <div class="form-group">
                                     <label for="name">Full Name</label>
                                     <input

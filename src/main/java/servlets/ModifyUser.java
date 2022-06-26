@@ -62,6 +62,8 @@ public class ModifyUser extends HttpServlet {
 
         String full_name = request.getParameter("name");
         String email = request.getParameter("email");
+        String profile_pic_url = request.getParameter("image");
+        
         
         String password = request.getParameter("password");
         String old_password = request.getParameter("old_password");
@@ -123,7 +125,7 @@ public class ModifyUser extends HttpServlet {
         }
 
 
-        IDatabaseUpdate databaseUpdate = UserModel.updateUser(userID, full_name, email, finalPassword);
+        IDatabaseUpdate databaseUpdate = UserModel.updateUser(userID, profile_pic_url, full_name, email, finalPassword);
                 
 
         int affectedRows = databaseUpdate.update(connection);
