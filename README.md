@@ -4,6 +4,15 @@
 
 The template folder is where the template files are stored. It is located at `/src/main/webapp/template`. For every User Story you are doing, make a template up in HTML and then make it into JSP.
 
+## Defaults
+
+```
+Folder Name: CA1-Preparation (Not jad-ca1)
+DB Name: sp_tour
+DB User: root
+DB Password: root
+```
+
 ## Change the path of upload images in `web.xml` found in `webapp/WEB-INF`
 
 ```xml
