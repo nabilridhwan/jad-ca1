@@ -111,7 +111,10 @@
                 <div class="container px-5">
                     <div class="row d-flex contact-info">
                         <div class="col-md-12 mb-4">
-                            <h2 class="h4">Edit <%=tour.getTour_name()%> tour</h2>
+                        	<%
+                        	 String headerText = tour_idStr.equals("new") ? "Add Tour" : "Edit " + tour.getTour_name() + " tour";
+                        	%>
+                            <h2 class="h3"><%=headerText%></h2>
                         </div>
                         <div class="w-100"></div>
                         <div class="col-md-12">
@@ -122,16 +125,24 @@
                         </div>
                     </div>
 
+					<h4>
+						Tour Images
+					</h4>
+					
                     <div class="row block-9">
                         <div class="col-md-12">
                             <%
                                 if (tour.getTour_id() != 0) {
 //new tours won't be able to see this.
                             %>
-                            <a href="./edit_tourImages.jsp?tourId=<%=tour.getTour_id()%>&tourImageId=new"
-                               class="btn btn-primary">
-                                Add Image
-                            </a>
+                            
+                            <div class="col-lg-12 my-3">
+	                            <a href="./edit_tourImages.jsp?tourId=<%=tour.getTour_id()%>&tourImageId=new"
+	                               class="btn btn-primary">
+	                                Add Image
+	                            </a>
+                            </div>
+                            
 
                             <div class="col-md-4 ftco-animate">
                                 <%
@@ -142,7 +153,7 @@
                                     <div class="text p-3">
                                         <p>
 
-                                            <img src="<%=image.getUrl()%>" alt="<%=image.getAltText()%>">
+                                            <img class="img-fluid" src="<%=image.getUrl()%>" alt="<%=image.getAltText()%>">
                                             Alt text: <%=image.getAltText()%>
                                         </p>
 
@@ -167,10 +178,19 @@
                                     }
                                 %>
                             </div>
-                            <a href="./edit_tourDates.jsp?tourId=<%=tour.getTour_id()%>&tourDateId=new"
+                            
+                            <h4>
+								Tour Dates
+							</h4>
+					
+                            
+                            
+                            <div class="col-lg-12 my-3">
+	                            <a href="./edit_tourDates.jsp?tourId=<%=tour.getTour_id()%>&tourDateId=new"
                                class="btn btn-primary">
-                                Add Tour
-                            </a>
+	                                Add Tour Date
+	                            </a>
+                            </div>
 
                             <div class="col-md-4 ftco-animate">
                                 <%
@@ -212,10 +232,14 @@
                             <%
                                 }
                             %>
+                            
+                            <h4>
+								Tour Details
+							</h4>
 
                             <form action="${pageContext.request.contextPath}/editTour" method="POST">
 
-                                <label>
+                                
                                     <input
                                             class="form-control"
                                             hidden
@@ -223,32 +247,32 @@
                                             type="text"
                                             value="<%=tour.getTour_id() %>"
                                     />
-                                </label>
+                                
                                 <div class="form-group">
-                                    <label>
+                                    
                                         <input
                                                 type="text"
                                                 class="form-control"
-                                                placeholder="Name"
+                                                placeholder="Tour Name"
                                                 name="name"
                                                 value="<%=tour.getTour_name() %>"
                                         />
-                                    </label>
+                                    
                                 </div>
                                 <div class="form-group">
-                                    <label>
+                                    
                                         <input
                                                 type="text"
                                                 class="form-control"
-                                                placeholder="brief descL"
+                                                placeholder="Brief Description"
                                                 name="bDesc"
                                                 value="<%=tour.getTour_brief_desc() %>"
                                         />
-                                    </label>
+                                    
                                 </div>
 
                                 <div class="form-group">
-                                    <label>
+                                    
                                         <input
                                                 type="text"
                                                 class="form-control"
@@ -257,10 +281,10 @@
                                                 value="<%=tour.getTour_desc() %>"
                                                 required
                                         />
-                                    </label>
+                                    
                                 </div>
                                 <div class="form-group">
-                                    <label>
+                                    
                                         <input
                                                 type="text"
                                                 name="location"
@@ -268,7 +292,7 @@
                                                 placeholder="Location"
                                                 value="<%=tour.getTour_location() %>"
                                                 required/>
-                                    </label>
+                                    
                                 </div>
                                 <div class="form-group">
                                     <input

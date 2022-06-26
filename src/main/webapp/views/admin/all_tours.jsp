@@ -152,8 +152,10 @@
                         double rating = tour.getAverage_rating();
                         String tour_location = tour.getTour_location();
             %>
-            <div class="col-md-4 ftco-animate"> <!--Start Tour-->
+            
+            <div class="col-sm col-md-2 ftco-animate">
                 <div class="destination">
+
                     <a href="${pageContext.request.contextPath}/views/tour/detail.jsp?tour_id=<%=tour_id %>"
                        class="img img-2 d-flex justify-content-center align-items-center"
                        style="background-image: url(<%=tour_image.getUrl()%>);">
@@ -161,12 +163,15 @@
                             <span class="icon-search2"></span>
                         </div>
                     </a>
+                    
+
                     <div class="text p-3">
                         <div class="d-flex">
                             <div class="one">
                                 <h3>
                                     <a href="${pageContext.request.contextPath}/views/tour/detail.jsp?tour_id=<%=tour_id %>"><%=tour_name %>
                                     </a></h3>
+                                    
                                 <p class="rate">
                                     <%
                                         if (reviews.length != 0) {
@@ -195,19 +200,23 @@
                                     %>
                                 </p>
                             </div>
-                            <span class="star">
-	                                    <div class="two">
-	                                        <span class="price">$<%=tour_date.getPrice() %></span>
-	                                    </div>
-                                                      </span>
-                            <p><%=tour_brief_desc %>
-                            </p>
-                            <p class="days"><span><%=tour_date.getDuration()%></span></p>
-                            <hr>
-                            <p class="bottom-area d-flex">
+                            <div class="two">
+                                <span class="price">$<%=tour_date.getPrice() %></span>
+                            </div>
+                        </div>
+                        
+                        <p>
+                        	<%=tour_brief_desc %>
+                        </p>
+                        
+                        <p class="days"><%=tour_date.getDuration()%></p>
+
+                        <hr/>
+                        <p class="bottom-area d-flex">
                                 <span><i class="icon-map-o"></i> <%=tour_location %></span>
-                            </p>
-                            <div class="row my-3">
+                         </p>
+                         
+                         <div class="row my-3">
                                 <div class="col-md-12">
                                     <a href="./edit_tour.jsp?tourId=<%=tour_id%>" class="btn btn-primary w-100  mb-1">
                                         Edit
@@ -220,18 +229,18 @@
                                 </div>
 
                             </div>
-                        </div>
-
                     </div>
                 </div>
-            </div> <!--End Tour-->
+            </div>
+            
+            
 
-        </div>
+        
         <!--End Card-->
         <%
                 }
         %>
-
+		</div>
     </div>
 </section>
 

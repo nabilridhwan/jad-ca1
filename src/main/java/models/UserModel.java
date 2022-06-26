@@ -76,7 +76,7 @@ public class UserModel {
         };
     }
 
-    public static IDatabaseUpdate updateUser(int userId, String fullName, String email, String password) {
+    public static IDatabaseUpdate updateUser(int userId, String profile_pic_url, String fullName, String email, String password) {
         return databaseConnection -> {
 
 //            SQL Reference "UPDATE user SET full_name = ?, email = ?, password = ?, profile_pic_url = ? WHERE user_id = ?";
@@ -85,16 +85,17 @@ public class UserModel {
             try {
                 PreparedStatement prepStatement = conn.prepareStatement("UPDATE user " +
                         "SET " +
+                		"profile_pic_url = ?" +
                         "full_name = ?," +
                         "email = ?," +
                         "password =? " +
                         "WHERE user_id = ?");
 
-
-                prepStatement.setString(1, fullName);
-                prepStatement.setString(2, email);
-                prepStatement.setString(3, password);
-                prepStatement.setInt(4, userId);
+                prepStatement.setString(1, profile_pic_url);
+                prepStatement.setString(2, fullName);
+                prepStatement.setString(3, email);
+                prepStatement.setString(4, password);
+                prepStatement.setInt(5, userId);
 
                 return prepStatement.executeUpdate();
             } catch (Exception e) {
@@ -104,7 +105,7 @@ public class UserModel {
         };
     }
 
-    public static IDatabaseUpdate updateUser(int userId, String fullName, String email) {
+    public static IDatabaseUpdate updateUser(int userId, String profile_pic_url, String fullName, String email) {
         return databaseConnection -> {
 //            SQL Reference "UPDATE user SET full_name = ?, email = ?, password = ?, profile_pic_url = ? WHERE user_id = ?";
 
@@ -112,14 +113,15 @@ public class UserModel {
             try {
                 PreparedStatement prepStatement = conn.prepareStatement("UPDATE user " +
                         "SET " +
+                        "profile_pic_url = ?" +
                         "full_name = ?," +
                         "email = ?," +
                         "WHERE user_id = ?");
 
-
-                prepStatement.setString(1, fullName);
-                prepStatement.setString(2, email);
-                prepStatement.setInt(3, userId);
+                prepStatement.setString(1, profile_pic_url);
+                prepStatement.setString(2, fullName);
+                prepStatement.setString(3, email);
+                prepStatement.setInt(4, userId);
                 return prepStatement.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();

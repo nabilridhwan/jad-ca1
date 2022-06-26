@@ -43,7 +43,12 @@
 %>
 
 
-<%@ include file="../misc/navbar.jsp" %>
+<%@ include file="../misc/navbar_dark.jsp" %>
+
+
+<!-- 
+
+
 
 <div class="hero-wrap js-fullheight"
      style="background-image: url('${pageContext.request.contextPath}/images/bg_5.jpg');">
@@ -65,6 +70,7 @@
         </div>
     </div>
 </div>
+ -->
 
 
 <section class="ftco-section ftco-degree-bg">
@@ -82,43 +88,11 @@
                         <div class="fields">
                             <div class="form-group">
                                 <label>
-                                    <input type="text" class="form-control" placeholder="Destination, City" name="q"
+                                    <input type="text" class="form-control" placeholder="Search for tours..." name="q"
                                            value="<%=q%>">
                                 </label>
                             </div>
-                            <div class="form-group">
-                                <div class="select-wrap one-third">
-                                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                    <label for=""></label><select name="" id="" class="form-control"
-                                                                  placeholder="Keyword search">
-                                    <option value="">Select Location</option>
-                                    <option value="">San Francisco USA</option>
-                                    <option value="">Berlin Germany</option>
-                                    <option value="">Lodon United Kingdom</option>
-                                    <option value="">Paris Italy</option>
-                                </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="checkin_date" class="form-control" placeholder="Date from">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="checkin_date" class="form-control" placeholder="Date to">
-                            </div>
-                            <div class="form-group">
-                                <div class="range-slider">
-										<span>
-											<label><input type="number" value="25000" min="0" max="120000"/></label> -
-											<label><input type="number" value="50000" min="0" max="120000"/></label>
-										</span>
-                                    <label>
-                                        <input value="1000" min="0" max="120000" step="500" type="range"/>
-                                    </label>
-                                    <label>
-                                        <input value="50000" min="0" max="120000" step="500" type="range"/>
-                                    </label>
-                                </div>
-                            </div>
+                            
                             <div class="form-group">
                                 <input type="submit" value="Search" class="btn btn-primary py-3 px-5">
                             </div>
@@ -127,7 +101,7 @@
 
                 </div>
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-9" id="tourbody">
                 <div class="row"> <!-- Start tour body -->
 
                     <%

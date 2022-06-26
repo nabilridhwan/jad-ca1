@@ -136,7 +136,7 @@
                         <div class="col-md-12">
 
                             <form action="${pageContext.request.contextPath}/editTourImage" method="POST">
-                                <label>
+                                
                                     <input
                                             class="form-control"
                                             hidden
@@ -144,8 +144,8 @@
                                             type="text"
                                             value="<%=tourImage.getId() %>"
                                     />
-                                </label>
-                                <label>
+                                
+                                
                                     <input
                                             class="form-control"
                                             hidden
@@ -153,9 +153,9 @@
                                             type="text"
                                             value="<%=tour.getTour_id()%>"
                                     />
-                                </label>
+                                
                                 <div class="form-group">
-                                    <label> image url
+                                    <label> Image URL </label>
                                         <input
                                                 type="text"
                                                 name="url"
@@ -163,18 +163,19 @@
                                                 placeholder="Image Url"
                                                 value="<%=tourImage.getUrl() %>"
                                                 required/>
-                                    </label>
+                                    
                                 </div>
                                 <div class="form-group">
-                                    <label> alt text
+                                   
+                                    <label> Alt Text </label>
                                         <input
                                                 type="text"
                                                 name="alt"
                                                 class="form-control"
-                                                placeholder="alt text"
+                                                placeholder="Alt text"
                                                 checked="<%=tourImage.getAltText() %>"
                                         />
-                                    </label>
+                                    
                                 </div>
                                 <div class="form-group">
                                     <input
