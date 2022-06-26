@@ -42,7 +42,7 @@ User Password: secret
 Change every URL to include `/CA1-Preparation` in the path. This includes all the redirection and also to servlets.
 
 ```html
-<link rel="stylesheet" href="/CA1-Preparation/css/style.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
 ```
 
 ## Include the navigation bar (if within views/.. folder)
