@@ -84,7 +84,7 @@
                                     />
                                 </label>
                             </div>
-                            
+
                         </div>
                         <input
                                 type="submit"
@@ -93,7 +93,7 @@
                         />
                     </form>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -243,16 +243,19 @@
         <div class="row">
 
             <%
-                Tour[] tours = TourModel.getUniqueToursByLowestPriceFirst().query(connection);
+                    Tour[] tours = TourModel.getAllTours(5).query(connection);
                 connection.close();
 
                 if (tours != null)
                     for (Tour tour : tours) {
+                        int tour_id = tour.getTour_id();
                         Tour.Image tour_image = tour.getFirstOrDefaultImage();
                         String tour_name = tour.getTour_name();
                         String tour_brief_desc = tour.getTour_brief_desc();
                         Tour.Date tour_date = tour.getFirstOrDefaultDate();
                         String tour_location = tour.getTour_location();
+                        Tour.Review[] reviews = tour.getReviews();
+                        double rating = tour.getAverage_rating();
             %>
             <div class="col-sm col-md-6 col-lg ftco-animate">
                 <div class="destination">
@@ -273,15 +276,34 @@
                         <div class="d-flex">
                             <div class="one">
                                 <h3>
-                                    <a href="${pageContext.request.contextPath}/views/tour/detail.jsp?tour_id=<%=tour.getTour_id()%>"><%=tour_name %>
+                                    <a href="${pageContext.request.contextPath}/views/tour/detail.jsp?tour_id=<%=tour_id %>"><%=tour_name %>
                                     </a></h3>
                                 <p class="rate">
+                                    <%
+                                        if (reviews.length != 0) {
+                                            double minFilled = Math.floor(rating);
+                                            for (double i = 0d; i < minFilled; i++) {
+                                    %>
                                     <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
-                                    <i class="icon-star"></i>
+                                    <%
+                                        }
+                                        double maxEmpty = 5 - minFilled;
+                                        for (double i = 0d; i < maxEmpty; i++) {
+                                    %>
                                     <i class="icon-star-o"></i>
-                                    <span>8 Rating</span>
+                                    <%
+                                        }
+                                    %>
+                                    <span><%=rating%> Rating
+<%--                                                (<%=reviews.length%> review(s))--%>
+                                            </span>
+                                    <%
+                                    } else {
+                                    %>
+                                    No ratings yet.
+                                    <%
+                                        }
+                                    %>
                                 </p>
                             </div>
                             <div class="two">

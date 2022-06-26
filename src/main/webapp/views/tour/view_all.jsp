@@ -167,10 +167,10 @@
                                         </p>
                                     </div>
                                     <span class="star">
-
 	                                    <div class="two">
 	                                        <span class="price">$<%=tour_date.getPrice() %></span>
 	                                    </div>
+                                    </span>
                                 </div>
                                 <p><%=tour_brief_desc %>
                                 </p>

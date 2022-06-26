@@ -189,6 +189,25 @@ public class TourModel {
         };
     }
 
+    public static IDatabaseQuery<Tour> getAllTours(int limit) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM tour LIMIT ?;");
+                pstmt.setInt(1, limit);
+                ResultSet rs = pstmt.executeQuery();
+
+                ArrayList<Tour> list = new ArrayList<>();
+
+                if (rs != null) while (rs.next()) list.add(new Tour(rs));
+
+                return list.toArray(new Tour[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
 
     public static IDatabaseQuery<Tour.Review> getTourReviews(Tour tour) {
         return databaseConnection -> {
