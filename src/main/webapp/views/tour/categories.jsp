@@ -82,7 +82,7 @@
     </div>
 </div>
 
-<div class="container">
+<div class="container" style="padding: 7em 0">
             <div class="row my-3"> <!-- Start tour body -->
 
                 <%
@@ -152,6 +152,7 @@
 	                                    <div class="two">
 	                                        <span class="price">$<%=tour_date.getPrice() %></span>
 	                                    </div>
+                                </span>
                             </div>
                             <p><%=tour_brief_desc %>
                             </p>
