@@ -214,16 +214,19 @@
                                                 required/>
                                     
                                 </div>
-                                <div class="form-group">
-                                    <label> Is Shown</label>
+                                
+                                <h5>Tour Date Visibility</h5>
+                                <div class="form-check">
                                         <input
                                                 type="checkbox"
+                                                id="shown"
                                                 name="shown"
-                                                class="form-control"
+                                                class="form-check-input"
                                                 placeholder="Visible?"
                                                 value="shown"
                                                 checked="<%=tourDate.isShown() %>"
                                         />
+                                        <label class="form-check-label" for="shown"> Make tour date visible</label>
                                     
                                 </div>
                                 <div class="form-group">
