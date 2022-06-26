@@ -45,15 +45,6 @@ public class TourModel {
         };
     }
 
-    public static IDatabaseQuery<Tour> getTourById(String tourId) {
-        try {
-            int id = Integer.parseInt(tourId);
-            return getTourById(id);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     public static IDatabaseQuery<Tour> getTourById(int tourId) {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
