@@ -137,16 +137,14 @@
 
                             <form action="${pageContext.request.contextPath}/editTourDate" method="POST">
 
-                                <label>
-                                    <input
+									<input
                                             class="form-control"
                                             hidden
                                             name="dateId"
                                             type="text"
                                             value="<%=tourDate.getId() %>"
                                     />
-                                </label>
-                                <label>
+                                    
                                     <input
                                             class="form-control"
                                             hidden
@@ -154,9 +152,10 @@
                                             type="text"
                                             value="<%=tour.getTour_id()%>"
                                     />
-                                </label>
+
+
                                 <div class="form-group">
-                                    <label> Start Date
+                                    <label> Start Date</label>
                                         <input
                                                 type="text"
                                                 class="form-control"
@@ -164,10 +163,10 @@
                                                 name="start"
                                                 value="<%=tourDate.getStart() %>"
                                         />
-                                    </label>
+                                    
                                 </div>
                                 <div class="form-group">
-                                    <label> End Date
+                                    <label> End Date</label>
                                         <input
                                                 type="text"
                                                 class="form-control"
@@ -175,11 +174,11 @@
                                                 name="end"
                                                 value="<%=tourDate.getEnd() %>"
                                         />
-                                    </label>
+                                    
                                 </div>
 
                                 <div class="form-group">
-                                    <label> Price
+                                    <label> Price</label>
                                         <input
                                                 type="number"
                                                 class="form-control"
@@ -190,10 +189,10 @@
                                                 value="<%=tourDate.getPrice()%>"
                                                 required
                                         />
-                                    </label>
+                                    
                                 </div>
                                 <div class="form-group">
-                                    <label> Available Slots
+                                    <label> Available Slots</label>
                                         <input
                                                 type="number"
                                                 name="emptySlots"
@@ -201,10 +200,10 @@
                                                 placeholder="Available Slots"
                                                 value="<%=tourDate.getAvail_slot() %>"
                                                 required/>
-                                    </label>
+                                    
                                 </div>
                                 <div class="form-group">
-                                    <label> Max Slots
+                                    <label> Max Slots</label>
                                         <input
                                                 type="number"
                                                 name="slots"
@@ -213,19 +212,19 @@
                                                 min="0"
                                                 value="<%=tourDate.getMax_slot() %>"
                                                 required/>
-                                    </label>
+                                    
                                 </div>
                                 <div class="form-group">
-                                    <label> Is Shown
+                                    <label> Is Shown</label>
                                         <input
                                                 type="checkbox"
                                                 name="shown"
                                                 class="form-control"
-                                                placeholder="Is Shown"
+                                                placeholder="Visible?"
                                                 value="shown"
                                                 checked="<%=tourDate.isShown() %>"
                                         />
-                                    </label>
+                                    
                                 </div>
                                 <div class="form-group">
                                     <input

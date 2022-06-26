@@ -79,7 +79,7 @@
                                     <input
                                             type="text"
                                             class="form-control"
-                                            placeholder="Search Query"
+                                            placeholder="Search for tours..."
                                             name="q"
                                     />
                                 </label>
