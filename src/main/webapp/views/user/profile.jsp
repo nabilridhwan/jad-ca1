@@ -93,7 +93,7 @@
                                 Your Tours
                             </h2>
                             <%
-                                Tour[] tours = TourModel.getTourRegistrations(userID).query(connection);
+                                Tour[] tours = TourModel.getTourRegistrationsByUser(userID).query(connection);
                                 if (tours.length == 0) {
                             %>
                             <h3>You have not registered for any tours</h3>
@@ -103,7 +103,7 @@
                             <h3>Your registered tours</h3>
                             <%
                                 for (Tour tour : tours) {
-                                    Tour.Registrations[] registrations = TourModel.getTourDateRegistrations(userID, tour.getTour_id()).query(connection);
+                                    Tour.Registrations[] registrations = TourModel.getTourRegistrations(userID, tour.getTour_id()).query(connection);
                                     if (registrations.length == 0) continue;
                             %>
                             <div class="row">

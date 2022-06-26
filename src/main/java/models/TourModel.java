@@ -300,7 +300,6 @@ public class TourModel {
     }
 
 
-
     public static IDatabaseQuery<Tour> getToursFromCategory(Category category) {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
@@ -342,31 +341,31 @@ public class TourModel {
         };
     }
 
-//    public static IDatabaseQuery<Tour.Registrations> getTourRegistrations(int userID) {
-//        return databaseConnection -> {
-//            Connection conn = databaseConnection.get();
-//            try {
-//                PreparedStatement pstmt = conn.prepareStatement("" +
-//                        "SELECT tr.* " +
-//                        "FROM tour_registration tr,tour_date td  " +
-//                        "WHERE tr.user_id = ? AND td.tour_id = ? AND tr.tour_date_id = td.tour_date_id");
-//                pstmt.setInt(1, userID);
-//                pstmt.setInt(2, tourID);
-//
-//                ResultSet rs = pstmt.executeQuery();
-//                ArrayList<Tour.Registrations> list = new ArrayList<>();
-//
-//                if (rs != null) while (rs.next()) list.add(new Tour.Registrations(rs));
-//
-//                return list.toArray(new Tour.Registrations[0]);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//        };
-//    }
+    public static IDatabaseQuery<Tour.Registrations> getTourRegistrations(int userID, int tourID) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("" +
+                        "SELECT tr.* " +
+                        "FROM tour_registration tr,tour_date td  " +
+                        "WHERE tr.user_id = ? AND td.tour_id = ? AND tr.tour_date_id = td.tour_date_id");
+                pstmt.setInt(1, userID);
+                pstmt.setInt(2, tourID);
 
-    public static IDatabaseQuery<Tour> getTourRegistrations(int userID) {
+                ResultSet rs = pstmt.executeQuery();
+                ArrayList<Tour.Registrations> list = new ArrayList<>();
+
+                if (rs != null) while (rs.next()) list.add(new Tour.Registrations(rs));
+
+                return list.toArray(new Tour.Registrations[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
+
+    public static IDatabaseQuery<Tour> getTourRegistrationsByUser(int userID) {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {

@@ -1,8 +1,6 @@
-<%@page import="dataStructures.User"%>
-<%@page import="models.UserModel"%>
-<%@ page import="dataStructures.Category" %>
+<%@page import="dataStructures.User" %>
+<%@page import="models.UserModel" %>
 <%@ page import="utils.DatabaseConnection" %>
-<%@ page import="models.CategoryModel" %>
 <%@ page import="dataStructures.Tour" %>
 <%@ page import="models.TourModel" %>
 <%@ page import="utils.IDatabaseQuery" %>
@@ -20,7 +18,7 @@
         return;
     }
     Tour[] tours = tourQuery.query(connection);
-    
+
     if (tours == null || tours.length != 1) {
         response.sendRedirect("/CA1-Preparation/views/tour/view_all.jsp");
         return;
@@ -153,10 +151,8 @@
                             <%=tour.getTour_desc()%>
                         </p>
                     </div>
-                    <div
-                            class="col-md-12 hotel-single ftco-animate mb-5 mt-4"
-                    >
-                        <h4 class="mb-4">Take A Tour</h4>
+                    <div class="col-md-12 hotel-single ftco-animate mb-5 mt-4">
+                        <h4 class="mb-4"></h4>
                         <div class="block-16">
                             <figure>
                                 <img
@@ -167,8 +163,9 @@
                                 <a
                                         href="https://vimeo.com/45830194"
                                         class="play-button popup-vimeo"
-                                ><span class="icon-play"></span
-                                ></a>
+                                >
+                                    <span class="icon-play"></span
+                                    ></a>
                             </figure>
                         </div>
                     </div>
@@ -177,304 +174,91 @@
                             class="col-md-12 hotel-single ftco-animate mb-5 mt-4"
                     >
                         <%
-                        	boolean isUserLoggedIn = Util.isUserLoggedIn(session);
+                            boolean isUserLoggedIn = Util.isUserLoggedIn(session);
                             Tour.Review[] reviews = tour.getReviews();%>
                         <h4 class="mb-4">Reviews</h4>
-                        
+
                         <%if (isUserLoggedIn) {%>
-                            	<h5>Leave a review</h5>
-                            	<form action="${pageContext.request.contextPath}/addReview" method="POST" style="margin-bottom: 50px">
-	                                <div class="form-group">
-	                                
-	                                	<input
-	                                        type="text"
-	                                        hidden="true"
-	                                        class="form-control"
-	                                        placeholder="Enter your review"
-	                                        name="tour_id"
-	                                        value="<%=tour_id %>"
-	                                        required
-	                                    />
-	                                
-	                                    <label for="review">Review</label>
-	                                    
-	                                    <input
-	                                        type="text"
-	                                        class="form-control"
-	                                        placeholder="Enter your review"
-	                                        name="text"
-	                                        required
-	                                    />
-	                                </div>
-	
-	                                <div class="form-group">
-	                                    <label for="rating">Rating</label>
-	                                    <input
-	                                        type="number"
-	                                        class="form-control"
-	                                        min="1"
-	                                        max="5"
-	                                        name="rating"
-	                                        required
-	                                    />
-	                                </div>
-	
-	                                <div class="form-group">
-	                                    <button class="btn btn-primary">
-	                                        Submit Review
-	                                    </button>
-	                                </div>
-	                            </form>
-	                         <% }%>
+                        <h5>Leave a review</h5>
+                        <form action="${pageContext.request.contextPath}/addReview" method="POST"
+                              style="margin-bottom: 50px">
+                            <div class="form-group">
+
+                                <input
+                                        type="text"
+                                        hidden="true"
+                                        class="form-control"
+                                        placeholder="Enter your review"
+                                        name="tour_id"
+                                        value="<%=tour_id %>"
+                                        required
+                                />
+
+                                <label for="review">Review</label>
+
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="Enter your review"
+                                        name="text"
+                                        required
+                                />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="rating">Rating</label>
+                                <input
+                                        type="number"
+                                        class="form-control"
+                                        min="1"
+                                        max="5"
+                                        name="rating"
+                                        required
+                                />
+                            </div>
+
+                            <div class="form-group">
+                                <button class="btn btn-primary">
+                                    Submit Review
+                                </button>
+                            </div>
+                        </form>
+                        <% }%>
                         <%
-                        	if(reviews.length > 0){
-                        		
-                        	
-                            for (Tour.Review review : reviews) {
+                            if (reviews.length > 0) {
+
+
+                                for (Tour.Review review : reviews) {
                         %>
-                        	<div class="card" style="margin-bottom: 10px;">
-                        			
-                                    <div class="card-body">
+                        <div class="card" style="margin-bottom: 10px;">
+
+                            <div class="card-body">
                                         <span>
-	                                        <%for(int i = 0; i < review.getRating(); i++){%>
+	                                        <%for (int i = 0; i < review.getRating(); i++) {%>
 	                        				 	<i class="icon-star"></i>
 	                        				<%} %>
                                         </span>
 
-                                        <p class="font-weight-bold"><%=review.getReview_text() %></p>
-                                        
-                                        <%
-                                        	// Get the name of the user
-                                        	User[] users = UserModel.getUserByUserID(review.getUser_id()).query(connection);
-                                        %>
-                                        <p class="muted">By <%= users[0].getFullName()%></p>
-                                    </div>
-                                </div>
-                        <%
-                                }
-                        	}else{%>
-                        	
-                        	<h5>No reviews yet :(</h5>		
-                        <%}
-                            
-                        %>
-                    </div>
-                    <div
-                            class="col-md-12 hotel-single ftco-animate mb-5 mt-5"
-                    >
-                        <h4 class="mb-4">Related Hotels</h4>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="destination">
-                                    <a
-                                            href="hotel-single.html"
-                                            class="img img-2"
-                                            style="
-                                                    background-image: url(${pageContext.request.contextPath}/images/hotel-1.jpg);
-                                                    "
-                                    ></a>
-                                    <div class="text p-3">
-                                        <div class="d-flex">
-                                            <div class="one">
-                                                <h3>
-                                                    <a
-                                                            href="hotel-single.html"
-                                                    >Hotel, Italy</a
-                                                    >
-                                                </h3>
-                                                <p class="rate">
-                                                    <i
-                                                            class="icon-star"
-                                                    ></i>
-                                                    <i
-                                                            class="icon-star"
-                                                    ></i>
-                                                    <i
-                                                            class="icon-star"
-                                                    ></i>
-                                                    <i
-                                                            class="icon-star"
-                                                    ></i>
-                                                    <i
-                                                            class="icon-star-o"
-                                                    ></i>
-                                                    <span
-                                                    >8 Rating</span
-                                                    >
-                                                </p>
-                                            </div>
-                                            <div class="two">
-                                                        <span
-                                                                class="price per-price"
-                                                        >$40<br/><small
-                                                        >/night</small
-                                                        ></span
-                                                        >
-                                            </div>
-                                        </div>
-                                        <p>
-                                            Far far away, behind the
-                                            word mountains, far from the
-                                            countries
-                                        </p>
-                                        <hr/>
-                                        <p class="bottom-area d-flex">
-                                                    <span
-                                                    ><i
-                                                            class="icon-map-o"
-                                                    ></i>
-                                                        Miami, Fl</span
-                                                    >
-                                            <span class="ml-auto"
-                                            ><a href="#"
-                                            >Book Now</a
-                                            ></span
-                                            >
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="destination">
-                                    <a
-                                            href="hotel-single.html"
-                                            class="img img-2"
-                                            style="
-                                                    background-image: url(${pageContext.request.contextPath}/images/hotel-2.jpg);
-                                                    "
-                                    ></a>
-                                    <div class="text p-3">
-                                        <div class="d-flex">
-                                            <div class="one">
-                                                <h3>
-                                                    <a
-                                                            href="hotel-single.html"
-                                                    >Hotel, Italy</a
-                                                    >
-                                                </h3>
-                                                <p class="rate">
-                                                    <i
-                                                            class="icon-star"
-                                                    ></i>
-                                                    <i
-                                                            class="icon-star"
-                                                    ></i>
-                                                    <i
-                                                            class="icon-star"
-                                                    ></i>
-                                                    <i
-                                                            class="icon-star"
-                                                    ></i>
-                                                    <i
-                                                            class="icon-star-o"
-                                                    ></i>
-                                                    <span
-                                                    >8 Rating</span
-                                                    >
-                                                </p>
-                                            </div>
-                                            <div class="two">
-                                                        <span
-                                                                class="price per-price"
-                                                        >$40<br/><small
-                                                        >/night</small
-                                                        ></span
-                                                        >
-                                            </div>
-                                        </div>
-                                        <p>
-                                            Far far away, behind the
-                                            word mountains, far from the
-                                            countries
-                                        </p>
-                                        <hr/>
-                                        <p class="bottom-area d-flex">
-                                                    <span
-                                                    ><i
-                                                            class="icon-map-o"
-                                                    ></i>
-                                                        Miami, Fl</span
-                                                    >
-                                            <span class="ml-auto"
-                                            ><a href="#"
-                                            >Book Now</a
-                                            ></span
-                                            >
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="destination">
-                                    <a
-                                            href="hotel-single.html"
-                                            class="img img-2"
-                                            style="
-                                                    background-image: url(images/hotel-3.jpg);
-                                                "
-                                    ></a>
-                                    <div class="text p-3">
-                                        <div class="d-flex">
-                                            <div class="one">
-                                                <h3>
-                                                    <a
-                                                            href="hotel-single.html"
-                                                    >Hotel, Italy</a
-                                                    >
-                                                </h3>
-                                                <p class="rate">
-                                                    <i
-                                                            class="icon-star"
-                                                    ></i>
-                                                    <i
-                                                            class="icon-star"
-                                                    ></i>
-                                                    <i
-                                                            class="icon-star"
-                                                    ></i>
-                                                    <i
-                                                            class="icon-star"
-                                                    ></i>
-                                                    <i
-                                                            class="icon-star-o"
-                                                    ></i>
-                                                    <span
-                                                    >8 Rating</span
-                                                    >
-                                                </p>
-                                            </div>
-                                            <div class="two">
-                                                        <span
-                                                                class="price per-price"
-                                                        >$40<br/><small
-                                                        >/night</small
-                                                        ></span
-                                                        >
-                                            </div>
-                                        </div>
-                                        <p>
-                                            Far far away, behind the
-                                            word mountains, far from the
-                                            countries
-                                        </p>
-                                        <hr/>
-                                        <p class="bottom-area d-flex">
-                                                    <span
-                                                    ><i
-                                                            class="icon-map-o"
-                                                    ></i>
-                                                        Miami, Fl</span
-                                                    >
-                                            <span class="ml-auto"
-                                            ><a href="#"
-                                            >Book Now</a
-                                            ></span
-                                            >
-                                        </p>
-                                    </div>
-                                </div>
+                                <p class="font-weight-bold"><%=review.getReview_text() %>
+                                </p>
+
+                                <%
+                                    // Get the name of the user
+                                    User[] users = UserModel.getUserByUserID(review.getUser_id()).query(connection);
+                                %>
+                                <p class="muted">By <%= users[0].getFullName()%>
+                                </p>
                             </div>
                         </div>
+                        <%
+                            }
+                        } else {%>
+
+                        <h5>No reviews yet :(</h5>
+                        <%
+                            }
+
+                        %>
                     </div>
                 </div>
             </div>
