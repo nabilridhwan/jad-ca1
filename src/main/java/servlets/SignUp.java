@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import models.UserModel;
 import utils.DatabaseConnection;
 import utils.Password;
@@ -64,6 +66,7 @@ public class SignUp extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirm_password");
+        
 
         System.out.println(password);
         System.out.println(confirmPassword);
@@ -79,8 +82,8 @@ public class SignUp extends HttpServlet {
 
         DatabaseConnection connection = new DatabaseConnection();
         
-        // Hash the password
-        password = Password.encryptThisString(password);
+        // Hash the password using BCrypt
+        password = BCrypt.hashpw(password, BCrypt.gensalt());
 
         int rowsAffected = UserModel.insertNewUser(name, email, password).update(connection);
 

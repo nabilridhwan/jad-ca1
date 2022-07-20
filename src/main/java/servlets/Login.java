@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import dataStructures.User;
 import models.UserModel;
 import utils.DatabaseConnection;
@@ -55,11 +57,8 @@ public class Login extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Hash the password
-        password = Password.encryptThisString(password);
-
         DatabaseConnection connection = new DatabaseConnection();
-        User[] users = UserModel.getUserByEmailAndPassword(email, password).query(connection);
+        User[] users = UserModel.getUserByEmail(email).query(connection);
         connection.close();
 
 //				Redirect
@@ -71,26 +70,41 @@ public class Login extends HttpServlet {
         System.out.println(email);
         System.out.println(password);
         System.out.println("================================");
+        
         if (users.length == 1) {
             User user = users[0];
-//				Get the user ID
-            int userID = user.getUserID();
-
-//				Set in the session
-            HttpSession session = request.getSession(true);
-            session.setAttribute("userID", userID);
             
-//				Redirect
+            // Check if the password matches
+            if(BCrypt.checkpw(password, user.getPassword())) {
+            	
+            	// Successful in login
+//  				Get the user ID
+              int userID = user.getUserID();
 
-            System.out.println(redirect);
-            if (redirect == null) {
-                redirect = "/views/index.jsp";
+//  				Set in the session
+              HttpSession session = request.getSession(true);
+              session.setAttribute("userID", userID);
+              
+//  				Redirect
+
+              System.out.println(redirect);
+              if (redirect == null) {
+                  redirect = "/views/index.jsp";
+              }
+              System.out.println(redirect);
+
+              if (redirect == null || redirect.equals("null")) redirect = "/CA1-Preparation/views/index.jsp";
+              response.sendRedirect(redirect);
+              return;
+            }else {
+            	request.setAttribute("error", "invalid_credentials");
+//				Dispatch
+                String url = "/views/user/login.jsp?error=invalid_credentials";
+                if (redirect != null) url += "&redirect=" + redirect;
+                request.getRequestDispatcher(url).forward(request, response);
             }
-            System.out.println(redirect);
+            
 
-            if (redirect == null || redirect.equals("null")) redirect = "/CA1-Preparation/views/index.jsp";
-            response.sendRedirect(redirect);
-            return;
         } else {
 //				If there is no user, dispatch the page back to the login page
 

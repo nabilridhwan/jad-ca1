@@ -46,6 +46,26 @@ public class UserModel {
             }
         };
     }
+    
+    public static IDatabaseQuery<User> getUserByEmail(String email){
+    	return databaseConnection -> {
+            try {
+                Connection conn = databaseConnection.get();
+                PreparedStatement prepStatement = conn.prepareStatement("SELECT * FROM user WHERE email = ? LIMIT 1;");
+                prepStatement.setString(1, email);
+                ResultSet rs = prepStatement.executeQuery();
+
+                ArrayList<User> list = new ArrayList<>();
+
+                if (rs != null) while (rs.next()) list.add(new User(rs));
+
+                return list.toArray(new User[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
 
     public static IDatabaseQuery<User> getUserByUserID(int userID) {
         return databaseConnection -> {
