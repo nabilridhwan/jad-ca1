@@ -117,6 +117,9 @@
 
                             <div class="row block-9">
                                 <div class="col-md-12">
+                                
+                                <img width="300" src="<%=category_img %>" />
+                                <button id="upload_widget" class="cloudinary-button">Upload image</button>
 
                                     <form action="${pageContext.request.contextPath}/editCategory" method="POST">
                                     
@@ -127,15 +130,18 @@
                                                 name="category_id"
                                                 value="<%=category_id %>"
                                             />
+                                            
                                         <div class="form-group">
                                             <input
                                                 type="text"
                                                 class="form-control"
-                                                placeholder="Category Image URL"
+                                                id="file_url"
                                                 name="category_img"
                                                 value="<%=category_img %>"
                                             />
                                         </div>
+                                        
+                                        
 
                                         <div class="form-group">
                                             <input
@@ -368,6 +374,31 @@
         <script src="${pageContext.request.contextPath}/js/scrollax.min.js"></script>
         
         <script src="${pageContext.request.contextPath}/js/main.js"></script>
+        
+        
+        <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+        <script type="text/javascript">  
+  var widget = cloudinary.applyUploadWidget(
+		  document.getElementById("upload_widget"),
+		  { 
+	  
+    cloudName: 'dqxawxewb', 
+    uploadPreset: 'ml_default' }, 
+    (error, result) => { 
+       if (!error && result && result.event === "success") { 
+      		console.log('Done uploading..: ', result.info); 
+      		
+      		
+      		
+      		const imageUploadUrl = result.info.secure_url;
+      		console.log(imageUploadUrl);
+      		document.getElementById("file_url").value = imageUploadUrl;
+   	      }else{
+   	    	  document.getElementById("form_submit_button").disabled=true;
+   	      }
+
+     });  
+  </script>
 
     </body>
 </html>
