@@ -6,6 +6,10 @@
 	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI 
  -->
  
+ <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ <%@taglib uri="http://cloudinary.com/jsp/taglib" prefix="cl" %>
+ 
+ 
 <!DOCTYPE html>
 <%@page import="utils.Util"%>
 <html lang="en">
@@ -43,6 +47,8 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/flaticon.css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/icomoon.css"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
+        
+        
 
         
     </head>
@@ -90,14 +96,17 @@
 
                             <div class="row block-9">
                                 <div class="col-md-12">
+                                
+                                <button id="upload_widget" class="cloudinary-button">Upload files</button>
 
-                                    <form enctype="multipart/form-data" action="${pageContext.request.contextPath}/addNewCategory" method="POST">
+                                    <form action="${pageContext.request.contextPath}/addNewCategory" method="POST">
                                         <div class="form-group">
                                             <input
-                                                type="file"
+                                                type="text"
                                                 class="form-control"
-                                                placeholder="Category Image"
-                                                name="file"
+                                                id="file_url"
+                                                name="file_url"
+                                                hidden="true"
                                             />
                                         </div>
 
@@ -120,6 +129,7 @@
                                         </div>
                                         <div class="form-group">
                                             <input
+                                            	id="form_submit_button"
                                                 type="submit"
                                                 value="Add new category"
                                                 class="btn w-100 btn-primary py-3 px-5"
@@ -330,6 +340,31 @@
         <script src="${pageContext.request.contextPath}/js/scrollax.min.js"></script>
         
         <script src="${pageContext.request.contextPath}/js/main.js"></script>
+        <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+        <script type="text/javascript">  
+  var widget = cloudinary.applyUploadWidget(
+		  document.getElementById("upload_widget"),
+		  { 
+	  
+    cloudName: 'dqxawxewb', 
+    uploadPreset: 'ml_default' }, 
+    (error, result) => { 
+       if (!error && result && result.event === "success") { 
+      		console.log('Done uploading..: ', result.info); 
+      		
+      		document.getElementById("form_submit_button").removeAttribute('disabled');
+      		
+      		const imageUploadUrl = result.info.secure_url;
+      		console.log(imageUploadUrl);
+      		document.getElementById("file_url").value = imageUploadUrl;
+   	      }else{
+   	    	  document.getElementById("form_submit_button").disabled=true;
+   	      }
+
+     });    
+
+
+     </script>
 
     </body>
 </html>
