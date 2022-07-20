@@ -9,6 +9,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <%--tour card--%>
 <%
     Tour tour = (Tour) request.getAttribute("tour");
+    if(tour == null) return;
     int tour_id = tour.getTour_id();
     Tour.Image tour_image = tour.getFirstOrDefaultImage();
     String tour_name = tour.getTour_name();
