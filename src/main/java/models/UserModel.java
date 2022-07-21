@@ -88,21 +88,26 @@ public class UserModel {
     }
 
 
-    public static IDatabaseUpdate insertNewUser(String name, String email, String password) {
+    public static IDatabaseUpdate insertNewUser(String name, String email, String password, String address_1, String address_2, String apt_suite, String postal_code, String phone) {
         //		Default profile picture image
-        return insertNewUser(name, email, password, "https://via.placeholder.com/400");
+        return insertNewUser(name, email, password, "https://via.placeholder.com/400", address_1, address_2, apt_suite, postal_code, phone);
     }
 
-    public static IDatabaseUpdate insertNewUser(String name, String email, String password, String pfpImg) {
+    public static IDatabaseUpdate insertNewUser(String name, String email, String password, String pfpImg, String address_1, String address_2, String apt_suite, String postal_code, String phone) {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement prepStatement = conn.prepareStatement("INSERT INTO user(full_name, email, password, profile_pic_url) VALUES(?, ?, ?, ?)");
+                PreparedStatement prepStatement = conn.prepareStatement("INSERT INTO user(full_name, email, password, profile_pic_url, address_1, address_2, apt_suite, postal_code, phone) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
                 prepStatement.setString(1, name);
                 prepStatement.setString(2, email);
                 prepStatement.setString(3, password);
                 prepStatement.setString(4, pfpImg);
+                prepStatement.setString(5, address_1);
+                prepStatement.setString(6, address_2);
+                prepStatement.setString(7, apt_suite);
+                prepStatement.setString(8, postal_code);
+                prepStatement.setString(9, phone);
                 return prepStatement.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -111,7 +116,7 @@ public class UserModel {
         };
     }
 
-    public static IDatabaseUpdate updateUser(int userId, String profile_pic_url, String fullName, String email, String password) {
+    public static IDatabaseUpdate updateUser(int userId, String profile_pic_url, String fullName, String email, String password, String address_1, String address_2, String apt_suite, String postal_code, String phone) {
         return databaseConnection -> {
 
 //            SQL Reference "UPDATE user SET full_name = ?, email = ?, password = ?, profile_pic_url = ? WHERE user_id = ?";
@@ -123,14 +128,26 @@ public class UserModel {
                 		"profile_pic_url = ?," +
                         "full_name = ?," +
                         "email = ?," +
-                        "password =? " +
+                        "password =?, " +
+                        "address_1 = ?," +
+                        "address_2 = ?," +
+                        "apt_suite = ?," +
+                        "postal_code = ?," +
+                        "phone = ?" +
                         "WHERE user_id = ?");
 
                 prepStatement.setString(1, profile_pic_url);
                 prepStatement.setString(2, fullName);
                 prepStatement.setString(3, email);
                 prepStatement.setString(4, password);
-                prepStatement.setInt(5, userId);
+                
+                prepStatement.setString(5, address_1);
+                prepStatement.setString(6, address_2);
+                prepStatement.setString(7, apt_suite);
+                prepStatement.setString(8, postal_code);
+                
+                prepStatement.setString(9, phone);
+                prepStatement.setInt(10, userId);
                 
                 System.out.println(prepStatement.toString());
 
@@ -142,7 +159,7 @@ public class UserModel {
         };
     }
 
-    public static IDatabaseUpdate updateUser(int userId, String profile_pic_url, String fullName, String email) {
+    public static IDatabaseUpdate updateUser(int userId, String profile_pic_url, String fullName, String email, String address_1, String address_2, String apt_suite, String postal_code, String phone) {
         return databaseConnection -> {
 //            SQL Reference "UPDATE user SET full_name = ?, email = ?, password = ?, profile_pic_url = ? WHERE user_id = ?";
 
@@ -153,12 +170,25 @@ public class UserModel {
                         "profile_pic_url = ?" +
                         "full_name = ?," +
                         "email = ?," +
+                        "address_1 = ?," +
+                        "address_2 = ?," +
+                        "apt_suite = ?," +
+                        "postal_code = ?," +
+                        "phone = ?" +
                         "WHERE user_id = ?");
 
                 prepStatement.setString(1, profile_pic_url);
                 prepStatement.setString(2, fullName);
                 prepStatement.setString(3, email);
-                prepStatement.setInt(4, userId);
+                
+                prepStatement.setString(4, address_1);
+                prepStatement.setString(5, address_2);
+                prepStatement.setString(6, apt_suite);
+                prepStatement.setString(7, postal_code);
+                
+                prepStatement.setString(8, phone);
+                
+                prepStatement.setInt(9, userId);
                 return prepStatement.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();

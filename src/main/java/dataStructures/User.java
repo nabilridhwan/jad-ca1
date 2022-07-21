@@ -18,6 +18,13 @@ public class User {
     private String email;
     private String role;
     private String password;
+    
+    private String phone;
+    
+    private String address_1;
+    private String address_2;
+    private String apt_suite;
+    private String postal_code;
 
 
     public User(ResultSet rs) {
@@ -28,6 +35,13 @@ public class User {
             email = rs.getString("email");
             role = rs.getString("role");
             password = rs.getString("password");
+            
+            phone = rs.getString("phone");
+            
+            address_1 = rs.getString("address_1");
+            address_2 = rs.getString("address_2");
+            apt_suite = rs.getString("apt_suite");
+            postal_code = rs.getString("postal_code");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,5 +71,25 @@ public class User {
 
     public String getRole() {
         return role;
+    }
+    
+    public String getPhone() {
+    	return phone;
+    }
+    
+    public String getAddress1() {
+    	return address_1;
+    }
+    
+    public String getAddress2() {
+    	return address_2;
+    }
+    
+    public String getAptSuite() {
+    	return apt_suite;
+    }
+    
+    public String getPostalCode() {
+    	return postal_code;
     }
 }

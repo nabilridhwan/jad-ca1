@@ -88,6 +88,12 @@
     String fullName = user.getFullName();
     String profilePicUrl = user.getPfpUrl();
     String email = user.getEmail();
+    
+    String phone = user.getPhone();
+    String address_1 = user.getAddress1();
+    String address_2 = user.getAddress2();
+    String apt_suite = user.getAptSuite();
+    String postal_code = user.getPostalCode();
 %>
 
 <%@ include file="../misc/navbar.jsp" %>
@@ -98,8 +104,8 @@
     <%--    Profile--%>
     <div class="container" style="padding: 7em 0">
         <div
-                class="row no-gutters js-fullheight align-items-center justify-content-center"
-                data-scrollax-parent="true"
+                class="row no-gutters align-items-center justify-content-center"
+                data-scrollax-parent="true" style="height: 100%;"
         >
             <section
                     class="ftco-section contact-section ftco-degree-bg bg-white rounded"
@@ -171,6 +177,63 @@
                                             value="<%=email%>" name="email"
                                     />
                                 </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">Phone</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Email"
+                                            name="phone"
+                                            value="<%=phone%>"
+                                    />
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">Address 1</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Address 1"
+                                            name="address_1"
+                                            value="<%=address_1%>"
+                                    />
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">Address 2</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Address 2"
+                                            name="address_2"
+                                            value="<%=address_2%>"
+                                    />
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">Apt/Suite</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Apt/Suite"
+                                            name="apt_suite"
+                                            value="<%=apt_suite%>"
+                                    />
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="email">Postal Code</label>
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Postal Code"
+                                            name="postal_code"
+                                            value="<%=postal_code%>"
+                                    />
+                                </div>
+                                
+                                
 
                                 <h2 class="h5">Change your password</h2>
 
