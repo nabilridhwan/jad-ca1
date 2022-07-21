@@ -67,5 +67,10 @@ public class StripePayment {
 		
 		return customer;
 	}
+	
+	public static PaymentIntent retrievePayment(String payment_intent_client_secret) throws StripeException {
+		PaymentIntent intent = PaymentIntent.retrieve(payment_intent_client_secret);
+		return intent;
+	}
 
 }

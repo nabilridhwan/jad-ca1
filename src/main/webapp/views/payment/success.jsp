@@ -38,6 +38,7 @@
     // confirmation, while others will first enter a `processing` state.
     //
     // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
+    console.log(paymentIntent)
     switch (paymentIntent.status) {
       case 'succeeded':
         message.innerText = 'Success! Payment received.';

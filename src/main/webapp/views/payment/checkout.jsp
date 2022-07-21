@@ -24,7 +24,7 @@
 		const stripe = Stripe('pk_test_51Kq9aiGruISt8Q6Bay3PRs8qYLr9NvzEgDzK8F4cI98ZI1vau3047zqKu0ODXHuJpS5MYJ9gmQc6nAltyZU2WBsh00U0mNnNWf');
 		
 		const options = {
-				  clientSecret: 'pi_3LNolHGruISt8Q6B0x5gAf5O_secret_VYh4falHEpBJIXEx5aZOFccNF',
+				  clientSecret: 'pi_3LNpwQGruISt8Q6B0lTOVCUx_secret_WqZDex0ezl3wtzWHZWNxGAQgM',
 				  // Fully customizable with appearance API.
 				  appearance: {/*...*/},
 				};
@@ -45,7 +45,7 @@
 				    //`Elements` instance that was used to create the Payment Element
 				    elements,
 				    confirmParams: {
-				      return_url: 'http://localhost:8080/CA1-Preparation/views/payment/success.jsp',
+				      return_url: 'http://localhost:8080/CA1-Preparation/pay',
 				    },
 				  });
 
