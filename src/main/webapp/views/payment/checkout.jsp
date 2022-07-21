@@ -10,6 +10,18 @@
 </head>
 <body>
 
+
+<%
+	String paymentIntent = (String) request.getAttribute("payment_intent_secret");
+
+	if(paymentIntent == null){%>
+		<h1>Something went wrong while trying to pay</h1>
+		<%return;
+	}%>
+	
+	
+<h1><%=request.getAttribute("payment_intent_secret") %></h1>
+
 	<form id="payment-form">
 		<div id="payment-element">
 			<!-- Elements will create form elements here -->
@@ -24,7 +36,7 @@
 		const stripe = Stripe('pk_test_51Kq9aiGruISt8Q6Bay3PRs8qYLr9NvzEgDzK8F4cI98ZI1vau3047zqKu0ODXHuJpS5MYJ9gmQc6nAltyZU2WBsh00U0mNnNWf');
 		
 		const options = {
-				  clientSecret: 'pi_3LNpwQGruISt8Q6B0lTOVCUx_secret_WqZDex0ezl3wtzWHZWNxGAQgM',
+				  clientSecret: '<%=paymentIntent%>',
 				  // Fully customizable with appearance API.
 				  appearance: {/*...*/},
 				};

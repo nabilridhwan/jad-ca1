@@ -18,7 +18,7 @@
 
 
 
-	<form action="/pay">
+	<form action="<%=request.getContextPath() %>/create_payment_intent">
 		<button>Pay</button>
 	</form>
 </body>
