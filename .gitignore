@@ -5,4 +5,4 @@ build/
 
 */DatabaseConnectionConfig.java
 *.class
-src/main/java/utils/DatabaseConnectionConfig.java
+DatabaseConnectionConfig.java
