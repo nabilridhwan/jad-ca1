@@ -67,6 +67,13 @@ public class SignUp extends HttpServlet {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirm_password");
         
+        String phone = request.getParameter("phone") == null ? "" : request.getParameter("phone");
+        
+        String address_1 = request.getParameter("address_1") == null ? "" : request.getParameter("address_1");
+    	String address_2 = request.getParameter("address_2") == null ? "" : request.getParameter("address_2");
+    	String apt_suite = request.getParameter("apt_suite") == null ? "" : request.getParameter("apt_suite");
+    	String postal_code = request.getParameter("postal_code") == null ? "" : request.getParameter("postal_code");
+        
 
         System.out.println(password);
         System.out.println(confirmPassword);
@@ -85,7 +92,7 @@ public class SignUp extends HttpServlet {
         // Hash the password using BCrypt
         password = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        int rowsAffected = UserModel.insertNewUser(name, email, password).update(connection);
+        int rowsAffected = UserModel.insertNewUser(name, email, password, address_1, address_2, apt_suite, postal_code, phone).update(connection);
 
         connection.close();
 

@@ -76,6 +76,13 @@ public class ModifyUser extends HttpServlet {
         String old_password = request.getParameter("old_password");
         String confirm_password = request.getParameter("confirm_password");
         
+        String phone = request.getParameter("phone") == null ? "" : request.getParameter("phone");
+        
+        String address_1 = request.getParameter("address_1") == null ? "" : request.getParameter("address_1");
+        String address_2 = request.getParameter("address_2") == null ? "" : request.getParameter("address_2");
+        String apt_suite = request.getParameter("apt_suite") == null ? "" : request.getParameter("apt_suite");
+        String postal_code = request.getParameter("postal_code") == null ? "" : request.getParameter("postal_code");
+        
         String finalPassword = null;
         
         System.out.println(userID);
@@ -84,6 +91,11 @@ public class ModifyUser extends HttpServlet {
         System.out.println(password);
         System.out.println(old_password);
         System.out.println(confirm_password);
+        
+        System.out.println(address_1);
+        System.out.println(address_2);
+        System.out.println(apt_suite);
+        System.out.println(postal_code);
         
         
         
@@ -132,7 +144,7 @@ public class ModifyUser extends HttpServlet {
         }
 
 
-        IDatabaseUpdate databaseUpdate = UserModel.updateUser(userID, profile_pic_url, full_name, email, finalPassword);
+        IDatabaseUpdate databaseUpdate = UserModel.updateUser(userID, profile_pic_url, full_name, email, finalPassword, address_1, address_2, apt_suite, postal_code, phone);
                 
 
         int affectedRows = databaseUpdate.update(connection);

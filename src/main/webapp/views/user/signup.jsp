@@ -48,9 +48,17 @@
 	String name = request.getParameter("name");
 	String email = request.getParameter("email");
 	String password = request.getParameter("password");
+	
+	String phone = request.getParameter("phone") == null ? "" : request.getParameter("phone");
+	
+	String address_1 = request.getParameter("address_1") == null ? "" : request.getParameter("address_1");
+	String address_2 = request.getParameter("address_2") == null ? "" : request.getParameter("address_2");
+	String apt_suite = request.getParameter("apt_suite") == null ? "" : request.getParameter("apt_suite");
+	String postal_code = request.getParameter("postal_code") == null ? "" : request.getParameter("postal_code");
+	
 	String error = "";
 
-	if (email == null) {
+		if (email == null) {
 			email = "";
 		}
 		
@@ -69,7 +77,7 @@
 	
         <%@ include file="../misc/navbar.jsp" %>
 
-        <div class="hero-wrap" style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
+        <div class="hero-wrap" style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg'); padding-top: 70px;">
             <div class="overlay"></div>
             <div class="container">
                 <div
@@ -121,6 +129,16 @@
                                                 required name="email" value="<%=email %>"
                                             />
                                         </div>
+                                        
+                                        <div class="form-group">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                placeholder="Phone"
+                                                required name="phone" value="<%=phone %>"
+                                            />
+                                        </div>
+                                        
                                         <div class="form-group">
                                             <input
                                                 type="password"
@@ -136,6 +154,44 @@
                                                 class="form-control"
                                                 placeholder="Confirm Password"
                                                 required name="confirm_password"
+                                            />
+                                        </div>
+                                        
+                                        <h5>Address</h5>
+                                        
+                                        <div class="form-group">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                placeholder="Address 1"
+                                                required name="address_1" value="<%=address_1 %>"
+                                            />
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                placeholder="Address 2"
+                                                required name="address_2" value="<%=address_2 %>"
+                                            />
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                placeholder="Apt/Suite"
+                                                required name="apt_suite" value="<%=apt_suite %>"
+                                            />
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                placeholder="Postal Code"
+                                                required name="postal_code" value="<%=postal_code %>"
                                             />
                                         </div>
 
