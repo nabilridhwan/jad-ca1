@@ -26,7 +26,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
     <title>Tours R' Us</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <jsp:include page="components/stylesheets.jsp"/>
+    <%@ include file="components/stylesheets.html" %>
 </head>
 <body>
 
@@ -187,7 +187,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                             for (Category category : categories) {
                                 request.setAttribute("category", category);
                     %>
-                    <jsp:include page="components/categoryPageCard.jsp"/>
+                    <jsp:include page="${pageContext.request.contextPath}components/categoryPageCard.jsp"/>
                     <%
                             }
                         request.removeAttribute("category");
@@ -218,7 +218,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                     for (Tour tour : tours) {
                         request.setAttribute("tour", tour);
             %>
-            <jsp:include page="components/tourPageCard.jsp"/>
+            <jsp:include page="${pageContext.request.contextPath}/components/tourPageCard.jsp"/>
             <%
                     }
                 request.removeAttribute("tour");
@@ -229,9 +229,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
     </div>
 </section>
 
-<jsp:include page="components/footer.jsp"/>
-
-<!-- loader -->
-<jsp:include page="components/loader.jsp"/>
+<%@ include file="components/footer.html" %>
+<%@ include file="components/loader.html" %>
 </body>
 </html>
