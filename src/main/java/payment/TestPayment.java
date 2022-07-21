@@ -10,42 +10,22 @@ import com.paypal.api.payments.RedirectUrls;
 import com.paypal.api.payments.Transaction;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
+import com.stripe.model.Customer;
 
 public class TestPayment {
-	
+
 	public static CheckoutController checkoutController = new CheckoutController();
-	
-	public static void main (String[] args) {
-		Amount amount = new Amount();
-		amount.setCurrency("USD");
-		amount.setTotal("1.00");
 
-		Transaction transaction = new Transaction();
-		transaction.setAmount(amount);
-		List<Transaction> transactions = new ArrayList<Transaction>();
-		transactions.add(transaction);
-
-		Payer payer = new Payer();
-		payer.setPaymentMethod("paypal");
-
-		Payment payment = new Payment();
-		payment.setIntent("sale");
-		payment.setPayer(payer);
-		payment.setTransactions(transactions);
-
-		RedirectUrls redirectUrls = new RedirectUrls();
-		redirectUrls.setCancelUrl("https://example.com/cancel");
-		redirectUrls.setReturnUrl("https://example.com/return");
-		payment.setRedirectUrls(redirectUrls);
-		
+	public static void main(String[] args) {
 		try {
-		    APIContext apiContext = new APIContext(CheckoutController.clientId, CheckoutController.clientSecret, "sandbox");
-		    Payment createdPayment = payment.create(apiContext);
-		    System.out.println(createdPayment.toString());
-		} catch (PayPalRESTException e) {
-		    // Handle errors
-		} catch (Exception ex) {
-		    // Handle errors
+			Customer customer = StripePayment.getCustomer("cus_M61EbJnYU99YBU");
+			
+			
+			System.out.println(customer.getId());
+			System.out.println(customer.getName());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 	}
 }
