@@ -46,8 +46,9 @@ public class CheckoutCart extends HttpServlet {
         Cart cart = Cart.GetExisting(request.getSession());
         if (cart == null || cart.Size() == 0) {
 //TODO: cart is empty
-return;
+            return;
         }
 
 
     }
+}
