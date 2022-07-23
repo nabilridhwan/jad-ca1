@@ -27,9 +27,7 @@ import java.io.IOException;
 public class Util {
 
     public static boolean isUserLoggedIn(HttpSession session) {
-        Integer user = (Integer) session.getAttribute("userID");
-        System.out.println(user);
-        return user != null;
+        return getUserID(session) != -1;
     }
 
     public static int getUserID(HttpSession session) {
@@ -61,10 +59,7 @@ public class Util {
     }
 
     public static int forceLogin(HttpSession session, HttpServletResponse response) throws ServletException, IOException {
-        int userid = getUserID(session);
-        if (userid > 0) return userid;
-        response.sendRedirect("/CA1-Preparation/views/user/login.jsp");
-        return -1;
+        return forceLogin(session, response, "/CA1-Preparation/views/user/login.jsp");
     }
 
     public static int forceAdmin(HttpSession session, HttpServletResponse response, String redirectUrl) throws IOException {
@@ -75,9 +70,6 @@ public class Util {
     }
 
     public static int forceAdmin(HttpSession session, HttpServletResponse response) throws IOException {
-        int userid = getUserID(session);
-        if (userid > 0 && isUserAdmin(userid)) return userid;
-        response.sendRedirect("/CA1-Preparation/views/user/login.jsp");
-        return -1;
+        return forceAdmin(session, response, "/CA1-Preparation/views/user/login.jsp");
     }
 }
