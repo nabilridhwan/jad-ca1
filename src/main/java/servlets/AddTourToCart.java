@@ -7,29 +7,30 @@
 
 package servlets;
 
+import dataStructures.Cart;
 import dataStructures.Tour;
 import models.TourModel;
 import utils.DatabaseConnection;
 import utils.Util;
 
-import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Servlet implementation class RegisterForTour
  */
-@WebServlet("/RegisterForTour")
-public class RegisterForTour extends HttpServlet {
+@WebServlet("/AddTourToCart")
+public class AddTourToCart extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RegisterForTour() {
+    public AddTourToCart() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,7 +47,6 @@ public class RegisterForTour extends HttpServlet {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
         String date = request.getParameter("date");
         String paxStr = request.getParameter("pax");
 
@@ -90,45 +90,8 @@ public class RegisterForTour extends HttpServlet {
 
         if (!isValid) response.sendRedirect(previousURL);
 
-        int userID = Util.forceLogin(request.getSession(), response, previousURL);
-        if (userID == -1) {
-            return;
-        } //doesn't work sometimes if you don't return
+        Cart cart = Cart.getOrCreateCart(request.getSession());
 
-        DatabaseConnection conn = new DatabaseConnection();
-
-        Tour.Date[] tourDate = TourModel.getTourDateById(tourDateID).query(conn);
-
-        System.out.println("length:" + tourDate.length);
-        System.out.println("id: " + tourDateID);
-        if (tourDate.length != 1) {
-            response.sendRedirect(previousURL + "&InvalidDate=");
-            return;
-        }
-
-        if (tourDate[0].getAvail_slot() < pax) {
-            response.sendRedirect(previousURL + "&InvalidPax=");
-            return;
-        }
-
-        boolean registered = TourModel.getPaxForTour(userID, tourDateID).query(conn).length > 0;
-
-        if (registered) {
-            conn.close();
-            previousURL += "&alreadyRegistered=";
-            response.sendRedirect(previousURL);
-            return;
-        }
-
-        boolean success = TourModel.registerUserForTour(userID, tourDateID, pax).update(conn) == 1;
-        conn.close();
-
-        if (!success) {
-            originalURL += "&error=";
-            response.sendRedirect(originalURL);
-            return;
-        }
-        originalURL += "&success=";
-        response.sendRedirect(originalURL);
+        cart.addItem(new Cart.Item(tourDateID, pax));
     }
 }

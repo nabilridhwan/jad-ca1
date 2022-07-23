@@ -51,21 +51,21 @@ public class Util {
         return role.equals("admin");
     }
 
-    public static int forceLogin(HttpSession session, HttpServletResponse response, String redirectUrl) throws ServletException, IOException {
+    public static int forceLogin(HttpSession session, HttpServletResponse response, String redirectUrl) throws IOException {
         int userid = getUserID(session);
         if (userid > 0) return userid;
-        response.sendRedirect("/CA1-Preparation/views/user/login.jsp?redirect=" + redirectUrl);
+        if (response != null) response.sendRedirect("/CA1-Preparation/views/user/login.jsp?redirect=" + redirectUrl);
         return -1;
     }
 
-    public static int forceLogin(HttpSession session, HttpServletResponse response) throws ServletException, IOException {
+    public static int forceLogin(HttpSession session, HttpServletResponse response) throws IOException {
         return forceLogin(session, response, "/CA1-Preparation/views/user/login.jsp");
     }
 
     public static int forceAdmin(HttpSession session, HttpServletResponse response, String redirectUrl) throws IOException {
         int userid = getUserID(session);
         if (userid > 0 && isUserAdmin(userid)) return userid;
-        response.sendRedirect("/CA1-Preparation/views/user/login.jsp?redirect=" + redirectUrl);
+        if (response != null)    response.sendRedirect("/CA1-Preparation/views/user/login.jsp?redirect=" + redirectUrl);
         return -1;
     }
 

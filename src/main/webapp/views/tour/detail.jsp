@@ -321,7 +321,7 @@
             <div class="col-lg-4 sidebar">
                 <div class="sidebar-wrap bg-light ftco-animate">
                     <h3 class="heading mb-4">Book for tour</h3>
-                    <form action="${pageContext.request.contextPath}/RegisterForTour" method="POST">
+                    <form action="${pageContext.request.contextPath}/AddTourToCart" method="POST">
                         <div class="fields">
                             <div class="form-group">
                                 <div class="select-wrap one-third">
@@ -459,7 +459,7 @@
                             <div class="form-group">
                                 <input
                                         type="submit"
-                                        value="Book"
+                                        value="AddToCart"
                                         class="btn btn-primary py-3 px-5"
                                         <%
                                             if (!HaveDates) {
