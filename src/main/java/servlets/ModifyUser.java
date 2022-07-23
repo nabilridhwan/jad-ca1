@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import dataStructures.User;
 
 import java.io.IOException;
@@ -121,7 +123,8 @@ public class ModifyUser extends HttpServlet {
         if(!old_password.isEmpty() && !password.isEmpty() && !confirm_password.isEmpty()) {
         	
         	// Check if old_password matches the old user password
-        	if(!Password.encryptThisString(old_password).equals(user.getPassword())) {
+        	
+        	if(!BCrypt.checkpw(old_password, user.getPassword())) {
         		response.sendRedirect("/CA1-Preparation/views/user/profile.jsp?message=You have entered an incorrect password!");
         		return;
         	}
@@ -133,7 +136,7 @@ public class ModifyUser extends HttpServlet {
         	}
         	
         	// Set final password to be password
-        	finalPassword = Password.encryptThisString(password);
+        	finalPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         	
         	
         }
