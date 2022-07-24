@@ -195,47 +195,48 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
             connection.close();
         %>
     </div>
-
-    <%
-        if (!Util.isUserLoggedIn(session)) {
-    %>
-    please <a href="${pageContext.request.contextPath}/views/user/login.jsp">Login</a> or
-    <a href="${pageContext.request.contextPath}/views/user/signup.jsp">Register</a> to save your cart or checkout.
-    <%
-        }
-    %>
-    <form action="${pageContext.request.contextPath}/SaveCart" method="post">
-        <input type="submit" value="Save"
-            <%
+    <div class="container">
+        <%
+            if (!Util.isUserLoggedIn(session)) {
+        %>
+        please <a href="${pageContext.request.contextPath}/views/user/login.jsp">Login</a> or
+        <a href="${pageContext.request.contextPath}/views/user/signup.jsp">Register</a> to save your cart or checkout.
+        <%
+            }
+        %>
+        <form action="${pageContext.request.contextPath}/SaveCart" method="post">
+            <input type="submit" value="Save"
+                <%
                      if (!Util.isUserLoggedIn(session))
                      {
                %>
-               disabled
-            <%
+                   disabled
+                <%
                         }
                 %>
-        >
-    </form>
+            >
+        </form>
 
-    <%
-        if (cartItems.length == 0) {
-    %>
-    You have no tours in your cart.
-    <%
-        }
-    %>
-    <form action="${pageContext.request.contextPath}/Checkout" method="post">
-        <input type="submit" value="Checkout"
-            <%
+        <%
+            if (cartItems.length == 0) {
+        %>
+        You have no tours in your cart.
+        <%
+            }
+        %>
+        <form action="${pageContext.request.contextPath}/Checkout" method="post">
+            <input type="submit" value="Checkout"
+                <%
                      if (cartItems.length == 0 || !Util.isUserLoggedIn(session))
                      {
                %>
-               disabled
-            <%
+                   disabled
+                <%
                         }
                 %>
-        >
-    </form>
+            >
+        </form>
+    </div>
 </section>
 
 <footer class="ftco-footer ftco-bg-dark ftco-section">
