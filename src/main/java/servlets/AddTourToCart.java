@@ -93,5 +93,7 @@ public class AddTourToCart extends HttpServlet {
         Cart cart = Cart.getOrCreateCart(request.getSession());
 
         cart.addItem(new Cart.Item(tourDateID, pax));
+
+        response.sendRedirect(originalURL + "&CartSuccess=");
     }
 }

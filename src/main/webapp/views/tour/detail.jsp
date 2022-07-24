@@ -1,17 +1,17 @@
-<!-- 
-	Name: Nabil Ridhwanshah Bin Rosli
-	Admin No: P2007421
-	Class: DIT/FT/2A/01
-	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI 
- -->
+<!--
+Name: Nabil Ridhwanshah Bin Rosli
+Admin No: P2007421
+Class: DIT/FT/2A/01
+Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
+-->
 
 
-<!-- 
-	Name: Xavier Tay Cher Yew
-	Admin No: P2129512
-	Class: DIT/FT/2A/01
-	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI 
- -->
+<!--
+Name: Xavier Tay Cher Yew
+Admin No: P2129512
+Class: DIT/FT/2A/01
+Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
+-->
 
 <%@page import="dataStructures.User" %>
 <%@page import="models.UserModel" %>
@@ -45,25 +45,34 @@
     }
     Tour tour = tours[0];
 
-    if (request.getParameter("success") != null) {
-        out.print("<div class=\"alert alert-success\" role=\"alert\">");
-        out.print("<strong>Success!</strong> You have successfully registered for this tour.");
-        out.print("</div>");
-    } else if (request.getParameter("alreadyRegistered") != null) {
-        out.print("<div class=\"alert alert-danger\" role=\"alert\">");
-        out.print("<strong>Error!</strong> You have already registered for this tour.");
-        out.print("</div>");
-    } else if (request.getParameter("error") != null) {
-        out.print("<div class=\"alert alert-danger\" role=\"alert\">");
-        out.print("<strong>Error!</strong> There was an error registering for this tour.");
-        out.print("</div>");
+    if (request.getParameter("CartSuccess") != null) {
+%>
+<div class="alert alert-success" role="alert">
+    <strong>Success!</strong> You have successfully added this tour to <a
+        href="${pageContext.request.contextPath}/views/user/cart" style="text-underline: auto"> your cart.</a>
+</div>
+<%
+} else if (request.getParameter("alreadyRegistered") != null) {
+%>
+<div class="alert alert-danger" role="alert">
+    <strong>Error!</strong> You have already registered for this tour.
+</div>
+<%
+} else if (request.getParameter("error") != null) {
+%>
+<div class="alert alert-danger" role="alert">
+    <strong>Error!</strong> There was an error registering for this tour.
+</div>
+<%
     }
     {
         String msg = request.getParameter("message");
         if (msg != null) {
-            out.print("<div class=\"alert alert-danger\" role=\"alert\">");
-            out.print("<strong>Error!</strong> " + msg);
-            out.print("</div>");
+%>
+<div class="alert alert-danger" role="alert">
+    <strong>Error!</strong> <%= msg %>
+</div>
+<%
         }
     }
 %>
