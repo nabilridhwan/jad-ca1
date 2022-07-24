@@ -59,14 +59,24 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 %>
 
 <%@ include file="../misc/navbar_dark.jsp" %>
-
+<%
+    if (!Util.isUserLoggedIn(session)) {%>
+<div class="alert alert-danger" role="alert">
+    <strong>You are not logged in!</strong>
+    <br>
+    <a href="${pageContext.request.contextPath}/views/user/login.jsp">Login</a> or
+    <a href="${pageContext.request.contextPath}views/user/signup.jsp">Register</a> to save your cart or checkout.
+</div>
+<%
+    }
+%>
 <section class="ftco-section bg-light">
     <div class="container">
         <div class="row justify-content-start mb-5 pb-3">
             <div class="col-md-7 heading-section ftco-animate">
                 <span class="subheading">Wishlist</span>
                 <h2 class="mb-4">
-                    <strong>Your wishlist tours</strong>
+                    <strong>Your Cart</strong>
                 </h2>
             </div>
         </div>

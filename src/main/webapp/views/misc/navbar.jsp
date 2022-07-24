@@ -1,17 +1,17 @@
-<!-- 
-	Name: Nabil Ridhwanshah Bin Rosli
-	Admin No: P2007421
-	Class: DIT/FT/2A/01
-	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI 
- -->
+<!--
+Name: Nabil Ridhwanshah Bin Rosli
+Admin No: P2007421
+Class: DIT/FT/2A/01
+Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
+-->
 
 
-<!-- 
-	Name: Xavier Tay Cher Yew
-	Admin No: P2129512
-	Class: DIT/FT/2A/01
-	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI 
- -->
+<!--
+Name: Xavier Tay Cher Yew
+Admin No: P2129512
+Class: DIT/FT/2A/01
+Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
+-->
 
 <%@page import="utils.DatabaseConnection" %>
 <%@page import="dataStructures.User" %>
@@ -66,6 +66,9 @@
 
                 <li class="nav-item">
                     <a href="${pageContext.request.contextPath}/views/tour/categoryListing.jsp" class="nav-link">Categories</a>
+                </li>
+                <li class="nav-item">
+                    <a href=${pageContext.request.contextPath}/views/user/cart.jsp class="nav-link">Cart</a>
                 </li>
                 <%
 
