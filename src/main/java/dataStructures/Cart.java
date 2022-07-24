@@ -11,26 +11,27 @@ import models.TourModel;
 import utils.DatabaseConnection;
 import utils.Util;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Cart {
-    int id;
+    int user_id;
     ArrayList<Item> items;
 
     public Cart(DatabaseConnection connection, int userID) {
         items = new ArrayList<>();
+        user_id = userID;
         if (userID == -1) {
-            id = -1;
             return;
         }
+        Collections.addAll(items, TourModel.getCart(userID).query(connection));
+    }
 
-        //TODO Get cart from DB
-
-        //TODO Create cart to DB
+    public void linkToUser(int userID, DatabaseConnection connection) {
+        user_id = userID;
+        Collections.addAll(items, TourModel.getCart(userID).query(connection));
     }
 
     public void addItem(Item item) {
@@ -77,31 +78,25 @@ public class Cart {
     }
 
 
-    public boolean save(HttpSession session)   {
-        int userID = Util.getUserID(session);
-        return save(userID);
-    }
-
-    public boolean save(int userID)   {
-        if (id == -1) return false;
+    public boolean save() {
+        if (user_id == -1) return false;
         DatabaseConnection connection = new DatabaseConnection();
-        boolean result = save(userID, connection);
+        boolean result = save(connection);
         connection.close();
         return result;
     }
 
-    public boolean save(int userID, DatabaseConnection connection)   {
-        if (id == -1) return false;
-
+    public boolean save(DatabaseConnection connection) {
+        if (user_id == -1) return false;
         //TODO: insert cart in db
         return true;
     }
 
     public void delete(HttpSession session, DatabaseConnection connection) {
         session.removeAttribute("cart");
-        if (id == -1) {
-            //TODO delete cart from db
-        }
+        if (user_id == -1) return;
+        TourModel.deleteCart(user_id).update(connection);
+
     }
 
     public int Size() {
@@ -148,8 +143,9 @@ public class Cart {
         }
 
         public double getPrice(DatabaseConnection connection) {
-            //TODO get price from db
-            return 1 * pax;
+            Tour.Date[] dates = TourModel.getTourDateById(tourDateId).query(connection);
+            if (dates.length != 1) return 0;
+            return dates[0].getPrice() * pax;
         }
 
         public int getTourDateId() {
