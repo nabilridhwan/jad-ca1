@@ -81,6 +81,13 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 </div>
 <%
     }
+    if (request.getParameter("CartRemoveSuccess") != null) {
+%>
+<div class="alert alert-success" role="alert">
+    <strong> Successfully removed from cart ! </strong>
+</div>
+<%
+    }
 %>
 <section class="ftco-section bg-light">
     <div class="container">
@@ -193,6 +200,10 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
             <%=date.getDate().getStartString()%> - <%=date.getDate().getEndString()%> <br>
             pax: <%=date.getPax()%> <br>
             <br>
+            <form action="${pageContext.request.contextPath}/RemoveTourFromCart" method="post">
+                <input type="hidden" name="date_id" value="<%=date.getDate().getId() %>">
+                <input type="submit" value="Remove">
+            </form>
             <%
                 }
             %>
