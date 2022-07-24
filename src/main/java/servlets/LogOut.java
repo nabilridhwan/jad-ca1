@@ -41,7 +41,7 @@ public class LogOut extends HttpServlet {
         HttpSession session = request.getSession(false);
 
         Cart cart = Cart.GetExisting(session);
-        if (cart != null) cart.save(session);
+        if (cart != null) cart.save();
 
         session.invalidate();
         response.sendRedirect("/CA1-Preparation/views/index.jsp");

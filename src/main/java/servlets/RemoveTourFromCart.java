@@ -45,16 +45,10 @@ public class RemoveTourFromCart extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String dateid = request.getParameter("date_id");
 
-        String baseUrl = request.getHeader("Referer");
-        //remove all the parameters from the url
-        baseUrl = baseUrl.substring(0, baseUrl.indexOf("?"));
-
-        String originalURL = baseUrl + "?tour_id=" + request.getParameter("id");
-
         Cart cart = Cart.getOrCreateCart(request.getSession());
 
         cart.removeItem(Integer.parseInt(dateid));
 
-        response.sendRedirect(originalURL + "&CartRemoveSuccess=");
+        response.sendRedirect( request.getHeader("Referer") + "?CartRemoveSuccess=");
     }
 }
