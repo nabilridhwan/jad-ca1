@@ -52,6 +52,10 @@ public class Cart {
         return total;
     }
 
+    public String getTotalPriceString(DatabaseConnection connection) {
+        return '$' + String.format("%.2f", getTotalPrice(connection));
+    }
+
     public static Cart GetExisting(HttpSession session) {
         return (Cart) session.getAttribute("cart");
     }
