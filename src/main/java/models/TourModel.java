@@ -688,4 +688,18 @@ public class TourModel {
             }
         };
     }
+    public static IDatabaseUpdate purchaseCart(Cart cart) {
+        return databaseConnection -> {
+            int userid = cart.getUserid();
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("UPDATE tour_registration SET purchased = 1 WHERE user_id = ? AND purchased = 0");
+                pstmt.setInt(1, userid);
+                return pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        };
+    }
 }

@@ -8,6 +8,8 @@
 package servlets;
 
 import dataStructures.Cart;
+import models.TourModel;
+import utils.DatabaseConnection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -45,11 +47,12 @@ public class CheckoutCart extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Cart cart = Cart.GetExisting(request.getSession());
         if (cart == null || cart.Size() == 0) {
-//TODO: cart is empty
             response.sendRedirect(request.getContextPath() + "views/user/cart.jsp?error_cartEmpty=");
             return;
         }
-
-
+        //TODO payment logic
+        DatabaseConnection connection = new DatabaseConnection();
+        TourModel.purchaseCart(cart).update(connection);
+        connection.close();
     }
 }
