@@ -88,7 +88,10 @@ public class AddTourToCart extends HttpServlet {
         }
 
 
-        if (!isValid) response.sendRedirect(previousURL);
+        if (!isValid) {
+            response.sendRedirect(previousURL);
+            return;
+        }
 
         Cart cart = Cart.getOrCreateCart(request.getSession());
 
