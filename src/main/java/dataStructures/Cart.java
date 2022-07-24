@@ -7,6 +7,7 @@
 
 package dataStructures;
 
+import models.TourModel;
 import utils.DatabaseConnection;
 import utils.Util;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Cart {
     int id;
@@ -35,11 +37,16 @@ public class Cart {
         items.add(item);
     }
 
+    public Item[] getAllItems() {
+        return items.toArray(new Item[0]);
+    }
+
     public double getTotalPrice(DatabaseConnection connection) {
         double total = 0;
         for (Item item : items) total += item.getPrice(connection);
         return total;
     }
+
     public static Cart GetExisting(HttpSession session) {
         return (Cart) session.getAttribute("cart");
     }
@@ -90,6 +97,36 @@ public class Cart {
         return items.size();
     }
 
+
+    public HashMap<Tour, Tour.Date.Pair[]> toHashMap(DatabaseConnection connection) {
+        HashMap<Integer, ArrayList<Tour.Date.Pair>> dateDictionary = new HashMap<>();
+        for (Item item : items) {
+            // Get the tour_id
+
+            int tourDateId = item.getTourDateId();
+
+            Tour.Date[] tours = TourModel.getTourDateById(tourDateId).query(connection);
+
+            if (tours.length != 1) continue;
+            Tour.Date.Pair pair = new Tour.Date.Pair(tours[0], item.getPax());
+            int tourId = tours[0].getTour_id();
+            if (dateDictionary.containsKey(tourId)) {
+                dateDictionary.get(tourId).add(pair);
+            } else {
+                ArrayList<Tour.Date.Pair> dates = new ArrayList<>();
+                dates.add(pair);
+                dateDictionary.put(tourId, dates);
+            }
+        }
+        HashMap<Tour, Tour.Date.Pair[]> result = new HashMap<>();
+        for (Integer key : dateDictionary.keySet()) {
+            Tour[] tours = TourModel.getTourById(key).query(connection);
+            if (tours.length != 1) continue;
+            result.put(tours[0], dateDictionary.get(key).toArray(new Tour.Date.Pair[0]));
+        }
+        return result;
+    }
+
     public static class Item {
         int tourDateId;
         int pax;
@@ -102,6 +139,14 @@ public class Cart {
         public double getPrice(DatabaseConnection connection) {
             //TODO get price from db
             return 1 * pax;
+        }
+
+        public int getTourDateId() {
+            return tourDateId;
+        }
+
+        public int getPax() {
+            return pax;
         }
     }
 }

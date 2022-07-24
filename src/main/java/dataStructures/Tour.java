@@ -156,6 +156,7 @@ public class Tour {
 
     public static class Date {
         int id;
+        int tour_id;
 
         public int getId() {
             return id;
@@ -171,6 +172,7 @@ public class Tour {
         public Date(ResultSet rs) {
             try {
                 id = rs.getInt("tour_date_id");
+                tour_id = rs.getInt("tour_id");
                 start = rs.getTimestamp("tour_start");
                 end = rs.getTimestamp("tour_end");
                 shown = rs.getByte("show_tour") == 1;
@@ -245,6 +247,28 @@ public class Tour {
         @Override
         public String toString() {
             return getStartString() + "-" + getEndString() + " (" + getDuration() + ")";
+        }
+
+        public int getTour_id() {
+            return tour_id;
+        }
+
+        public static class Pair {
+            Date date;
+            int pax;
+
+            public Pair(Date date, int pax) {
+                this.date = date;
+                this.pax = pax;
+            }
+
+            public Date getDate() {
+                return date;
+            }
+
+            public int getPax() {
+                return pax;
+            }
         }
     }
 
