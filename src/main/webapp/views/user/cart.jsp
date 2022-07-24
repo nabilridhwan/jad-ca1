@@ -65,7 +65,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
     <strong>You are not logged in!</strong>
     <br>
     <a href="${pageContext.request.contextPath}/views/user/login.jsp">Login</a> or
-    <a href="${pageContext.request.contextPath}views/user/signup.jsp">Register</a> to save your cart or checkout.
+    <a href="${pageContext.request.contextPath}/views/user/signup.jsp">Register</a> to save your cart or checkout.
 </div>
 <%
     }
