@@ -77,13 +77,24 @@ public class Cart {
     }
 
 
-    public void save(HttpSession session, DatabaseConnection connection, HttpServletResponse response) throws IOException {
-        int userID = Util.forceLogin(session, response);
-        if (id == -1) {
-            //TODO: update cart in db
-        } else {
-            //TODO: insert cart in db
-        }
+    public boolean save(HttpSession session)   {
+        int userID = Util.getUserID(session);
+        return save(userID);
+    }
+
+    public boolean save(int userID)   {
+        if (id == -1) return false;
+        DatabaseConnection connection = new DatabaseConnection();
+        boolean result = save(userID, connection);
+        connection.close();
+        return result;
+    }
+
+    public boolean save(int userID, DatabaseConnection connection)   {
+        if (id == -1) return false;
+
+        //TODO: insert cart in db
+        return true;
     }
 
     public void delete(HttpSession session, DatabaseConnection connection) {
