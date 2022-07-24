@@ -34,6 +34,10 @@ public class Cart {
         Collections.addAll(items, TourModel.getCart(userID).query(connection));
     }
 
+    public int getUserid() {
+        return user_id;
+    }
+
     public void addItem(Item item) {
         items.add(item);
     }
@@ -88,7 +92,7 @@ public class Cart {
 
     public boolean save(DatabaseConnection connection) {
         if (user_id == -1) return false;
-        //TODO: insert cart in db
+        TourModel.updateCart(this).update(connection);
         return true;
     }
 

@@ -15,6 +15,7 @@
 
 package models;
 
+import dataStructures.Cart;
 import dataStructures.Category;
 import dataStructures.Tour;
 import utils.IDatabaseQuery;
@@ -397,7 +398,7 @@ public class TourModel {
                 PreparedStatement pstmt = conn.prepareStatement("" +
                         "SELECT tr.* " +
                         "FROM tour_registration tr,tour_date td  " +
-                        "WHERE tr.user_id = ? AND td.tour_id = ? AND tr.tour_date_id = td.tour_date_id");
+                        "WHERE tr.user_id = ? AND td.tour_id = ? AND tr.purchased = 1 AND tr.tour_date_id = td.tour_date_id");
                 pstmt.setInt(1, userID);
                 pstmt.setInt(2, tourID);
 
@@ -611,6 +612,76 @@ public class TourModel {
                 pstmt.setString(2, alt);
                 pstmt.setInt(3, tourImageId);
                 return pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        };
+    }
+
+    public static IDatabaseQuery<Cart.Item> getCart(int userid) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM tour_registration WHERE user_id = ? AND purchased = 0");
+                pstmt.setInt(1, userid);
+                ResultSet rs = pstmt.executeQuery();
+                ArrayList<Cart.Item> items = new ArrayList<Cart.Item>();
+                while (rs.next()) {
+                    int tourDateID = rs.getInt("tour_date_id");
+                    int slot = rs.getInt("slot");
+                    items.add(new Cart.Item(tourDateID, slot));
+                }
+                return items.toArray(new Cart.Item[0]);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
+
+    public static IDatabaseUpdate deleteCart(int userid) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("DELETE FROM tour_registration WHERE user_id = ? AND purchased = 0");
+                pstmt.setInt(1, userid);
+                return pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        };
+    }
+
+    public static IDatabaseUpdate updateCart(Cart cart) {
+        return databaseConnection -> {
+            int userid = cart.getUserid();
+            Connection conn = databaseConnection.get();
+            try {
+                {
+                    PreparedStatement pstmt = conn.prepareStatement("DELETE FROM tour_registration WHERE user_id = ? AND purchased = 0");
+                    pstmt.setInt(1, userid);
+                    pstmt.executeUpdate();
+                }
+                {
+                    PreparedStatement pstmt = conn.prepareStatement("INSERT INTO tour_registration (user_id, tour_date_id, pax, purchased) VALUES ( ?, ?, ?, 0)");
+                    int i = 0;
+                    Cart.Item[] items = cart.getAllItems();
+                    for (Cart.Item item : items) {
+                        pstmt.setInt(1, userid);
+                        pstmt.setInt(2, item.getTourDateId());
+                        pstmt.setInt(3, item.getPax());
+                        pstmt.addBatch();
+                        i++;
+
+                        if (i % 1000 == 0 || i == items.length) {
+                            pstmt.executeBatch(); // Execute every 1000 items.
+                        }
+                    }
+                }
+                return 1;
             } catch (Exception e) {
                 e.printStackTrace();
                 return -1;
