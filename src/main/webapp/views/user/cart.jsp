@@ -192,7 +192,6 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
         <%
                 }
             }
-            connection.close();
         %>
     </div>
     <div class="container">
@@ -225,7 +224,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
             }
         %>
         <form action="${pageContext.request.contextPath}/Checkout" method="post">
-            <input type="submit" value="Checkout"
+            <input type="submit" value="Checkout (<%=cart.getTotalPrice(connection)%>>)"
                 <%
                      if (cartItems.length == 0 || !Util.isUserLoggedIn(session))
                      {
@@ -434,3 +433,6 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <script src="${pageContext.request.contextPath}/js/main.js"></script>
 </body>
 </html>
+<%
+    connection.close();
+%>
