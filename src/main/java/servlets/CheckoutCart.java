@@ -54,5 +54,7 @@ public class CheckoutCart extends HttpServlet {
         DatabaseConnection connection = new DatabaseConnection();
         TourModel.purchaseCart(cart).update(connection);
         connection.close();
+
+        response.sendRedirect(request.getContextPath() + "views/user/cart.jsp?success_purchase=");
     }
 }

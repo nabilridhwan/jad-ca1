@@ -74,6 +74,13 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 </div>
 <%
     }
+    if (request.getParameter("success_purchase") != null) {
+%>
+<div class="alert alert-success" role="alert">
+    <strong> Successfully purchased ! </strong>
+</div>
+<%
+    }
 %>
 <section class="ftco-section bg-light">
     <div class="container">
@@ -95,6 +102,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
             if (cartItems.length == 0) {
         %>
         <h3>No Tours added to cart :( </h3>
+        Click <a href="${pageContext.request.contextPath}/views/tour/view_all.jsp">here</a> to add tours to your cart.
         <%
         } else {
             HashMap<Tour, Tour.Date.Pair[]> hashMap = cart.toHashMap(connection);
