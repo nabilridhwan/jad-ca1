@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * Servlet implementation class RegisterForTour
  */
-@WebServlet("/AddTourToCart")
+@WebServlet("/Checkout")
 public class CheckoutCart extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -46,6 +46,7 @@ public class CheckoutCart extends HttpServlet {
         Cart cart = Cart.GetExisting(request.getSession());
         if (cart == null || cart.Size() == 0) {
 //TODO: cart is empty
+            response.sendRedirect(request.getContextPath() + "views/user/cart.jsp?error_cartEmpty=");
             return;
         }
 

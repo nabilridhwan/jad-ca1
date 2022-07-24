@@ -6,11 +6,8 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 -->
 
 <!DOCTYPE html>
-<%@page import="models.TourModel" %>
 <%@page import="dataStructures.Tour" %>
 <%@page import="utils.DatabaseConnection" %>
-<%@page import="dataStructures.Wishlist" %>
-<%@page import="models.WishlistModel" %>
 <%@page import="utils.Util" %>
 <%@ page import="dataStructures.Cart" %>
 <%@ page import="java.util.*" %>
@@ -69,6 +66,14 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 </div>
 <%
     }
+
+    if (request.getParameter("error_cartEmpty") != null) {
+%>
+<div class="alert alert-danger" role="alert">
+    <strong> Your cart is empty ! </strong>
+</div>
+<%
+    }
 %>
 <section class="ftco-section bg-light">
     <div class="container">
@@ -115,6 +120,19 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 
         </div>
     </div>
+
+    <form action="${pageContext.request.contextPath}/Checkout" method="post">
+        <input type="submit" value="Checkout"
+            <%
+                     if (!Util.isUserLoggedIn(session))
+                     {
+               %>
+               disabled
+            <%
+                        }
+                %>
+        >
+    </form>
 </section>
 
 <footer class="ftco-footer ftco-bg-dark ftco-section">
@@ -281,8 +299,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                 r="22"
                 fill="none"
                 stroke-width="4"
-                stroke="#eeeeee"
-        />
+                stroke="#eeeeee"></circle>
         <circle
                 class="path"
                 cx="24"
@@ -291,8 +308,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                 fill="none"
                 stroke-width="4"
                 stroke-miterlimit="10"
-                stroke="#F96D00"
-        />
+                stroke="#F96D00"></circle>
     </svg>
 </div>
 
