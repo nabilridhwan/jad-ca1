@@ -13,25 +13,28 @@ import utils.Util;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 public class Cart {
     int user_id;
-    ArrayList<Item> items;
+    //    ArrayList<Item> items;
+    HashMap<Integer, Item> items;
 
-    public Cart(DatabaseConnection connection, int userID) {
-        items = new ArrayList<>();
-        user_id = userID;
-        if (userID == -1) {
-            return;
-        }
-        Collections.addAll(items, TourModel.getCart(userID).query(connection));
+    public Cart(int userID, DatabaseConnection connection) {
+        items = new HashMap<>();
+        linkToUser(userID, connection);
     }
 
     public void linkToUser(int userID, DatabaseConnection connection) {
         user_id = userID;
-        Collections.addAll(items, TourModel.getCart(userID).query(connection));
+        if (userID == -1) {
+            return;
+        }
+        //TODO find a better way to do this
+        Cart.Item[] items = TourModel.getCart(userID).query(connection);
+        for (Cart.Item item : items) {
+            this.items.put(item.getTourDateId(), item);
+        }
     }
 
     public int getUserid() {
@@ -39,16 +42,18 @@ public class Cart {
     }
 
     public void addItem(Item item) {
-        items.add(item);
+        if (items.containsKey(item.tourDateId)) items.merge(item.tourDateId, item, (oldValue, newValue) -> newValue);
+        else items.put(item.tourDateId, item);
     }
 
     public Item[] getAllItems() {
-        return items.toArray(new Item[0]);
+        return items.values().toArray(new Item[0]);
     }
 
     public double getTotalPrice(DatabaseConnection connection) {
         double total = 0;
-        for (Item item : items) total += item.getPrice(connection);
+        Item[] itemsArray = getAllItems();
+        for (Item item : itemsArray) total += item.getPrice(connection);
         return total;
     }
 
@@ -65,7 +70,7 @@ public class Cart {
         //check if cart is in session
         Cart cart = GetExisting(session);
         if (cart == null) {
-            cart = new Cart(connection, userid);
+            cart = new Cart(userid, connection);
             session.setAttribute("cart", cart);
         }
         return cart;
@@ -78,7 +83,7 @@ public class Cart {
         Cart cart = GetExisting(session);
         if (cart == null) {
             DatabaseConnection connection = new DatabaseConnection();
-            cart = new Cart(connection, userid);
+            cart = new Cart(userid, connection);
             connection.close();
             session.setAttribute("cart", cart);
         }
@@ -114,7 +119,9 @@ public class Cart {
 
     public HashMap<Tour, Tour.Date.Pair[]> toHashMap(DatabaseConnection connection) {
         HashMap<Integer, ArrayList<Tour.Date.Pair>> dateDictionary = new HashMap<>();
-        for (Item item : items) {
+
+        Item[] itemsArray = getAllItems();
+        for (Item item : itemsArray) {
             // Get the tour_id
 
             int tourDateId = item.getTourDateId();
