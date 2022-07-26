@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="utils.Util"%>
+<%@page import="utils.DatabaseConnection"%>
 <html lang="en">
 <head>
 <title>Admin - Analytics/Report</title>
@@ -43,6 +47,22 @@
 	href="${pageContext.request.contextPath}/css/style.css" />
 </head>
 <body>
+
+
+	<%
+	Util.forceAdmin(session, response);
+	String q = request.getParameter("search") != null ? request.getParameter("search") : "";
+	%>
+
+
+	<%
+	DatabaseConnection connection = new DatabaseConnection();
+	String sql = "SELECT u.user_id, u.full_name, profile_pic_url, email, phone, SUM(td.price * tr.pax) AS total_amount FROM tour_registration tr LEFT JOIN tour_date td ON tr.tour_date_id = td.tour_date_id LEFT JOIN `user` u ON tr.user_id = u.user_id GROUP BY tr.user_id ORDER BY total_amount DESC LIMIT 10;";
+	System.out.println(sql);
+	PreparedStatement pstmt = connection.get().prepareStatement(sql);
+	ResultSet usersRs = pstmt.executeQuery();
+	%>
+
 	<%@ include file="../misc/navbar_dark.jsp"%>
 	<!-- END nav -->
 
@@ -531,201 +551,40 @@
 		</div>
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm col-md-6 col-lg ftco-animate">
-					<div class="destination">
-						<a href="#"
-							class="img img-2 d-flex justify-content-center align-items-center"
-							style="background-image: url(images/destination-1.jpg);">
-							<div
-								class="icon d-flex justify-content-center align-items-center">
-								<span class="icon-search2"></span>
-							</div>
-						</a>
-						<div class="text p-3">
-							<div class="d-flex">
-								<div class="one">
-									<h3>
-										<a href="#">Paris, Italy</a>
-									</h3>
-									<p class="rate">
-										<i class="icon-star"></i> <i class="icon-star"></i> <i
-											class="icon-star"></i> <i class="icon-star"></i> <i
-											class="icon-star-o"></i> <span>8 Rating</span>
-									</p>
-								</div>
-								<div class="two">
-									<span class="price">$200</span>
-								</div>
-							</div>
-							<p>Far far away, behind the word mountains, far from the
-								countries</p>
-							<p class="days">
-								<span>2 days 3 nights</span>
-							</p>
-							<hr />
-							<p class="bottom-area d-flex">
-								<span><i class="icon-map-o"></i> San Franciso, CA</span> <span
-									class="ml-auto"><a href="#">Discover</a></span>
-							</p>
+				<%
+				while (usersRs.next()) {
+					int user_id = usersRs.getInt("user_id");
+					String full_name = usersRs.getString("full_name");
+					String profile_pic_url = usersRs.getString("profile_pic_url");
+					String email = usersRs.getString("email");
+					double total_amount = usersRs.getDouble("total_amount");
+					
+				%>
+				<div class="col-sm-4 col-lg-3 ftco-animate">
+					<div class="card">
+
+						<img class="card-img-top img-fluid" src="<%=profile_pic_url%>"
+							alt="" />
+
+						<div class="card-body">
+							<h4 class="card-title"><%=full_name%></h4>
+							<h5>$<%=total_amount %></h5>
+							<p class="card-text muted"><%=email%></p>
+
+							<!-- 
+							
+							
+							<a
+								href="<%=request.getContextPath()%>/views/admin/edit_user.jsp?user_id=<%=user_id%>"
+								class="btn btn-primary"> Edit User </a>
+								
+								 -->
 						</div>
 					</div>
 				</div>
-				<div class="col-sm col-md-6 col-lg ftco-animate">
-					<div class="destination">
-						<a href="#"
-							class="img img-2 d-flex justify-content-center align-items-center"
-							style="background-image: url(images/destination-2.jpg);">
-							<div
-								class="icon d-flex justify-content-center align-items-center">
-								<span class="icon-search2"></span>
-							</div>
-						</a>
-						<div class="text p-3">
-							<div class="d-flex">
-								<div class="one">
-									<h3>
-										<a href="#">Paris, Italy</a>
-									</h3>
-									<p class="rate">
-										<i class="icon-star"></i> <i class="icon-star"></i> <i
-											class="icon-star"></i> <i class="icon-star"></i> <i
-											class="icon-star-o"></i> <span>8 Rating</span>
-									</p>
-								</div>
-								<div class="two">
-									<span class="price">$200</span>
-								</div>
-							</div>
-							<p>Far far away, behind the word mountains, far from the
-								countries</p>
-							<p class="days">
-								<span>2 days 3 nights</span>
-							</p>
-							<hr />
-							<p class="bottom-area d-flex">
-								<span><i class="icon-map-o"></i> San Franciso, CA</span> <span
-									class="ml-auto"><a href="#">Discover</a></span>
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm col-md-6 col-lg ftco-animate">
-					<div class="destination">
-						<a href="#"
-							class="img img-2 d-flex justify-content-center align-items-center"
-							style="background-image: url(images/destination-3.jpg);">
-							<div
-								class="icon d-flex justify-content-center align-items-center">
-								<span class="icon-search2"></span>
-							</div>
-						</a>
-						<div class="text p-3">
-							<div class="d-flex">
-								<div class="one">
-									<h3>
-										<a href="#">Paris, Italy</a>
-									</h3>
-									<p class="rate">
-										<i class="icon-star"></i> <i class="icon-star"></i> <i
-											class="icon-star"></i> <i class="icon-star"></i> <i
-											class="icon-star-o"></i> <span>8 Rating</span>
-									</p>
-								</div>
-								<div class="two">
-									<span class="price">$200</span>
-								</div>
-							</div>
-							<p>Far far away, behind the word mountains, far from the
-								countries</p>
-							<p class="days">
-								<span>2 days 3 nights</span>
-							</p>
-							<hr />
-							<p class="bottom-area d-flex">
-								<span><i class="icon-map-o"></i> San Franciso, CA</span> <span
-									class="ml-auto"><a href="#">Discover</a></span>
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm col-md-6 col-lg ftco-animate">
-					<div class="destination">
-						<a href="#"
-							class="img img-2 d-flex justify-content-center align-items-center"
-							style="background-image: url(images/destination-4.jpg);">
-							<div
-								class="icon d-flex justify-content-center align-items-center">
-								<span class="icon-search2"></span>
-							</div>
-						</a>
-						<div class="text p-3">
-							<div class="d-flex">
-								<div class="one">
-									<h3>
-										<a href="#">Paris, Italy</a>
-									</h3>
-									<p class="rate">
-										<i class="icon-star"></i> <i class="icon-star"></i> <i
-											class="icon-star"></i> <i class="icon-star"></i> <i
-											class="icon-star-o"></i> <span>8 Rating</span>
-									</p>
-								</div>
-								<div class="two">
-									<span class="price">$200</span>
-								</div>
-							</div>
-							<p>Far far away, behind the word mountains, far from the
-								countries</p>
-							<p class="days">
-								<span>2 days 3 nights</span>
-							</p>
-							<hr />
-							<p class="bottom-area d-flex">
-								<span><i class="icon-map-o"></i> San Franciso, CA</span> <span
-									class="ml-auto"><a href="#">Discover</a></span>
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm col-md-6 col-lg ftco-animate">
-					<div class="destination">
-						<a href="#"
-							class="img img-2 d-flex justify-content-center align-items-center"
-							style="background-image: url(images/destination-5.jpg);">
-							<div
-								class="icon d-flex justify-content-center align-items-center">
-								<span class="icon-search2"></span>
-							</div>
-						</a>
-						<div class="text p-3">
-							<div class="d-flex">
-								<div class="one">
-									<h3>
-										<a href="#">Paris, Italy</a>
-									</h3>
-									<p class="rate">
-										<i class="icon-star"></i> <i class="icon-star"></i> <i
-											class="icon-star"></i> <i class="icon-star"></i> <i
-											class="icon-star-o"></i> <span>8 Rating</span>
-									</p>
-								</div>
-								<div class="two">
-									<span class="price">$200</span>
-								</div>
-							</div>
-							<p>Far far away, behind the word mountains, far from the
-								countries</p>
-							<p class="days">
-								<span>2 days 3 nights</span>
-							</p>
-							<hr />
-							<p class="bottom-area d-flex">
-								<span><i class="icon-map-o"></i> San Franciso, CA</span> <span
-									class="ml-auto"><a href="#">Discover</a></span>
-							</p>
-						</div>
-					</div>
-				</div>
+				<%
+				}
+				%>
 			</div>
 		</div>
 	</section>
