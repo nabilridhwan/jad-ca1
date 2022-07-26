@@ -102,7 +102,7 @@
 								<img src="<%=profilePicUrl%>" alt="Image"
 									class="rounded-circle img-fluid" width="150" />
 
-								<h2 class="h4">Nabil Ridhwan</h2>
+								<h2 class="h4"><%=fullName%></h2>
 							</div>
 							<div class="w-100"></div>
 

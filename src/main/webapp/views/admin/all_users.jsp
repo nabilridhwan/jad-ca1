@@ -56,7 +56,7 @@
 
 	<%
 	DatabaseConnection connection = new DatabaseConnection();
-	String sql = "SELECT user_id, profile_pic_url, full_name, email FROM jad.user WHERE CONCAT(full_name, ' ', email, ' ', phone, ' ', address_1, ' ', address_2, ' ', apt_suite, ' ', postal_code) LIKE '%"
+	String sql = "SELECT user_id, profile_pic_url, full_name, email, CONCAT(address_1, ' ', address_2, ' ', apt_suite, ' ', postal_code) AS full_address FROM jad.user WHERE CONCAT(full_name, ' ', email, ' ', phone, ' ', address_1, ' ', address_2, ' ', apt_suite, ' ', postal_code) LIKE '%"
 			+ q + "%'";
 	System.out.println(sql);
 	PreparedStatement pstmt = connection.get().prepareStatement(sql);
@@ -98,6 +98,7 @@
 					String full_name = usersRs.getString("full_name");
 					String profile_pic_url = usersRs.getString("profile_pic_url");
 					String email = usersRs.getString("email");
+					String full_address = usersRs.getString("full_address").isEmpty() ? "No Address" : usersRs.getString("full_address");
 				%>
 				<div class="col-sm-4 col-lg-3 ftco-animate">
 					<div class="card">
@@ -108,6 +109,10 @@
 						<div class="card-body">
 							<h4 class="card-title"><%=full_name%></h4>
 							<p class="card-text muted"><%=email%></p>
+
+							<p class="card-text muted">
+								<%=full_address%>
+							</p>
 
 							<a
 								href="<%=request.getContextPath()%>/views/admin/edit_user.jsp?user_id=<%=user_id%>"
