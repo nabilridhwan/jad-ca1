@@ -88,6 +88,20 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 </div>
 <%
     }
+    if (request.getParameter("success_save") != null) {
+%>
+<div class="alert alert-success" role="alert">
+    <strong> Cart saved successfully </strong>
+</div>
+<%
+    }
+    if (request.getParameter("error_save") != null) {
+%>
+<div class="alert alert-danger" role="alert">
+    <strong> Error: You need be signed in to save</strong>
+</div>
+<%
+    }
 %>
 <section class="ftco-section bg-light">
     <div class="container">

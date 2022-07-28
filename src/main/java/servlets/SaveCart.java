@@ -21,14 +21,14 @@ import java.io.IOException;
 /**
  * Servlet implementation class RegisterForTour
  */
-@WebServlet("/Checkout")
-public class CheckoutCart extends HttpServlet {
+@WebServlet("/SaveCart")
+public class SaveCart extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CheckoutCart() {
+    public SaveCart() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -50,13 +50,10 @@ public class CheckoutCart extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/views/user/cart.jsp?error_cartEmpty=");
             return;
         }
-        //TODO payment logic
+        boolean res = cart.save();
+        if (res) response.sendRedirect(request.getContextPath() + "/views/user/cart.jsp?success_save=");
+        else response.sendRedirect(request.getContextPath() + "/views/user/cart.jsp?error_save=");
 
-        String transactionId = "TEMP_TRANSACTION_ID";
-        DatabaseConnection connection = new DatabaseConnection();
-        TourModel.purchaseCart(cart,transactionId).update(connection);
-        connection.close();
 
-        response.sendRedirect(request.getContextPath() + "/views/user/cart.jsp?success_purchase=");
     }
 }

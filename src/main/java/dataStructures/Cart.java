@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Cart {
+    boolean updatedSinceLastSave;
+
     int user_id;
     //    ArrayList<Item> items;
     HashMap<Integer, Item> items;
@@ -27,14 +29,10 @@ public class Cart {
 
     public void linkToUser(int userID, DatabaseConnection connection) {
         user_id = userID;
-        if (userID == -1) {
-            return;
-        }
-        //TODO find a better way to do this
+        if (userID == -1) return;
         Cart.Item[] items = TourModel.getCart(userID).query(connection);
-        for (Cart.Item item : items) {
-            this.items.put(item.getTourDateId(), item);
-        }
+        for (Cart.Item item : items) addItem(item);
+        if (items.length > 0) save(connection);
     }
 
     public int getUserid() {
@@ -44,10 +42,14 @@ public class Cart {
     public void addItem(Item item) {
         if (items.containsKey(item.tourDateId)) items.merge(item.tourDateId, item, (oldValue, newValue) -> newValue);
         else items.put(item.tourDateId, item);
+        updatedSinceLastSave = true;
     }
-public void removeItem(int tourDateId) {
+
+    public void removeItem(int tourDateId) {
         items.remove(tourDateId);
+        updatedSinceLastSave = true;
     }
+
     public Item[] getAllItems() {
         return items.values().toArray(new Item[0]);
     }
@@ -95,15 +97,19 @@ public void removeItem(int tourDateId) {
 
     public boolean save() {
         if (user_id == -1) return false;
+        if (!updatedSinceLastSave) return true;
         DatabaseConnection connection = new DatabaseConnection();
-        boolean result = save(connection);
+        TourModel.updateCart(this).update(connection);
         connection.close();
-        return result;
+        updatedSinceLastSave = false;
+        return true;
     }
 
     public boolean save(DatabaseConnection connection) {
         if (user_id == -1) return false;
+        if (!updatedSinceLastSave) return true;
         TourModel.updateCart(this).update(connection);
+        updatedSinceLastSave = false;
         return true;
     }
 

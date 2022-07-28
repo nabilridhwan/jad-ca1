@@ -269,6 +269,10 @@ public class Tour {
             public int getPax() {
                 return pax;
             }
+
+            public double getPrice() {
+                return date.getPrice() * pax;
+            }
         }
     }
 

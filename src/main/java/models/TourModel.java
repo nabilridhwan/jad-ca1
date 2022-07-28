@@ -623,13 +623,13 @@ public class TourModel {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM tour_registration WHERE user_id = ? AND purchased = 0");
+                PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM tour_registration WHERE user_id = ? AND stripe_transaction_id = ''");
                 pstmt.setInt(1, userid);
                 ResultSet rs = pstmt.executeQuery();
                 ArrayList<Cart.Item> items = new ArrayList<Cart.Item>();
                 while (rs.next()) {
                     int tourDateID = rs.getInt("tour_date_id");
-                    int slot = rs.getInt("slot");
+                    int slot = rs.getInt("pax");
                     items.add(new Cart.Item(tourDateID, slot));
                 }
                 return items.toArray(new Cart.Item[0]);
@@ -645,7 +645,7 @@ public class TourModel {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("DELETE FROM tour_registration WHERE user_id = ? AND purchased = 0");
+                PreparedStatement pstmt = conn.prepareStatement("DELETE FROM tour_registration WHERE user_id = ? AND stripe_transaction_id = ''");
                 pstmt.setInt(1, userid);
                 return pstmt.executeUpdate();
             } catch (Exception e) {
@@ -661,12 +661,12 @@ public class TourModel {
             Connection conn = databaseConnection.get();
             try {
                 {
-                    PreparedStatement pstmt = conn.prepareStatement("DELETE FROM tour_registration WHERE user_id = ? AND purchased = 0");
+                    PreparedStatement pstmt = conn.prepareStatement("DELETE FROM tour_registration WHERE user_id = ? AND stripe_transaction_id = ''");
                     pstmt.setInt(1, userid);
                     pstmt.executeUpdate();
                 }
                 {
-                    PreparedStatement pstmt = conn.prepareStatement("INSERT INTO tour_registration (user_id, tour_date_id, pax, purchased) VALUES ( ?, ?, ?, 0)");
+                    PreparedStatement pstmt = conn.prepareStatement("INSERT INTO tour_registration (user_id, tour_date_id, pax, stripe_transaction_id) VALUES ( ?, ?, ?, '')");
                     int i = 0;
                     Cart.Item[] items = cart.getAllItems();
                     for (Cart.Item item : items) {
@@ -688,13 +688,14 @@ public class TourModel {
             }
         };
     }
-    public static IDatabaseUpdate purchaseCart(Cart cart) {
+    public static IDatabaseUpdate purchaseCart(Cart cart,String transactionId) {
         return databaseConnection -> {
             int userid = cart.getUserid();
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("UPDATE tour_registration SET purchased = 1 WHERE user_id = ? AND purchased = 0");
-                pstmt.setInt(1, userid);
+                PreparedStatement pstmt = conn.prepareStatement("UPDATE tour_registration SET stripe_transaction_id = ? WHERE user_id = ? AND stripe_transaction_id = ''");
+                pstmt.setString(1, transactionId);
+                pstmt.setInt(2, userid);
                 return pstmt.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();
