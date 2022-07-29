@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@page import="models.TourModel"%>
+<%@page import="dataStructures.Tour"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="utils.Util"%>
@@ -66,7 +68,10 @@
 	<%@ include file="../misc/navbar_dark.jsp"%>
 	<!-- END nav -->
 
-	<section class="ftco-section ftco-destination">
+
+
+
+	<section class="ftco-section bg-light">
 		<div class="container">
 			<div class="row justify-content-start mb-5 pb-3">
 				<div class="col-md-7 heading-section ftco-animate">
@@ -76,124 +81,102 @@
 					</h2>
 				</div>
 			</div>
+		</div>
+		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-12">
-					<div class="destination-slider owl-carousel ftco-animate">
-						<div class="item">
-							<div class="destination">
-								<a href="#"
-									class="img d-flex justify-content-center align-items-center"
-									style="background-image: url(images/destination-1.jpg);">
-									<div
-										class="icon d-flex justify-content-center align-items-center">
-										<span class="icon-search2"></span>
-									</div>
-								</a>
-								<div class="text p-3">
+
+				<%
+                    Tour[] bestSellingTours = TourModel.getBestSellingTours(5).query(connection);
+                
+
+                if (bestSellingTours != null)
+                    for (Tour tour : bestSellingTours) {
+                        int tour_id = tour.getTour_id();
+                        Tour.Image tour_image = tour.getFirstOrDefaultImage();
+                        String tour_name = tour.getTour_name();
+                        String tour_brief_desc = tour.getTour_brief_desc();
+                        Tour.Date tour_date = tour.getFirstOrDefaultDate();
+                        String tour_location = tour.getTour_location();
+                        Tour.Review[] reviews = tour.getReviews();
+                        double rating = tour.getAverage_rating();
+            %>
+				<div class="col-sm col-md-6 col-lg ftco-animate">
+					<div class="destination">
+
+						<a
+							href="${pageContext.request.contextPath}/views/tour/detail.jsp?tour_id=<%=tour.getTour_id()%>"
+							class="img img-2 d-flex justify-content-center align-items-center"
+							style="background-image: url(<%=tour_image.getUrl() %>)">
+							<div
+								class="icon d-flex justify-content-center align-items-center">
+								<span class="icon-search2"></span>
+							</div>
+						</a>
+
+						<div class="text p-3">
+							<div class="d-flex">
+								<div class="one">
 									<h3>
-										<a href="#">Paris, Italy</a>
+										<a
+											href="${pageContext.request.contextPath}/views/tour/detail.jsp?tour_id=<%=tour_id %>"><%=tour_name %>
+										</a>
 									</h3>
-									<span class="listing">15 Listing</span>
+									<p class="rate">
+										<%
+                                        if (reviews.length != 0) {
+                                            double minFilled = Math.floor(rating);
+                                            for (double i = 0d; i < minFilled; i++) {
+                                    %>
+										<i class="icon-star"></i>
+										<%
+                                        }
+                                        double maxEmpty = 5 - minFilled;
+                                        for (double i = 0d; i < maxEmpty; i++) {
+                                    %>
+										<i class="icon-star-o"></i>
+										<%
+                                        }
+                                    %>
+										<span><%=rating%> Rating <%--                                                (<%=reviews.length%> review(s))--%>
+										</span>
+										<%
+                                    } else {
+                                    %>
+										No ratings yet.
+										<%
+                                        }
+                                    %>
+									</p>
+								</div>
+								<div class="two">
+									<span class="price">$<%=tour_date.getPrice() %></span>
 								</div>
 							</div>
-						</div>
-						<div class="item">
-							<div class="destination">
-								<a href="#"
-									class="img d-flex justify-content-center align-items-center"
-									style="background-image: url(images/destination-2.jpg);">
-									<div
-										class="icon d-flex justify-content-center align-items-center">
-										<span class="icon-search2"></span>
-									</div>
-								</a>
-								<div class="text p-3">
-									<h3>
-										<a href="#">San Francisco, USA</a>
-									</h3>
-									<span class="listing">20 Listing</span>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<div class="destination">
-								<a href="#"
-									class="img d-flex justify-content-center align-items-center"
-									style="background-image: url(images/destination-3.jpg);">
-									<div
-										class="icon d-flex justify-content-center align-items-center">
-										<span class="icon-search2"></span>
-									</div>
-								</a>
-								<div class="text p-3">
-									<h3>
-										<a href="#">Lodon, UK</a>
-									</h3>
-									<span class="listing">10 Listing</span>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<div class="destination">
-								<a href="#"
-									class="img d-flex justify-content-center align-items-center"
-									style="background-image: url(images/destination-4.jpg);">
-									<div
-										class="icon d-flex justify-content-center align-items-center">
-										<span class="icon-search2"></span>
-									</div>
-								</a>
-								<div class="text p-3">
-									<h3>
-										<a href="#">Lion, Singapore</a>
-									</h3>
-									<span class="listing">3 Listing</span>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<div class="destination">
-								<a href="#"
-									class="img d-flex justify-content-center align-items-center"
-									style="background-image: url(images/destination-5.jpg);">
-									<div
-										class="icon d-flex justify-content-center align-items-center">
-										<span class="icon-search2"></span>
-									</div>
-								</a>
-								<div class="text p-3">
-									<h3>
-										<a href="#">Australia</a>
-									</h3>
-									<span class="listing">3 Listing</span>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<div class="destination">
-								<a href="#"
-									class="img d-flex justify-content-center align-items-center"
-									style="background-image: url(images/destination-6.jpg);">
-									<div
-										class="icon d-flex justify-content-center align-items-center">
-										<span class="icon-search2"></span>
-									</div>
-								</a>
-								<div class="text p-3">
-									<h3>
-										<a href="#">Paris, Italy</a>
-									</h3>
-									<span class="listing">3 Listing</span>
-								</div>
-							</div>
+							<p>
+								<%=tour_brief_desc %>
+							</p>
+
+							<hr />
+							<p class="bottom-area d-flex">
+								<span><i class="icon-map-o"></i> <%=tour_location %></span>
+
+							</p>
 						</div>
 					</div>
 				</div>
+				<%
+                    }
+            %>
+
+
+
 			</div>
 		</div>
 	</section>
 
-	<section class="ftco-section ftco-destination">
+
+
+	<section class="ftco-section bg-light">
 		<div class="container">
 			<div class="row justify-content-start mb-5 pb-3">
 				<div class="col-md-7 heading-section ftco-animate">
@@ -203,119 +186,95 @@
 					</h2>
 				</div>
 			</div>
+		</div>
+		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-12">
-					<div class="destination-slider owl-carousel ftco-animate">
-						<div class="item">
-							<div class="destination">
-								<a href="#"
-									class="img d-flex justify-content-center align-items-center"
-									style="background-image: url(images/destination-1.jpg);">
-									<div
-										class="icon d-flex justify-content-center align-items-center">
-										<span class="icon-search2"></span>
-									</div>
-								</a>
-								<div class="text p-3">
+
+				<%
+                    Tour[] tours = TourModel.getWorstSellingTours(5).query(connection);
+                
+
+                if (tours != null)
+                    for (Tour tour : tours) {
+                        int tour_id = tour.getTour_id();
+                        Tour.Image tour_image = tour.getFirstOrDefaultImage();
+                        String tour_name = tour.getTour_name();
+                        String tour_brief_desc = tour.getTour_brief_desc();
+                        Tour.Date tour_date = tour.getFirstOrDefaultDate();
+                        String tour_location = tour.getTour_location();
+                        Tour.Review[] reviews = tour.getReviews();
+                        double rating = tour.getAverage_rating();
+            %>
+				<div class="col-sm col-md-6 col-lg ftco-animate">
+					<div class="destination">
+
+						<a
+							href="${pageContext.request.contextPath}/views/tour/detail.jsp?tour_id=<%=tour.getTour_id()%>"
+							class="img img-2 d-flex justify-content-center align-items-center"
+							style="background-image: url(<%=tour_image.getUrl() %>)">
+							<div
+								class="icon d-flex justify-content-center align-items-center">
+								<span class="icon-search2"></span>
+							</div>
+						</a>
+
+						<div class="text p-3">
+							<div class="d-flex">
+								<div class="one">
 									<h3>
-										<a href="#">Paris, Italy</a>
+										<a
+											href="${pageContext.request.contextPath}/views/tour/detail.jsp?tour_id=<%=tour_id %>"><%=tour_name %>
+										</a>
 									</h3>
-									<span class="listing">15 Listing</span>
+									<p class="rate">
+										<%
+                                        if (reviews.length != 0) {
+                                            double minFilled = Math.floor(rating);
+                                            for (double i = 0d; i < minFilled; i++) {
+                                    %>
+										<i class="icon-star"></i>
+										<%
+                                        }
+                                        double maxEmpty = 5 - minFilled;
+                                        for (double i = 0d; i < maxEmpty; i++) {
+                                    %>
+										<i class="icon-star-o"></i>
+										<%
+                                        }
+                                    %>
+										<span><%=rating%> Rating <%--                                                (<%=reviews.length%> review(s))--%>
+										</span>
+										<%
+                                    } else {
+                                    %>
+										No ratings yet.
+										<%
+                                        }
+                                    %>
+									</p>
+								</div>
+								<div class="two">
+									<span class="price">$<%=tour_date.getPrice() %></span>
 								</div>
 							</div>
-						</div>
-						<div class="item">
-							<div class="destination">
-								<a href="#"
-									class="img d-flex justify-content-center align-items-center"
-									style="background-image: url(images/destination-2.jpg);">
-									<div
-										class="icon d-flex justify-content-center align-items-center">
-										<span class="icon-search2"></span>
-									</div>
-								</a>
-								<div class="text p-3">
-									<h3>
-										<a href="#">San Francisco, USA</a>
-									</h3>
-									<span class="listing">20 Listing</span>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<div class="destination">
-								<a href="#"
-									class="img d-flex justify-content-center align-items-center"
-									style="background-image: url(images/destination-3.jpg);">
-									<div
-										class="icon d-flex justify-content-center align-items-center">
-										<span class="icon-search2"></span>
-									</div>
-								</a>
-								<div class="text p-3">
-									<h3>
-										<a href="#">Lodon, UK</a>
-									</h3>
-									<span class="listing">10 Listing</span>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<div class="destination">
-								<a href="#"
-									class="img d-flex justify-content-center align-items-center"
-									style="background-image: url(images/destination-4.jpg);">
-									<div
-										class="icon d-flex justify-content-center align-items-center">
-										<span class="icon-search2"></span>
-									</div>
-								</a>
-								<div class="text p-3">
-									<h3>
-										<a href="#">Lion, Singapore</a>
-									</h3>
-									<span class="listing">3 Listing</span>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<div class="destination">
-								<a href="#"
-									class="img d-flex justify-content-center align-items-center"
-									style="background-image: url(images/destination-5.jpg);">
-									<div
-										class="icon d-flex justify-content-center align-items-center">
-										<span class="icon-search2"></span>
-									</div>
-								</a>
-								<div class="text p-3">
-									<h3>
-										<a href="#">Australia</a>
-									</h3>
-									<span class="listing">3 Listing</span>
-								</div>
-							</div>
-						</div>
-						<div class="item">
-							<div class="destination">
-								<a href="#"
-									class="img d-flex justify-content-center align-items-center"
-									style="background-image: url(images/destination-6.jpg);">
-									<div
-										class="icon d-flex justify-content-center align-items-center">
-										<span class="icon-search2"></span>
-									</div>
-								</a>
-								<div class="text p-3">
-									<h3>
-										<a href="#">Paris, Italy</a>
-									</h3>
-									<span class="listing">3 Listing</span>
-								</div>
-							</div>
+							<p>
+								<%=tour_brief_desc %>
+							</p>
+
+							<hr />
+							<p class="bottom-area d-flex">
+								<span><i class="icon-map-o"></i> <%=tour_location %></span>
+
+							</p>
 						</div>
 					</div>
 				</div>
+				<%
+                    }
+            %>
+
+
+
 			</div>
 		</div>
 	</section>
@@ -568,7 +527,8 @@
 
 						<div class="card-body">
 							<h4 class="card-title"><%=full_name%></h4>
-							<h5>$<%=total_amount %></h5>
+							<h5>
+								$<%=total_amount %></h5>
 							<p class="card-text muted"><%=email%></p>
 
 							<!-- 
