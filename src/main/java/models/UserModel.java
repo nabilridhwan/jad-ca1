@@ -24,6 +24,25 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class UserModel {
+	
+	public static IDatabaseQuery<User> getAllUsers(){
+		return databaseConnection -> {
+			try {
+                Connection conn = databaseConnection.get();
+                PreparedStatement prepStatement = conn.prepareStatement("SELECT * FROM user;");
+                ResultSet rs = prepStatement.executeQuery();
+
+                ArrayList<User> list = new ArrayList<>();
+
+                if (rs != null) while (rs.next()) list.add(new User(rs));
+
+                return list.toArray(new User[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+		};
+	}
 
     public static IDatabaseQuery<User> getUserByEmailAndPassword(String email, String password) {
 
@@ -86,12 +105,30 @@ public class UserModel {
             }
         };
     }
+    
+    public static IDatabaseUpdate deleteUserByUserId(int user_id) {
+    	return databaseConnection -> {
+            try {
+                Connection conn = databaseConnection.get();
+                PreparedStatement prepStatement = conn.prepareStatement("DELETE FROM user WHERE user_id = ?;");
+                prepStatement.setInt(1, user_id);
+                int affectedRows = prepStatement.executeUpdate();
+
+                return affectedRows;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
+            }
+        };    
+    }
 
 
     public static IDatabaseUpdate insertNewUser(String name, String email, String password, String address_1, String address_2, String apt_suite, String postal_code, String phone) {
         //		Default profile picture image
         return insertNewUser(name, email, password, "https://via.placeholder.com/400", address_1, address_2, apt_suite, postal_code, phone);
     }
+    
+    
 
     public static IDatabaseUpdate insertNewUser(String name, String email, String password, String pfpImg, String address_1, String address_2, String apt_suite, String postal_code, String phone) {
         return databaseConnection -> {
