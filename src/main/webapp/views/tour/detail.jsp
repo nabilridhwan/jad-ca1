@@ -345,6 +345,19 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                 <div class="sidebar-wrap bg-light ftco-animate">
                     <h3 class="heading mb-4">Book for tour</h3>
                     <form action="${pageContext.request.contextPath}/AddTourToCart" method="POST">
+                        <%
+                            if (request.getParameter("edit_mode") != null) {
+                        %>
+                        <input type="hidden" name="edit_mode" value=""/>
+                        <%
+                            }
+                        %>                        <%
+                        if (request.getParameter("edit_mode") != null) {
+                    %>
+                        <input type="hidden" name="edit_mode" value=""/>
+                        <%
+                            }
+                        %>
                         <div class="fields">
                             <div class="form-group">
                                 <div class="select-wrap one-third">
@@ -489,7 +502,17 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                             <div class="form-group">
                                 <input
                                         type="submit"
+                                        <%
+                                            if (request.getParameter("edit_mode") != null) {
+                                        %>
+                                        value="Edit Cart"
+                                        <%
+                                        } else {
+                                        %>
                                         value="Add To Cart"
+                                        <%
+                                            }
+                                        %>
                                         class="btn btn-primary py-3 px-5"
                                         <%
                                             if (!HaveDates) {

@@ -40,8 +40,18 @@ public class Cart {
     }
 
     public boolean addItem(Item item) {
+        return addItem(item, false);
+    }
+
+    public boolean addItem(Item item, boolean override) {
         if (!items.containsKey(item.tourDateId)) {
             items.put(item.tourDateId, item);
+            updatedSinceLastSave = true;
+            save();
+            return true;
+        }
+        if (override) {
+            items.merge(item.tourDateId, item, (oldValue, newValue) -> newValue);
             updatedSinceLastSave = true;
             save();
             return true;
