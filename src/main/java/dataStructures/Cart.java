@@ -112,8 +112,8 @@ public class Cart {
         if (!updatedSinceLastSave) return true;
         DatabaseConnection connection = new DatabaseConnection();
         TourModel.updateCart(this).update(connection);
-        connection.close();
         updatedSinceLastSave = false;
+        connection.close();
         return true;
     }
 
@@ -166,6 +166,11 @@ public class Cart {
             result.put(tours[0], dateDictionary.get(key).toArray(new Tour.Date.Pair[0]));
         }
         return result;
+    }
+
+    public void clear() {
+        items.clear();
+        save();
     }
 
     public static class Item {

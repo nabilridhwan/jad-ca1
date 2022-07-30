@@ -79,7 +79,7 @@ public class Pay extends HttpServlet {
 
 
             TourModel.purchaseCart(cart, paymentId).update(connection);
-            cart.delete(request.getSession(), connection);
+            cart.clear();
             connection.close();
 
 
