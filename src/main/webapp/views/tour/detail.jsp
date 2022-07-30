@@ -351,7 +351,17 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
             <!-- Sidebar -->
             <div class="col-lg-4 sidebar">
                 <div class="sidebar-wrap bg-light ftco-animate">
+                    <%
+                        if (request.getParameter("edit_mode") != null) {
+                    %>
+                    <h3 class="heading mb-4">Edit tour</h3>
+                    <%
+                    } else {
+                    %>
                     <h3 class="heading mb-4">Book for tour</h3>
+                    <%
+                        }
+                    %>
                     <form action="${pageContext.request.contextPath}/AddTourToCart" method="POST">
                         <%
                             if (request.getParameter("edit_mode") != null) {
@@ -359,22 +369,21 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                         <input type="hidden" name="edit_mode" value=""/>
                         <%
                             }
-                        %>                        <%
-                        if (request.getParameter("edit_mode") != null) {
-                    %>
-                        <input type="hidden" name="edit_mode" value=""/>
-                        <%
-                            }
                         %>
                         <div class="fields">
                             <div class="form-group">
                                 <div class="select-wrap one-third">
+                                    <%
+                                        if (request.getParameter("edit_mode") == null) {
+                                    %>
                                     <div class="icon">
-                                                <span
-                                                        class="ion-ios-arrow-down"
-                                                ></span>
+                                        <span class="ion-ios-arrow-down"></span>
                                     </div>
                                     <label for="date"></label>
+                                    <%
+                                        }
+                                    %>
+
                                     <select
                                             required
                                             name="date"
@@ -384,7 +393,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                                             <%
                                                 if (request.getParameter("edit_mode") != null) {
                                             %>
-                                            readonly="readonly"
+                                            hidden
                                             <%
                                                 }
                                             %>
