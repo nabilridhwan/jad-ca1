@@ -53,14 +53,6 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 </div>
 <%
     }
-    if (request.getParameter("EditSuccess") != null) {
-%>
-<div class="alert alert-success" role="alert">
-    <strong>Success!</strong> You have successfully edited this tour in <a
-        href="${pageContext.request.contextPath}/views/user/cart.jsp" style="text-underline: auto"> your cart.</a>
-</div>
-<%
-    }
     if (request.getParameter("alreadyRegistered") != null) {
 %>
 <div class="alert alert-danger" role="alert">
@@ -379,7 +371,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                                     <div class="icon">
                                         <span class="ion-ios-arrow-down"></span>
                                     </div>
-                                    <label for="date"></label>
+                                    <label for="date">Date</label>
                                     <%
                                         }
                                     %>
@@ -464,7 +456,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 
                             <div class="form-group">
                                 <div class="select-wrap">
-                                    <label for="pax"></label>
+                                    <label for="pax">Pax</label>
                                     <input
                                             id="pax"
                                             required

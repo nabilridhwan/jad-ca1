@@ -109,7 +109,7 @@ public class AddTourToCart extends HttpServlet {
             return;
         }
         if(editMode) {
-            response.sendRedirect(originalURL + "&EditSuccess=");
+            response.sendRedirect(request.getContextPath() + "/views/user/cart.jsp?EditSuccess=");
         } else {
             response.sendRedirect(originalURL + "&CartSuccess= ");
         }
