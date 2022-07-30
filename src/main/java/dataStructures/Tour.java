@@ -1,6 +1,6 @@
 /*
- * 	Name: Xavier Tay Cher Yew
-	Admin No: P2129512
+ * 	Name: Xavier Tay Cher Yew, Nabil Ridhwanshah Bin Rosli
+	Admin No: P2129512, P2007421
 	Class: DIT/FT/2A/01
 	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI  
  * */
@@ -8,10 +8,12 @@
 package dataStructures;
 
 import models.TourModel;
+import dataStructures.Tour.Registrations;
 import utils.DatabaseConnection;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Tour {
@@ -22,6 +24,7 @@ public class Tour {
     String tour_location;
     Image[] images;
     Date[] dates;
+    Registrations[] registrations;
     double average_rating;
     Review[] reviews;
     boolean refreshed;
@@ -109,6 +112,13 @@ public class Tour {
 
     public void refreshTour(DatabaseConnection conn) {
         dates = TourModel.getTourDates(this).query(conn);
+        
+        // Get registrations
+        for(Date date : dates) {
+        	Registrations[] registrations = TourModel.getTourRegistrationByTourDateId(date).query(conn);
+        	date.setRegistrations(registrations);
+        }
+        
         images = TourModel.getTourImages(this).query(conn);
         reviews = TourModel.getTourReviews(this).query(conn);
         average_rating = TourModel.getTourReviewAverage(this).query(conn)[0];
@@ -161,18 +171,29 @@ public class Tour {
             return id;
         }
 
-        Timestamp start;
-        Timestamp end;
+        public java.util.Date start;
+        public java.util.Date end;
         boolean shown;
         double price;
         int avail_slot;
         int max_slot;
+        
+        private Registrations[] registrations;
 
-        public Date(ResultSet rs) {
+        public Registrations[] getRegistrations() {
+			return registrations;
+		}
+
+		public void setRegistrations(Registrations[] registrations) {
+			this.registrations = registrations;
+		}
+
+		public Date(ResultSet rs) {
+        	DatabaseConnection conn = new DatabaseConnection();
             try {
                 id = rs.getInt("tour_date_id");
-                start = rs.getTimestamp("tour_start");
-                end = rs.getTimestamp("tour_end");
+                start = new java.util.Date(rs.getTimestamp("tour_start").getTime());
+                end = new java.util.Date(rs.getTimestamp("tour_end").getTime());
                 shown = rs.getByte("show_tour") == 1;
                 price = rs.getDouble("price");
                 avail_slot = rs.getInt("avail_slot");
@@ -192,20 +213,20 @@ public class Tour {
             max_slot = 0;
         }
 
-        public Timestamp getStart() {
+        public java.util.Date getStart() {
             return start;
         }
 
         public String getStartString() {
-            return ParseTimeStamp(start);
+            return start.toString();
         }
 
-        public Timestamp getEnd() {
+        public java.util.Date getEnd() {
             return end;
         }
 
         public String getEndString() {
-            return ParseTimeStamp(end);
+            return end.toString();
         }
 
         private static String ParseTimeStamp(Timestamp timestamp) {
@@ -298,11 +319,16 @@ public class Tour {
         public byte getPax() {
             return pax;
         }
+        
+        public java.util.Date getCreatedAt(){
+        	return created_at;
+        }
 
         private int id;
         private int user_id;
         private int tour_date_id;
         private byte pax;
+        private java.util.Date created_at;
 
         public Registrations(ResultSet rs) {
             try {
@@ -310,6 +336,8 @@ public class Tour {
                 user_id = rs.getInt("user_id");
                 tour_date_id = rs.getInt("tour_date_id");
                 pax = rs.getByte("pax");
+                created_at = new java.util.Date(rs.getTimestamp("created_at").getTime());
+                
             } catch (Exception e) {
                 e.printStackTrace();
             }
