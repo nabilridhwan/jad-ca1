@@ -1,9 +1,12 @@
 # JAD-CA1
 
-## Template folder
-
-The template folder is where the template files are stored. It is located at `/src/main/webapp/template`. For every User
-Story you are doing, make a template up in HTML and then make it into JSP.
+## Branch naming convention
+-	`ca2-dev`
+	-	Branch for development for CA2
+-	`master`
+	-	Final release
+-	`feature/xxx`
+	-	A feature branch
 
 ## Defaults
 
@@ -11,20 +14,21 @@ Story you are doing, make a template up in HTML and then make it into JSP.
 Folder Name: CA1-Preparation (Not jad-ca1)
 
 Admin Email: amy@admin.com
-Admin Password: secret
+Admin Password: password
 
 User Email: test@test.com
-User Password: secret
+User Password: password
 ```
 
 ## Setting up the database
 
 ```
 In _DatabaseConnectionConfig (in src/main/java/utils/_DatabaseConnectionConfig.java)
-Please fill up the variables accordingly and rename the file to DatabaseConnectionConfig.java (remove the _)
+Please fill up the variables accordingly and remove underscore in the the file and the class name.
 ```
 
-## Change the path of upload images in `web.xml` found in `webapp/WEB-INF`
+## Change the path of `file-upload` in `web.xml` found in `webapp/WEB-INF`
+> This is for the image uploading feature
 
 ```xml
 
@@ -47,9 +51,13 @@ Please fill up the variables accordingly and rename the file to DatabaseConnecti
 
 Change every URL to include `/CA1-Preparation` in the path. This includes all the redirection and also to servlets.
 
-```html
+```jsp
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css"/>
+
+// OR
+
+<% request.getContextPath() + "/css/style.css" %>
 ```
 
 ## Include the navigation bar (if within views/.. folder)

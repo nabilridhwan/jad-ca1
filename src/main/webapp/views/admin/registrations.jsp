@@ -12,7 +12,7 @@
 <%@ page import="utils.DatabaseConnection"%>
 <html lang="en">
 <head>
-<title>Edit Tour Image</title>
+<title>Registrations</title>
 <meta charset="utf-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -63,61 +63,22 @@
 	<%
 	Util.forceAdmin(session, response);
 
-	// Get the category_id from parameter
-	String tourImageIdStr = request.getParameter("tourImageId");
-	String tourIdStr = request.getParameter("tourId");
+	String tour_dateIdStr = request.getParameter("tourDateId");
 
-	if (tourImageIdStr == null || tourImageIdStr.isEmpty()) {
-		response.sendRedirect("/CA1-Preparation/views/admin/edit_tour.jsp?tourId=" + tourIdStr);
+	if (tour_dateIdStr == null || tour_dateIdStr.isEmpty()) {
+		response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
 		return;
 	}
 	DatabaseConnection connection = new DatabaseConnection();
-	Tour.Image[] tourImages;
-	int tourId = Integer.parseInt(tourIdStr);
-	Tour[] tours = TourModel.getTourById(tourId).query(connection);
-	if (tours.length != 1) {
-		response.sendRedirect("/CA1-Preparation/views/admin/edit_tour.jsp");
+
+	Tour.Registrations[] tourRegistrations = TourModel.getRegistrationsByTourDateId(tour_dateIdStr).query(connection);
+
+	if (tourRegistrations == null) {
+		response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
 		return;
 	}
-	Tour tour = tours[0];
-
-	if (tourImageIdStr.equals("new")) {
-		tourImages = new Tour.Image[1];
-		tourImages[0] = new Tour.Image();
-	} else {
-		int tourImage_id = Integer.parseInt(tourImageIdStr);
-		// Get the category from the database
-		tourImages = TourModel.getTourImageById(tourImage_id).query(connection);
-
-		if (request.getParameter("delete") != null) {
-			//Double check if the user really wants to delete the category use an alert box
-			if (request.getParameter("delete").equals("confirm")) {
-		TourModel.deleteTourImage(tourImage_id).update(connection);
-		response.sendRedirect("/CA1-Preparation/views/admin/edit_tour.jsp?tourId=" + tourId);
-		return;
-			}
 	%>
-	<script>
-    //message box to confirm deletion
-    let x = confirm("Are you sure you want to delete this tour image?");
-    if (x) {
-        window.location.href = "/CA1-Preparation/views/admin/edit_tourImages.jsp?tourId=<%=tourId%>&tourImageId=<%=tourImage_id%>&delete=confirm";
-    } else {
-        window.location.href = "/CA1-Preparation/views/admin/edit_tourImages.jsp?tourId=<%=tourId%>
-		";
-		}
-	</script>
-	<%
-	}
-	}
 
-	if (tourImages == null || tourImages.length == 0) {
-	response.sendRedirect("/CA1-Preparation/views/admin/edit_tour.jsp?tourId=" + tourId);
-	return;
-	}
-
-	Tour.Image tourImage = tourImages[0];
-	%>
 	<div class="hero-wrap"
 		style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
 		<div class="overlay"></div>
@@ -127,13 +88,10 @@
 				data-scrollax-parent="true">
 				<section
 					class="ftco-section contact-section ftco-degree-bg bg-white rounded">
-					<div class="container px-5">
+					<div class="container px-5 ">
 						<div class="row d-flex contact-info">
 							<div class="col-md-12 mb-4">
-								<h2 class="h4">
-									Edit tour image for
-									<%=tour.getTour_name()%>
-								</h2>
+								<h2 class="h3">Registrations</h2>
 							</div>
 							<div class="w-100"></div>
 							<div class="col-md-12">
@@ -146,37 +104,71 @@
 							</div>
 						</div>
 
+
+
 						<div class="row block-9">
+
+
+
+							<%
+							if (tourRegistrations.length == 0) {
+							%>
 							<div class="col-md-12">
 
-								<form action="${pageContext.request.contextPath}/editTourImage"
-									method="POST" enctype="multipart/form-data">
-
-									<input class="form-control" hidden name="imageId" type="text"
-										value="<%=tourImage.getId()%>" />
-
-
-									<input class="form-control" hidden name="id" type="text"
-										value="<%=tour.getTour_id()%>" />
-
-									<div class="form-group">
-										<label> Image File </label> <input type="file" name="file"
-											class="form-control" placeholder="Image Url" required />
-
+								<div class="card">
+									<div class="card-body">
+										<h5>There are no registrations for this tour</h5>
 									</div>
-									<div class="form-group">
+								</div>
 
-										<label> Alt Text </label> <input type="text" name="alt"
-											class="form-control" placeholder="Alt text"
-											checked="<%=tourImage.getAltText()%>" />
-
-									</div>
-									<div class="form-group">
-										<input type="submit" value="Save"
-											class="btn w-100 btn-primary py-3 px-5" />
-									</div>
-								</form>
 							</div>
+							<%
+							} else {
+							for (Tour.Registrations tourRegistration : tourRegistrations) {
+							%>
+							<div class="col-md-12">
+
+								<div class="card">
+									<div class="card-body">
+
+
+										<%
+										int userId = tourRegistration.getUser_id();
+
+										User[] users = UserModel.getUserByUserID(userId).query(connection);
+
+										if (users == null || users.length == 0) {
+										%>
+
+										<p>Problem Loading User</p>
+
+										<%
+										}
+
+										User user = users[0];
+										%>
+
+
+										<h5><%=user.getFullName()%></h5>
+										<p class="muted font-bold text-bold bold">
+											Email:
+											<%=user.getEmail()%></p>
+										<p class="muted">
+											Pax:
+											<%=tourRegistration.getPax()%></p>
+
+										<p class="muted">
+											Transaction ID:
+											<%=tourRegistration.getStripe_transaction_id()%></p>
+									</div>
+								</div>
+
+							</div>
+							<%
+							}
+
+							}
+							%>
 							<!-- <div class="col-md-6" id="map"></div> -->
 						</div>
 					</div>

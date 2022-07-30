@@ -5,7 +5,6 @@
 	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI 
  * */
 
-
 /*
  * 	Name: Xavier Tay Cher Yew
 	Admin No: P2129512
@@ -34,16 +33,10 @@ public class TourModel {
             Connection conn = databaseConnection.get();
             try {
                 PreparedStatement prepStatement = conn.prepareStatement("SELECT t.*, a.price, b.url, b.alt_text\r\n"
-                        + " FROM tour t"
-                        + " LEFT JOIN ("
-                        + " 	SELECT DISTINCT t.name, td.tour_id, td.price"
-                        + "     FROM tour_date td"
-                        + "     LEFT JOIN tour t ON td.tour_id = t.tour_id"
-                        + "     WHERE td.show_tour = 1"
-                        + "     ORDER BY td.price"
-                        + " ) a ON a.tour_id = t.tour_id"
-                        + " LEFT JOIN ("
-                        + " 	SELECT DISTINCT tti.tour_id, ti.alt_text, ti.url"
+                        + " FROM tour t" + " LEFT JOIN (" + " 	SELECT DISTINCT t.name, td.tour_id, td.price"
+                        + "     FROM tour_date td" + "     LEFT JOIN tour t ON td.tour_id = t.tour_id"
+                        + "     WHERE td.show_tour = 1" + "     ORDER BY td.price" + " ) a ON a.tour_id = t.tour_id"
+                        + " LEFT JOIN (" + " 	SELECT DISTINCT tti.tour_id, ti.alt_text, ti.url"
                         + "     FROM tour_tour_image tti"
                         + "     LEFT JOIN tour_image ti ON ti.tour_image_id = tti.tour_image_id"
                         + " ) b  ON b.tour_id = t.tour_id LIMIT 5;");
@@ -51,9 +44,35 @@ public class TourModel {
 
                 ArrayList<Tour> list = new ArrayList<>();
 
-                if (rs != null) while (rs.next()) list.add(new Tour(rs));
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour(rs));
 
                 return list.toArray(new Tour[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
+
+    public static IDatabaseQuery<Tour.Registrations> getRegistrationsByTourDateId(String tour_date_id) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement prepStatement = conn.prepareStatement("SELECT * FROM tour_registration WHERE tour_date_id = ?;");
+
+                prepStatement.setString(1, tour_date_id);
+
+                ResultSet rs = prepStatement.executeQuery();
+
+                ArrayList<Tour.Registrations> list = new ArrayList<>();
+
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour.Registrations(rs));
+
+                return list.toArray(new Tour.Registrations[0]);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -72,7 +91,9 @@ public class TourModel {
 
                 ArrayList<Tour> list = new ArrayList<>();
 
-                if (rs != null) while (rs.next()) list.add(new Tour(rs));
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour(rs));
 
                 return list.toArray(new Tour[0]);
             } catch (Exception e) {
@@ -86,17 +107,17 @@ public class TourModel {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement prepStatement = conn.prepareStatement("SELECT *" +
-                        " FROM tour_date" +
-                        " WHERE tour_id = ?;"
-                );
+                PreparedStatement prepStatement = conn
+                        .prepareStatement("SELECT *" + " FROM tour_date" + " WHERE tour_id = ?;");
 
                 prepStatement.setInt(1, tour.getTour_id());
                 ResultSet rs = prepStatement.executeQuery();
 
                 ArrayList<Tour.Date> list = new ArrayList<>();
 
-                if (rs != null) while (rs.next()) list.add(new Tour.Date(rs));
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour.Date(rs));
 
                 return list.toArray(new Tour.Date[0]);
             } catch (Exception e) {
@@ -105,21 +126,22 @@ public class TourModel {
             }
         };
     }
+
     public static IDatabaseQuery<Tour.Date> getShownTourDates(Tour tour) {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement prepStatement = conn.prepareStatement("SELECT *" +
-                        " FROM tour_date" +
-                        " WHERE tour_id = ? AND show_tour = 1;"
-                );
+                PreparedStatement prepStatement = conn
+                        .prepareStatement("SELECT *" + " FROM tour_date" + " WHERE tour_id = ? AND show_tour = 1;");
 
                 prepStatement.setInt(1, tour.getTour_id());
                 ResultSet rs = prepStatement.executeQuery();
 
                 ArrayList<Tour.Date> list = new ArrayList<>();
 
-                if (rs != null) while (rs.next()) list.add(new Tour.Date(rs));
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour.Date(rs));
 
                 return list.toArray(new Tour.Date[0]);
             } catch (Exception e) {
@@ -134,17 +156,17 @@ public class TourModel {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement prepStatement = conn.prepareStatement("SELECT *" +
-                        " FROM tour_date" +
-                        " WHERE tour_date_id = ?;"
-                );
+                PreparedStatement prepStatement = conn
+                        .prepareStatement("SELECT *" + " FROM tour_date" + " WHERE tour_date_id = ?;");
 
                 prepStatement.setInt(1, tourDateID);
                 ResultSet rs = prepStatement.executeQuery();
 
                 ArrayList<Tour.Date> list = new ArrayList<>();
 
-                if (rs != null) while (rs.next()) list.add(new Tour.Date(rs));
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour.Date(rs));
 
                 return list.toArray(new Tour.Date[0]);
             } catch (Exception e) {
@@ -158,18 +180,44 @@ public class TourModel {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement prepStatement = conn.prepareStatement("SELECT *" +
-                        " FROM tour_image ti,tour_tour_image tti" +
-                        " WHERE tti.tour_id = ? AND tti.tour_image_id = ti.tour_image_id;");
+                PreparedStatement prepStatement = conn
+                        .prepareStatement("SELECT *" + " FROM tour_image ti,tour_tour_image tti"
+                                + " WHERE tti.tour_id = ? AND tti.tour_image_id = ti.tour_image_id;");
 
                 prepStatement.setInt(1, tour.getTour_id());
                 ResultSet rs = prepStatement.executeQuery();
 
                 ArrayList<Tour.Image> list = new ArrayList<>();
 
-                if (rs != null) while (rs.next()) list.add(new Tour.Image(rs));
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour.Image(rs));
 
                 return list.toArray(new Tour.Image[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
+
+    public static IDatabaseQuery<Tour.Registrations> getTourRegistrationByTourDateId(Tour.Date tourDate) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement prepStatement = conn
+                        .prepareStatement("SELECT *" + " FROM tour_registration tr WHERE tr.tour_date_id = ?");
+
+                prepStatement.setInt(1, tourDate.getId());
+                ResultSet rs = prepStatement.executeQuery();
+
+                ArrayList<Tour.Registrations> list = new ArrayList<>();
+
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour.Registrations(rs));
+
+                return list.toArray(new Tour.Registrations[0]);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -181,16 +229,17 @@ public class TourModel {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement prepStatement = conn.prepareStatement("SELECT *" +
-                        " FROM tour_image " +
-                        " WHERE tour_image_id = ?;");
+                PreparedStatement prepStatement = conn
+                        .prepareStatement("SELECT *" + " FROM tour_image " + " WHERE tour_image_id = ?;");
 
                 prepStatement.setInt(1, id);
                 ResultSet rs = prepStatement.executeQuery();
 
                 ArrayList<Tour.Image> list = new ArrayList<>();
 
-                if (rs != null) while (rs.next()) list.add(new Tour.Image(rs));
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour.Image(rs));
 
                 return list.toArray(new Tour.Image[0]);
             } catch (Exception e) {
@@ -199,7 +248,6 @@ public class TourModel {
             }
         };
     }
-
 
     public static IDatabaseQuery<Tour> getAllTours() {
         return databaseConnection -> {
@@ -210,7 +258,9 @@ public class TourModel {
 
                 ArrayList<Tour> list = new ArrayList<>();
 
-                if (rs != null) while (rs.next()) list.add(new Tour(rs));
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour(rs));
 
                 return list.toArray(new Tour[0]);
             } catch (Exception e) {
@@ -230,7 +280,9 @@ public class TourModel {
 
                 ArrayList<Tour> list = new ArrayList<>();
 
-                if (rs != null) while (rs.next()) list.add(new Tour(rs));
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour(rs));
 
                 return list.toArray(new Tour[0]);
             } catch (Exception e) {
@@ -238,6 +290,87 @@ public class TourModel {
                 return null;
             }
         };
+    }
+
+    public static IDatabaseQuery<Tour> getBestSellingTours(int limit) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement(
+                        "SELECT t.* FROM tour_date td\n" + "    	INNER JOIN tour t ON t.tour_id =  td.tour_id\n"
+                                + "    	ORDER BY avail_slot DESC LIMIT ?;");
+
+                pstmt.setInt(1, limit);
+
+                ResultSet rs = pstmt.executeQuery();
+
+                ArrayList<Tour> list = new ArrayList<>();
+
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour(rs));
+
+                return list.toArray(new Tour[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+
+    }
+
+    public static IDatabaseQuery<Tour> getLowSlotTours(int below) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement(
+                        "SELECT t.* FROM tour_date td\n" + "    	INNER JOIN tour t ON t.tour_id =  td.tour_id\n"
+                                + "    	WHERE avail_slot < ?;");
+
+                pstmt.setInt(1, below);
+
+                ResultSet rs = pstmt.executeQuery();
+
+                ArrayList<Tour> list = new ArrayList<>();
+
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour(rs));
+
+                return list.toArray(new Tour[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+
+    }
+
+    public static IDatabaseQuery<Tour> getWorstSellingTours(int limit) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement(
+                        "SELECT t.* FROM tour_date td\n" + "    	INNER JOIN tour t ON t.tour_id =  td.tour_id\n"
+                                + "    	ORDER BY avail_slot ASC LIMIT ?;");
+
+                pstmt.setInt(1, limit);
+
+                ResultSet rs = pstmt.executeQuery();
+
+                ArrayList<Tour> list = new ArrayList<>();
+
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour(rs));
+
+                return list.toArray(new Tour[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+
     }
 
     public static IDatabaseQuery<Tour.Review> getTourReviews(Tour tour) {
@@ -250,7 +383,9 @@ public class TourModel {
 
                 ArrayList<Tour.Review> list = new ArrayList<>();
 
-                if (rs != null) while (rs.next()) list.add(new Tour.Review(rs));
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour.Review(rs));
 
                 return list.toArray(new Tour.Review[0]);
             } catch (Exception e) {
@@ -286,26 +421,20 @@ public class TourModel {
             Connection conn = databaseConnection.get();
             try {
                 PreparedStatement pstmt = conn.prepareStatement("SELECT t.*, a.price, b.url, b.alt_text\r\n"
-                        + "FROM tour t\r\n"
-                        + "LEFT JOIN (\r\n"
-                        + "	SELECT DISTINCT t.name, td.tour_id, td.price\r\n"
-                        + "    FROM tour_date td\r\n"
-                        + "    LEFT JOIN tour t ON td.tour_id = t.tour_id\r\n"
-                        + "    WHERE td.show_tour = 1\r\n"
-                        + "    ORDER BY td.price\r\n"
-                        + ") a ON a.tour_id = t.tour_id\r\n"
-                        + "LEFT JOIN (\r\n"
-                        + "	SELECT DISTINCT tti.tour_id, ti.alt_text, ti.url\r\n"
-                        + "    FROM tour_tour_image tti\r\n"
+                        + "FROM tour t\r\n" + "LEFT JOIN (\r\n" + "	SELECT DISTINCT t.name, td.tour_id, td.price\r\n"
+                        + "    FROM tour_date td\r\n" + "    LEFT JOIN tour t ON td.tour_id = t.tour_id\r\n"
+                        + "    WHERE td.show_tour = 1\r\n" + "    ORDER BY td.price\r\n"
+                        + ") a ON a.tour_id = t.tour_id\r\n" + "LEFT JOIN (\r\n"
+                        + "	SELECT DISTINCT tti.tour_id, ti.alt_text, ti.url\r\n" + "    FROM tour_tour_image tti\r\n"
                         + "    LEFT JOIN tour_image ti ON ti.tour_image_id = tti.tour_image_id\r\n"
-                        + ") b  ON b.tour_id = t.tour_id\r\n"
-                        + "WHERE t.name LIKE '%" + name + "%'\r\n"
-                        + ";");
+                        + ") b  ON b.tour_id = t.tour_id\r\n" + "WHERE t.name LIKE '%" + name + "%'\r\n" + ";");
                 ResultSet rs = pstmt.executeQuery();
 
                 ArrayList<Tour> list = new ArrayList<>();
 
-                if (rs != null) while (rs.next()) list.add(new Tour(rs));
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour(rs));
 
                 return list.toArray(new Tour[0]);
             } catch (Exception e) {
@@ -315,15 +444,17 @@ public class TourModel {
         };
     }
 
-
-    public static IDatabaseUpdate registerUserForTour(int userID, int tourDateID, int pax) {
+    public static IDatabaseUpdate registerUserForTour(int userID, int tourDateID, int pax,
+                                                      String stripe_transaction_id) {
         IDatabaseUpdate addUserToTour = databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO tour_registration (user_id, tour_date_id, pax) VALUES (?, ?,?)");
+                PreparedStatement pstmt = conn.prepareStatement(
+                        "INSERT INTO tour_registration (user_id, tour_date_id, pax, stripe_transaction_id) VALUES (?, ?,?, ?)");
                 pstmt.setInt(1, userID);
                 pstmt.setInt(2, tourDateID);
                 pstmt.setInt(3, pax);
+                pstmt.setString(4, stripe_transaction_id);
                 return pstmt.executeUpdate();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -333,7 +464,8 @@ public class TourModel {
         IDatabaseUpdate addPaxToTour = databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("UPDATE tour_date SET avail_slot = avail_slot - ? WHERE tour_date_id = ?");
+                PreparedStatement pstmt = conn
+                        .prepareStatement("UPDATE tour_date SET avail_slot = avail_slot - ? WHERE tour_date_id = ?");
                 pstmt.setInt(1, pax);
                 pstmt.setInt(2, tourDateID);
                 return pstmt.executeUpdate();
@@ -343,12 +475,11 @@ public class TourModel {
             }
         };
         return databaseConnection -> {
-            if (addUserToTour.update(databaseConnection) == 1 &&
-                    addPaxToTour.update(databaseConnection) == 1) return 1;
+            if (addUserToTour.update(databaseConnection) == 1 && addPaxToTour.update(databaseConnection) == 1)
+                return 1;
             return -1;
         };
     }
-
 
     public static IDatabaseQuery<Tour> getToursFromCategory(Category category) {
         return databaseConnection -> {
@@ -361,7 +492,9 @@ public class TourModel {
 
                 ArrayList<Tour> list = new ArrayList<>();
 
-                if (resultSet != null) while (resultSet.next()) list.add(new Tour(resultSet));
+                if (resultSet != null)
+                    while (resultSet.next())
+                        list.add(new Tour(resultSet));
 
                 return list.toArray(new Tour[0]);
             } catch (Exception e) {
@@ -375,8 +508,8 @@ public class TourModel {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO review (tour_id, user_id, rating, score, text) "
-                        + "VALUES (?, ?, ?, ?, ?)");
+                PreparedStatement pstmt = conn.prepareStatement(
+                        "INSERT INTO review (tour_id, user_id, rating, score, text) " + "VALUES (?, ?, ?, ?, ?)");
                 pstmt.setString(1, tour_id);
                 pstmt.setInt(2, user_id);
                 pstmt.setInt(3, rating);
@@ -390,6 +523,7 @@ public class TourModel {
             }
         };
     }
+
 
     public static IDatabaseQuery<Tour.Registrations> getTourRegistrations(int userID, int tourID) {
         return databaseConnection -> {
@@ -405,7 +539,9 @@ public class TourModel {
                 ResultSet rs = pstmt.executeQuery();
                 ArrayList<Tour.Registrations> list = new ArrayList<>();
 
-                if (rs != null) while (rs.next()) list.add(new Tour.Registrations(rs));
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour.Registrations(rs));
 
                 return list.toArray(new Tour.Registrations[0]);
             } catch (Exception e) {
@@ -419,21 +555,36 @@ public class TourModel {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement(
-                        "SELECT DISTINCT T.* " +
-                                "FROM tour_registration tr, tour t, tour_date td " +
-                                "WHERE tr.user_id = ? AND tr.tour_date_id = td.tour_date_id AND td.tour_id = t.tour_id");
+                PreparedStatement pstmt = conn.prepareStatement("SELECT DISTINCT T.* "
+                        + "FROM tour_registration tr, tour t, tour_date td "
+                        + "WHERE tr.user_id = ? AND tr.tour_date_id = td.tour_date_id AND td.tour_id = t.tour_id");
                 pstmt.setInt(1, userID);
 
                 ResultSet rs = pstmt.executeQuery();
                 ArrayList<Tour> list = new ArrayList<>();
 
-                if (rs != null) while (rs.next()) list.add(new Tour(rs));
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour(rs));
 
                 return list.toArray(new Tour[0]);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
+            }
+        };
+    }
+
+    public static IDatabaseUpdate deleteTour(int tour_id) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement pstmt = conn.prepareStatement("DELETE FROM tour WHERE tour_id = ?");
+                pstmt.setInt(1, tour_id);
+                return pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return -1;
             }
         };
     }
@@ -459,26 +610,13 @@ public class TourModel {
         };
     }
 
-    public static IDatabaseUpdate deleteTour(int tour_id) {
+    public static IDatabaseUpdate insertNewTour(String tourName, String briefDesc, String description,
+                                                String location) {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("DELETE FROM tour WHERE tour_id = ?");
-                pstmt.setInt(1, tour_id);
-                return pstmt.executeUpdate();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return -1;
-            }
-        };
-    }
-
-    public static IDatabaseUpdate insertNewTour(String tourName, String briefDesc, String description, String location) {
-        return databaseConnection -> {
-            Connection conn = databaseConnection.get();
-            try {
-                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO tour (name, brief_desc, detail_desc, location) "
-                        + "VALUES (?, ?, ?, ?)");
+                PreparedStatement pstmt = conn.prepareStatement(
+                        "INSERT INTO tour (name, brief_desc, detail_desc, location) " + "VALUES (?, ?, ?, ?)");
                 pstmt.setString(1, tourName);
                 pstmt.setString(2, briefDesc);
                 pstmt.setString(3, description);
@@ -491,11 +629,13 @@ public class TourModel {
         };
     }
 
-    public static IDatabaseUpdate updateTour(int tourID, String tourName, String briefDesc, String description, String location) {
+    public static IDatabaseUpdate updateTour(int tourID, String tourName, String briefDesc, String description,
+                                             String location) {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("UPDATE tour SET name = ?, brief_desc = ?, detail_desc = ?, location = ? WHERE tour_id = ?");
+                PreparedStatement pstmt = conn.prepareStatement(
+                        "UPDATE tour SET name = ?, brief_desc = ?, detail_desc = ?, location = ? WHERE tour_id = ?");
                 pstmt.setString(1, tourName);
                 pstmt.setString(2, briefDesc);
                 pstmt.setString(3, description);
@@ -509,12 +649,14 @@ public class TourModel {
         };
     }
 
-    public static IDatabaseUpdate insertNewTourDate(int tourID, String dateStart, String dateEnd, double price, int emptySlots, int maxSlots, boolean show) {
+    public static IDatabaseUpdate insertNewTourDate(int tourID, String dateStart, String dateEnd, double price,
+                                                    int emptySlots, int maxSlots, boolean show) {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO tour_date (tour_id, tour_start, tour_end, max_slot, show_tour, price, avail_slot) "
-                        + "VALUES (?, ?, ?, ?, ?, ?, ?)");
+                PreparedStatement pstmt = conn.prepareStatement(
+                        "INSERT INTO tour_date (tour_id, tour_start, tour_end, max_slot, show_tour, price, avail_slot) "
+                                + "VALUES (?, ?, ?, ?, ?, ?, ?)");
                 pstmt.setInt(1, tourID);
                 pstmt.setString(2, dateStart);
                 pstmt.setString(3, dateEnd);
@@ -530,12 +672,13 @@ public class TourModel {
         };
     }
 
-
-    public static IDatabaseUpdate updateTourDate(int tourDateID, String dateStart, String dateEnd, double price, int emptySlots, int maxSlots, boolean show) {
+    public static IDatabaseUpdate updateTourDate(int tourDateID, String dateStart, String dateEnd, double price,
+                                                 int emptySlots, int maxSlots, boolean show) {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("UPDATE tour_date SET tour_start = ?, tour_end = ?, max_slot = ?, show_tour = ?, price = ?, avail_slot = ? WHERE tour_date_id = ?");
+                PreparedStatement pstmt = conn.prepareStatement(
+                        "UPDATE tour_date SET tour_start = ?, tour_end = ?, max_slot = ?, show_tour = ?, price = ?, avail_slot = ? WHERE tour_date_id = ?");
                 pstmt.setString(1, dateStart);
                 pstmt.setString(2, dateEnd);
                 pstmt.setInt(3, maxSlots);

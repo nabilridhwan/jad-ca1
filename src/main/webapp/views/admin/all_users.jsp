@@ -1,17 +1,11 @@
-<!-- 
-	Name: Nabil Ridhwanshah Bin Rosli
-	Admin No: P2007421
-	Class: DIT/FT/2A/01
-	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI 
- -->
-
 <!DOCTYPE html>
-<%@page import="dataStructures.Category"%>
-<%@page import="models.CategoryModel"%>
 <%@page import="utils.Util"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="utils.DatabaseConnection"%>
 <html lang="en">
 <head>
-<title>Edit Category</title>
+<title>Admin - All Users</title>
 <meta charset="utf-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -51,123 +45,88 @@
 	href="${pageContext.request.contextPath}/css/icomoon.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/style.css" />
-
-
 </head>
 <body>
 
-
-	<%@ include file="../misc/navbar.jsp"%>
-
 	<%
-	int userID = Util.getUserID(session);
-	if (userID == -1) {
-		response.sendRedirect("/CA1-Preparation/views/index.jsp");
-		return;
-	}
-
-	if (!Util.isUserAdmin(userID)) {
-		response.sendRedirect("/CA1-Preparation/views/index.jsp");
-		return;
-	}
-
-	// Get the category_id from parameter
-	String category_id = request.getParameter("id");
-
-	if (category_id == null || category_id.isEmpty()) {
-		response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
-		return;
-	}
-
-	DatabaseConnection connection = new DatabaseConnection();
-
-	// Get the category from the database
-	Category[] categories = CategoryModel.getCategoryFromId(category_id).query(connection);
-	connection.close();
-
-	if (categories == null || categories.length == 0) {
-		response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
-		return;
-	}
-
-	Category cat = categories[0];
-
-	String category_name = cat.getCategory_name();
-	String category_desc = cat.getDesc();
-	String category_img = cat.getImage();
+	Util.forceAdmin(session, response);
+	String q = request.getParameter("search") != null ? request.getParameter("search") : "";
 	%>
 
-	<div class="hero-wrap"
-		style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
-		<div class="overlay"></div>
+
+	<%
+	DatabaseConnection connection = new DatabaseConnection();
+	String sql = "SELECT user_id, profile_pic_url, full_name, email, CONCAT(address_1, ' ', address_2, ' ', apt_suite, ' ', postal_code) AS full_address FROM jad.user WHERE CONCAT(full_name, ' ', email, ' ', phone, ' ', address_1, ' ', address_2, ' ', apt_suite, ' ', postal_code) LIKE '%"
+			+ q + "%'";
+	System.out.println(sql);
+	PreparedStatement pstmt = connection.get().prepareStatement(sql);
+	ResultSet usersRs = pstmt.executeQuery();
+	%>
+	<%@ include file="../misc/navbar_dark.jsp"%>
+	<!-- END nav -->
+
+	<section class="ftco-section bg-light">
 		<div class="container">
-			<div
-				class="row no-gutters js-fullheight align-items-center justify-content-center"
-				data-scrollax-parent="true">
-				<section
-					class="ftco-section contact-section ftco-degree-bg bg-white rounded">
-					<div class="container px-5">
-						<div class="row d-flex contact-info">
-							<div class="col-md-12 mb-4">
-								<h2 class="h4">
-									Edit
-									"<%=category_name%>"
-									category
-								</h2>
-							</div>
-							<div class="w-100"></div>
-							<div class="col-md-12">
-								<p class="text-danger">
-									<%
-									String message = request.getParameter("message") != null ? request.getParameter("message") : "";
-									%>
-									<%=message%>
-								</p>
-							</div>
-						</div>
-
-						<div class="row block-9">
-							<div class="col-md-12">
-
-								<img width="300" src="<%=category_img%>" />
-
-
-								<form action="${pageContext.request.contextPath}/editCategory"
-									method="POST" enctype="multipart/form-data">
-
-									<input hidden="true" type="text" class="form-control"
-										name="category_id" value="<%=category_id%>" />
-
-									<div class="form-group">
-										<label>Category Image</label> <input type="file"
-											class="form-control" id="file_url" name="file" />
-									</div>
-
-
-
-									<div class="form-group">
-										<label>Category Name</label> <input type="text"
-											class="form-control" placeholder="Category Name"
-											name="category_name" value="<%=category_name%>" required />
-									</div>
-									<div class="form-group">
-										<label>Category Description</label> <input type="text"
-											name="category_desc" class="form-control"
-											placeholder="Description" value="<%=category_desc%>" required />
-									</div>
-									<div class="form-group">
-										<input type="submit" value="Save"
-											class="btn w-100 btn-primary py-3 px-5" />
-									</div>
-								</form>
-							</div>
-							<!-- <div class="col-md-6" id="map"></div> -->
-						</div>
-					</div>
-				</section>
+			<div class="row justify-content-start mb-5 pb-3">
+				<div class="col-md-7 heading-section ftco-animate">
+					<span class="subheading">User Management</span>
+					<h2 class="mb-4">
+						<strong>All Users</strong>
+					</h2>
+				</div>
 			</div>
 		</div>
-	</div>
+
+		<!-- FORM -->
+		<form class="container my-4">
+			<div class="form-group">
+				<label for="search">Search</label> <input class="form-control"
+					type="text" name="search" value="<%=q%>"
+					placeholder="Search for user by name, email or address" />
+			</div>
+
+			<button class="btn btn-primary">Search</button>
+		</form>
+
+		<div class="container-fluid">
+			<div class="row">
+
+
+				<%
+				while (usersRs.next()) {
+					int user_id = usersRs.getInt("user_id");
+					String full_name = usersRs.getString("full_name");
+					String profile_pic_url = usersRs.getString("profile_pic_url");
+					String email = usersRs.getString("email");
+					String full_address = usersRs.getString("full_address").isEmpty() ? "No Address" : usersRs.getString("full_address");
+				%>
+				<div class="col-sm-4 col-lg-3 ftco-animate">
+					<div class="card">
+
+						<img class="card-img-top img-fluid" src="<%=profile_pic_url%>"
+							alt="" />
+
+						<div class="card-body">
+							<h4 class="card-title"><%=full_name%></h4>
+							<p class="card-text muted"><%=email%></p>
+
+							<p class="card-text muted">
+								<%=full_address%>
+							</p>
+
+							<a
+								href="<%=request.getContextPath()%>/views/admin/edit_user.jsp?user_id=<%=user_id%>"
+								class="btn btn-primary"> Edit User </a>
+						</div>
+					</div>
+				</div>
+				<%
+				}
+				%>
+
+
+			</div>
+	</section>
 
 	<footer class="ftco-footer ftco-bg-dark ftco-section">
 		<div class="container">
@@ -253,11 +212,11 @@
 	<!-- loader -->
 	<div id="ftco-loader" class="show fullscreen">
 		<svg class="circular" width="48px" height="48px">
-                <circle class="path-bg" cx="24" cy="24" r="22"
-				fill="none" stroke-width="4" stroke="#eeeeee" />
-                <circle class="path" cx="24" cy="24" r="22" fill="none"
+				<circle class="path-bg" cx="24" cy="24" r="22" fill="none"
+				stroke-width="4" stroke="#eeeeee" />
+				<circle class="path" cx="24" cy="24" r="22" fill="none"
 				stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" />
-            </svg>
+			</svg>
 	</div>
 
 	<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
@@ -284,11 +243,5 @@
 	<script src="${pageContext.request.contextPath}/js/scrollax.min.js"></script>
 
 	<script src="${pageContext.request.contextPath}/js/main.js"></script>
-
-
-	<script src="https://widget.cloudinary.com/v2.0/global/all.js"
-		type="text/javascript"></script>
-
-
 </body>
 </html>

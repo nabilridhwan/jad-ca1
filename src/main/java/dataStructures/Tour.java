@@ -1,6 +1,6 @@
 /*
- * 	Name: Xavier Tay Cher Yew
-	Admin No: P2129512
+ * 	Name: Xavier Tay Cher Yew, Nabil Ridhwanshah Bin Rosli
+	Admin No: P2129512, P2007421
 	Class: DIT/FT/2A/01
 	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI  
  * */
@@ -22,6 +22,8 @@ public class Tour {
     String tour_location;
     Image[] images;
     Date[] dates;
+
+    Registrations[] registrations;
     double average_rating;
     Review[] reviews;
     boolean refreshed;
@@ -70,27 +72,30 @@ public class Tour {
         return tour_location;
     }
 
-
     public Date[] getDates() {
-        if (!refreshed) refreshTour();
+        if (!refreshed)
+            refreshTour();
         return dates;
     }
 
     public Image[] getImages() {
-        if (!refreshed) refreshTour();
+        if (!refreshed)
+            refreshTour();
         return images;
     }
 
     public Image getFirstOrDefaultImage() {
-        if (!refreshed) refreshTour();
-        if ( images.length > 0) {
+        if (!refreshed)
+            refreshTour();
+        if (images.length > 0) {
             return images[0];
         }
         return new Image();
     }
 
     public Tour.Date getFirstOrDefaultDate() {
-        if (!refreshed) refreshTour();
+        if (!refreshed)
+            refreshTour();
         if (dates.length > 0) {
             return dates[0];
         }
@@ -98,17 +103,26 @@ public class Tour {
     }
 
     public double getAverage_rating() {
-        if (!refreshed) refreshTour();
+        if (!refreshed)
+            refreshTour();
         return average_rating;
     }
 
     public Review[] getReviews() {
-        if (!refreshed) refreshTour();
+        if (!refreshed)
+            refreshTour();
         return reviews;
     }
 
     public void refreshTour(DatabaseConnection conn) {
         dates = TourModel.getTourDates(this).query(conn);
+
+        // Get registrations
+        for (Date date : dates) {
+            Registrations[] registrations = TourModel.getTourRegistrationByTourDateId(date).query(conn);
+            date.setRegistrations(registrations);
+        }
+
         images = TourModel.getTourImages(this).query(conn);
         reviews = TourModel.getTourReviews(this).query(conn);
         average_rating = TourModel.getTourReviewAverage(this).query(conn)[0];
@@ -162,19 +176,31 @@ public class Tour {
             return id;
         }
 
-        Timestamp start;
-        Timestamp end;
+        public java.util.Date start;
+        public java.util.Date end;
         boolean shown;
         double price;
         int avail_slot;
         int max_slot;
 
+
+        private Registrations[] registrations;
+
+        public Registrations[] getRegistrations() {
+            return registrations;
+        }
+
+        public void setRegistrations(Registrations[] registrations) {
+            this.registrations = registrations;
+        }
+
         public Date(ResultSet rs) {
+            DatabaseConnection conn = new DatabaseConnection();
             try {
                 id = rs.getInt("tour_date_id");
                 tour_id = rs.getInt("tour_id");
-                start = rs.getTimestamp("tour_start");
-                end = rs.getTimestamp("tour_end");
+                start = new java.util.Date(rs.getTimestamp("tour_start").getTime());
+                end = new java.util.Date(rs.getTimestamp("tour_end").getTime());
                 shown = rs.getByte("show_tour") == 1;
                 price = rs.getDouble("price");
                 avail_slot = rs.getInt("avail_slot");
@@ -182,6 +208,7 @@ public class Tour {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            conn.close();
         }
 
         public Date() {
@@ -194,32 +221,33 @@ public class Tour {
             max_slot = 0;
         }
 
-        public Timestamp getStart() {
+        public java.util.Date getStart() {
             return start;
         }
 
         public String getStartString() {
-            return ParseTimeStamp(start);
+            return start.toString();
         }
 
-        public Timestamp getEnd() {
+        public java.util.Date getEnd() {
             return end;
         }
 
         public String getEndString() {
-            return ParseTimeStamp(end);
+            return end.toString();
         }
 
         private static String ParseTimeStamp(Timestamp timestamp) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(timestamp);
-            //2 digit
+            // 2 digit
             int day = calendar.get(Calendar.DAY_OF_MONTH);
             String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, java.util.Locale.getDefault());
             int year = calendar.get(Calendar.YEAR);
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minute = calendar.get(Calendar.MINUTE);
-            return String.format("%02d", day) + " " + month + " " + year + " " + String.format("%02d", hour) + ":" + String.format("%02d", minute);
+            return String.format("%02d", day) + " " + month + " " + year + " " + String.format("%02d", hour) + ":"
+                    + String.format("%02d", minute);
         }
 
         public boolean isShown() {
@@ -227,9 +255,19 @@ public class Tour {
             return shown;
         }
 
+        @Override
+        public String toString() {
+            return getStartString() + "-" + getEndString() + " (" + getDuration() + ")";
+        }
+
+        public int getTour_id() {
+            return tour_id;
+        }
+
         public double getPrice() {
             return price;
         }
+
 
         public int getAvail_slot() {
             return avail_slot;
@@ -241,16 +279,8 @@ public class Tour {
 
         public String getDuration() {
             // add 1 day to include the start day
-            return String.format("%02d", (int) ((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1) + " days";
-        }
-
-        @Override
-        public String toString() {
-            return getStartString() + "-" + getEndString() + " (" + getDuration() + ")";
-        }
-
-        public int getTour_id() {
-            return tour_id;
+            return String.format("%02d", (int) ((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1)
+                    + " days";
         }
 
         public static class Pair {
@@ -327,10 +357,21 @@ public class Tour {
             return pax;
         }
 
+        public java.util.Date getCreatedAt() {
+            return created_at;
+        }
+
+        public String getStripe_transaction_id() {
+            return stripe_transaction_id;
+        }
+
         private int id;
         private int user_id;
         private int tour_date_id;
         private byte pax;
+        private String stripe_transaction_id;
+
+        private java.util.Date created_at;
 
         public Registrations(ResultSet rs) {
             try {
@@ -338,9 +379,13 @@ public class Tour {
                 user_id = rs.getInt("user_id");
                 tour_date_id = rs.getInt("tour_date_id");
                 pax = rs.getByte("pax");
+                created_at = new java.util.Date(rs.getTimestamp("created_at").getTime());
+                stripe_transaction_id = rs.getString("stripe_transaction_id");
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+
 }
