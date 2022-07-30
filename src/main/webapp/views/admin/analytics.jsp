@@ -283,7 +283,7 @@
 		<div class="container">
 			<div class="row justify-content-start mb-5 pb-3">
 				<div class="col-md-7 heading-section ftco-animate">
-					<span class="subheading">Special Offers</span>
+					<span class="subheading">Report</span>
 					<h2 class="mb-4">
 						<strong>Low Slot Tours</strong>
 					</h2>
