@@ -65,6 +65,8 @@ public class ModifyUser extends HttpServlet {
         String apt_suite = request.getParameter("apt_suite") == null ? "" : request.getParameter("apt_suite");
         String postal_code = request.getParameter("postal_code") == null ? "" : request.getParameter("postal_code");
         
+        String role = request.getParameter("role");
+        
         System.out.println(password);
         System.out.println(confirm_password);
         
@@ -109,7 +111,7 @@ public class ModifyUser extends HttpServlet {
         	
         }
         
-        IDatabaseUpdate databaseUpdate = UserModel.updateUser(intUserId, profile_pic_url, full_name, email, finalPassword, address_1, address_2, apt_suite, postal_code, phone);
+        IDatabaseUpdate databaseUpdate = UserModel.updateUser(intUserId, profile_pic_url, full_name, email, finalPassword, address_1, address_2, apt_suite, postal_code, phone, role);
                 
 
         int affectedRows = databaseUpdate.update(connection);

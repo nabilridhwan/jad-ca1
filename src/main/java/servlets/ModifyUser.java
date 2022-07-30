@@ -147,7 +147,7 @@ public class ModifyUser extends HttpServlet {
         }
 
 
-        IDatabaseUpdate databaseUpdate = UserModel.updateUser(userID, profile_pic_url, full_name, email, finalPassword, address_1, address_2, apt_suite, postal_code, phone);
+        IDatabaseUpdate databaseUpdate = UserModel.updateUser(userID, profile_pic_url, full_name, email, finalPassword, address_1, address_2, apt_suite, postal_code, phone, user.getRole());
                 
 
         int affectedRows = databaseUpdate.update(connection);
