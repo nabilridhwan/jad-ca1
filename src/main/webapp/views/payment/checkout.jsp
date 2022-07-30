@@ -33,6 +33,8 @@
 	</form>
 
 	<script>
+		const getUrl = window.location;
+		const redirectUrl = getUrl .protocol + "//" + getUrl.host + '${pageContext.request.contextPath}/pay'
 		const stripe = Stripe('pk_test_51Kq9aiGruISt8Q6Bay3PRs8qYLr9NvzEgDzK8F4cI98ZI1vau3047zqKu0ODXHuJpS5MYJ9gmQc6nAltyZU2WBsh00U0mNnNWf');
 		
 		const options = {
@@ -57,7 +59,7 @@
 				    //`Elements` instance that was used to create the Payment Element
 				    elements,
 				    confirmParams: {
-				      return_url: '${pageContext.request.contextPath}/pay',
+				      return_url: redirectUrl,
 				    },
 				  });
 
@@ -66,7 +68,7 @@
 				    // confirming the payment. Show error to your customer (for example, payment
 				    // details incomplete)
 				    const messageContainer = document.querySelector('#error-message');
-				    messageContainer.textContent = error.message + "return url: ${pageContext.request.contextPath}/pay";
+				    messageContainer.textContent = error.message + "return url: redirectUrl";
 				  } else {
 				    // Your customer will be redirected to your `return_url`. For some payment
 				    // methods like iDEAL, your customer will be redirected to an intermediate
