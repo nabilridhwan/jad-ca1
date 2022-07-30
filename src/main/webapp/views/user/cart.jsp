@@ -154,7 +154,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                 double rating = tour.getAverage_rating();
         %>
         <div class="row">
-            <div class="col-sm col-md-6 col-lg ftco-animate">
+            <div class="col-sm-12 col-md-9 col-lg-9 ftco-animate">
                 <div class="destination">
 
                     <a
@@ -216,7 +216,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="col">
                 <%=dates.length%> date bookings: <br>
 
                 <%
