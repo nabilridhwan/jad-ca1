@@ -57,8 +57,9 @@ public class CreatePaymentIntent extends HttpServlet {
         GenerateNewClientSecretBody entity = new GenerateNewClientSecretBody(amt, currency);
 
         Client client = ClientBuilder.newClient();
-
-        WebTarget target = client.target(request.getContextPath() + "/checkout/create");
+        String restUrl = "http://localhost:8080/CA1-Preparation/checkout/create";
+//        String restUrl = request.getContextPath() + "/checkout/create";
+        WebTarget target = client.target(restUrl);
 
         Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
 
