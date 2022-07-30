@@ -66,7 +66,7 @@
 				    // confirming the payment. Show error to your customer (for example, payment
 				    // details incomplete)
 				    const messageContainer = document.querySelector('#error-message');
-				    messageContainer.textContent = error.message;
+				    messageContainer.textContent = error.message + "return url: ${pageContext.request.contextPath}/pay";
 				  } else {
 				    // Your customer will be redirected to your `return_url`. For some payment
 				    // methods like iDEAL, your customer will be redirected to an intermediate
