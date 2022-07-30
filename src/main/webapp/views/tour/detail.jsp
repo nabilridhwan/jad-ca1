@@ -359,7 +359,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                                             <%
                                                 if (request.getParameter("edit_mode") != null) {
                                             %>
-                                            disabled
+                                            readonly="readonly"
                                     <%
                                         }
                                     %>
