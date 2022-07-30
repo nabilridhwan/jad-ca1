@@ -85,7 +85,7 @@ public class AddNewCategory extends HttpServlet {
 		}
 
 		// Initial Parameters
-		String image_url = null;
+		String image_url = "https://via.placeholder.com/400";
 		String category_name = null;
 		String category_desc = null;
 
@@ -132,16 +132,20 @@ public class AddNewCategory extends HttpServlet {
 						boolean isInMemory = fi.isInMemory();
 						long sizeInBytes = fi.getSize();
 
-						// Write the file
-						if (fileName.lastIndexOf("\\") >= 0) {
-							file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\")));
-						} else {
-							file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\") + 1));
-						}
-						fi.write(file);
+						// Only deal with files if the size is above 0
+						if (sizeInBytes > 0) {
+							// Write the file
+							if (fileName.lastIndexOf("\\") >= 0) {
+								file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\")));
+							} else {
+								file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\") + 1));
+							}
+							fi.write(file);
 
-						// Upload image and retrieve the URL
-						image_url = imageUpload.uploadImage(file, ImageUploadType.CATEGORY);
+							// Upload image and retrieve the URL
+							image_url = imageUpload.uploadImage(file, ImageUploadType.CATEGORY);
+						}
+
 					} else {
 						// Item is a normal input field
 						String fieldName = fi.getFieldName();
