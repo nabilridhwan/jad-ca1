@@ -444,8 +444,7 @@ public class TourModel {
         };
     }
 
-    public static IDatabaseUpdate registerUserForTour(int userID, int tourDateID, int pax,
-                                                      String stripe_transaction_id) {
+    public static IDatabaseUpdate registerUserForTour(int userID, int tourDateID, int pax, String stripe_transaction_id) {
         IDatabaseUpdate addUserToTour = databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
