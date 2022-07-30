@@ -111,7 +111,7 @@
 							<div class="col-md-12 mb-4">
 								<h2 class="h4">
 									Edit
-									<%=category_name%>
+									"<%=category_name%>"
 									category
 								</h2>
 							</div>
@@ -139,19 +139,20 @@
 										name="category_id" value="<%=category_id%>" />
 
 									<div class="form-group">
-										<input type="file" class="form-control" id="file_url"
-											name="file" />
+										<label>Category Image</label> <input type="file"
+											class="form-control" id="file_url" name="file" />
 									</div>
 
 
 
 									<div class="form-group">
-										<input type="text" class="form-control"
-											placeholder="Category Name" name="category_name"
-											value="<%=category_name%>" required />
+										<label>Category Name</label> <input type="text"
+											class="form-control" placeholder="Category Name"
+											name="category_name" value="<%=category_name%>" required />
 									</div>
 									<div class="form-group">
-										<input type="text" name="category_desc" class="form-control"
+										<label>Category Description</label> <input type="text"
+											name="category_desc" class="form-control"
 											placeholder="Description" value="<%=category_desc%>" required />
 									</div>
 									<div class="form-group">

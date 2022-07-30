@@ -110,16 +110,18 @@
 
 
 									<div class="form-group">
-										<input type="file" class="form-control" id="file_url"
-											name="file" />
+										<label>Category Image</label> <input type="file"
+											class="form-control" id="file_url" name="file" />
 									</div>
 
 									<div class="form-group">
-										<input type="text" class="form-control"
-											placeholder="Category Name" name="category_name" required />
+										<label>Category Name</label> <input type="text"
+											class="form-control" placeholder="Category Name"
+											name="category_name" required />
 									</div>
 									<div class="form-group">
-										<input type="text" name="category_desc" class="form-control"
+										<label>Category Description</label> <input type="text"
+											name="category_desc" class="form-control"
 											placeholder="Description" required />
 									</div>
 									<div class="form-group">
