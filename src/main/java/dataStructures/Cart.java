@@ -55,11 +55,19 @@ public class Cart {
         return items.values().toArray(new Item[0]);
     }
 
-    public double getTotalPrice(DatabaseConnection connection) {
+    public double getTotalPrice(DatabaseConnection connection, String currency) {
         double total = 0;
         Item[] itemsArray = getAllItems();
         for (Item item : itemsArray) total += item.getPrice(connection);
-        return total;
+        //todo: convert to currency
+        return total * 100;
+    }
+
+    public double getTotalPrice(String currency) {
+        DatabaseConnection connection = new DatabaseConnection();
+        double price = getTotalPrice(connection,currency);
+        connection.close();
+        return price;
     }
 
     public String getTotalPriceString(DatabaseConnection connection) {

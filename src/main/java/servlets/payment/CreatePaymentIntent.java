@@ -57,17 +57,16 @@ public class CreatePaymentIntent extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/views/user/cart.jsp?error_cartEmpty=");
             return;
         }
-        DatabaseConnection db = new DatabaseConnection();
-        double multiplier = 100;
-        String currency = "sgd";
-        double amt = cart.getTotalPrice(db) * multiplier;
-        db.close();
 
-        GenerateNewClientSecretBody entity = new GenerateNewClientSecretBody(amt, "sgd");
+        String currency = "sgd";
+        double amt = cart.getTotalPrice(currency);
+
+
+        GenerateNewClientSecretBody entity = new GenerateNewClientSecretBody(amt, currency);
 
         Client client = ClientBuilder.newClient();
 
-        String restUrl = "http://localhost:8080/CA1-Preparation/checkout/create";
+        String restUrl = request.getContextPath() + "/checkout/create";
 
         WebTarget target = client.target(restUrl);
 

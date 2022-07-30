@@ -1,22 +1,20 @@
 package servlets.payment;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import dataStructures.Cart;
+import models.TourModel;
+import payment.StripePayment;
+import utils.DatabaseConnection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.PaymentIntent;
-
-import dataStructures.Cart;
-import models.TourModel;
-import payment.StripePayment;
-import utils.DatabaseConnection;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Servlet implementation class Pay
@@ -50,18 +48,32 @@ public class Pay extends HttpServlet {
         }
 
         try {
+
             PaymentIntent intent = StripePayment.retrievePayment(paymentIntentId);
             String paymentId = intent.getId();
             Long paymentAmount = intent.getAmount();
             Long paymentDate = intent.getCreated();
             String paymentStatus = intent.getStatus();
 
+
+            DatabaseConnection connection = new DatabaseConnection();
+            String currency = "sgd";
+            double amt = cart.getTotalPrice(connection, currency);
+
+            if (amt != paymentAmount) {
+                out.println("<h1>Payment failed</h1>");
+                out.println("<p>Payment amount does not match</p>");
+                out.println("<p>Please contact us for assistance</p>");
+
+                connection.close();
+                return;
+            }
+
             out.println(paymentId);
             out.println(paymentAmount);
             out.println(paymentDate);
             out.println(paymentStatus);
 
-            DatabaseConnection connection = new DatabaseConnection();
             TourModel.purchaseCart(cart, paymentId).update(connection);
             connection.close();
 
