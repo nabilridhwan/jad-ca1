@@ -111,7 +111,7 @@
 
 									<div class="form-group">
 										<input type="file" class="form-control" id="file_url"
-											name="file" multiple />
+											name="file" />
 									</div>
 
 									<div class="form-group">
