@@ -216,13 +216,13 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                     </div>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-sm-12 col-md-3 col-lg-3 ftco-animate">
                 <%=dates.length%> date bookings: <br>
 
                 <%
                     for (Tour.Date.Pair date : dates) {
                 %>
-                <div class="container">
+                <div class="row">
                     <br>
                     <%=date.getDate().getStartString()%> - <%=date.getDate().getEndString()%> <br>
                     pax: <%=date.getPax()%> <br>
