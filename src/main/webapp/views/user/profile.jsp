@@ -183,7 +183,7 @@
                                     <input
                                             type="text"
                                             class="form-control"
-                                            placeholder="Email"
+                                            placeholder="Phone"
                                             name="phone"
                                             value="<%=phone%>"
                                     />
