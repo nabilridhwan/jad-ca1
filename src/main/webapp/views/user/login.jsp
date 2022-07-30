@@ -138,7 +138,7 @@
                                     <div class="form-group text-dark">
                                             <p>
                                                 Don't have an account?
-                                                <a href="${pageContext.request.contextPath}/views/user/signup.jsp">Sign Up</a>
+                                                <a href="${pageContext.request.contextPath}/views/user/signup.jsp?redirect=<%=request.getParameter("redirect")%>">Sign Up</a>
                                             </p>
                                         </div>
                                     </form>

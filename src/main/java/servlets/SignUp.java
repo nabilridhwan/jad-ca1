@@ -7,11 +7,9 @@
 
 package servlets;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import models.UserModel;
+import org.mindrot.jbcrypt.BCrypt;
+import utils.DatabaseConnection;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,13 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.mindrot.jbcrypt.BCrypt;
-
-import models.UserModel;
-import utils.DatabaseConnection;
-import utils.Password;
+import java.io.IOException;
 
 /**
  * Servlet implementation class SignUp
@@ -99,7 +91,11 @@ public class SignUp extends HttpServlet {
         // Check if the user is inserted
         if (rowsAffected > 0) {
             // Redirect to login page
-            response.sendRedirect("/CA1-Preparation/views/user/login.jsp");
+            if (request.getParameter("redirect") != null || request.getParameter("redirect").equals(""))
+                response.sendRedirect("/CA1-Preparation/views/user/login.jsp");
+            else
+                response.sendRedirect("/CA1-Preparation/views/user/login.jsp?redirect=" + request.getParameter("redirect"));
+
         } else if (rowsAffected == -1) {
             System.out.println("SQL Error has occured");
             // e.printStackTrace();

@@ -112,6 +112,13 @@
                                 <div class="col-md-12">
                                     <!-- FORM -->
                                     <form action="${pageContext.request.contextPath}/signup" method="POST">
+                                        <input
+                                                type="hidden"
+                                                hidden
+                                                name="redirect"
+                                                value=<%=request.getParameter("redirect")%>
+                                        />
+
                                         <div class="form-group">
                                             <input
                                                 type="text"
@@ -206,7 +213,7 @@
                                         <div class="form-group text-dark">
                                             <p>
                                                 Already have an account?
-                                                <a href="${pageContext.request.contextPath}/views/user/login.jsp">Sign In</a>
+                                                <a href="${pageContext.request.contextPath}/views/user/login.jsp?redirect=<%=request.getParameter("redirect")%>">Sign In</a>
                                             </p>
                                         </div>
                                     </form>
