@@ -233,6 +233,11 @@
                                                    class=" btn btn-primary w-100 mb-1">
                                                     Edit
                                                 </a>
+                                                
+                                                <a href="./registrations.jsp?tourDateId=<%=date.getId()%>"
+                                                   class=" btn btn-primary w-100 mb-1">
+                                                    Registrations
+                                                </a>
 
                                                 <a href="./edit_tourDates.jsp?tourId=<%=tour.getTour_id()%>&tourDateId=<%=date.getId()%>&delete="
                                                    class="btn btn-secondary w-100">
