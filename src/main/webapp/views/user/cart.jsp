@@ -219,7 +219,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
             pax: <%=date.getPax()%> <br>
             <br>
             <%--            edit cart --%>
-            <form action="${pageContext.request.contextPath}/views/tour/detail.jsp">
+            <form action="${pageContext.request.contextPath}/views/tour/detail.jsp?edit_mode=">
                 <input type="hidden" name="tour_id" value="<%=tour.getTour_id()%>">
                 <input type="hidden" name="date" value="<%=date.getDate().getId()%>">
                 <input type="hidden" name="pax" value="<%=date.getPax()%>">

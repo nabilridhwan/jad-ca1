@@ -39,11 +39,14 @@ public class Cart {
         return user_id;
     }
 
-    public void addItem(Item item) {
-        if (items.containsKey(item.tourDateId)) items.merge(item.tourDateId, item, (oldValue, newValue) -> newValue);
-        else items.put(item.tourDateId, item);
-        updatedSinceLastSave = true;
-        save();
+    public boolean addItem(Item item) {
+        if (!items.containsKey(item.tourDateId)) {
+            items.put(item.tourDateId, item);
+            updatedSinceLastSave = true;
+            save();
+            return true;
+        }
+        return false;
     }
 
     public void removeItem(int tourDateId) {

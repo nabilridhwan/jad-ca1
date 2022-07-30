@@ -442,7 +442,7 @@ public class TourModel {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("SELECT pax FROM tour_registration WHERE user_id = ? AND tour_date_id = ?");
+                PreparedStatement pstmt = conn.prepareStatement("SELECT pax FROM tour_registration WHERE user_id = ? AND tour_date_id = ? AND stripe_transaction_id != ''");
                 pstmt.setInt(1, userID);
                 pstmt.setInt(2, tourDataID);
                 ResultSet rs = pstmt.executeQuery();

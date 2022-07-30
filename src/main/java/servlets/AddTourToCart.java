@@ -8,10 +8,8 @@
 package servlets;
 
 import dataStructures.Cart;
-import dataStructures.Tour;
 import models.TourModel;
 import utils.DatabaseConnection;
-import utils.Util;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -87,15 +85,30 @@ public class AddTourToCart extends HttpServlet {
             }
         }
 
-
         if (!isValid) {
             response.sendRedirect(previousURL);
             return;
         }
 
-        Cart cart = Cart.getOrCreateCart(request.getSession());
 
-        cart.addItem(new Cart.Item(tourDateID, pax));
+        DatabaseConnection db = new DatabaseConnection();
+
+        Cart cart = Cart.getOrCreateCart(request.getSession(), db);
+
+        //check if tour is in database
+        if (TourModel.getPaxForTour(cart.getUserid(), tourDateID).query(db).length > 0) {
+            db.close();
+            response.sendRedirect(originalURL + "&alreadyRegistered=");
+            return;
+        }
+
+        db.close();
+
+        if (!cart.addItem(new Cart.Item(tourDateID, pax))) {
+
+            response.sendRedirect(originalURL + "&alreadyInCart=");
+            return;
+        }
 
         response.sendRedirect(originalURL + "&CartSuccess=");
     }

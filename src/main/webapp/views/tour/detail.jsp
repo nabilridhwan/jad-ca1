@@ -52,13 +52,23 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
         href="${pageContext.request.contextPath}/views/user/cart.jsp" style="text-underline: auto"> your cart.</a>
 </div>
 <%
-} else if (request.getParameter("alreadyRegistered") != null) {
+    }
+    if (request.getParameter("alreadyRegistered") != null) {
 %>
 <div class="alert alert-danger" role="alert">
     <strong>Error!</strong> You have already registered for this tour.
 </div>
 <%
-} else if (request.getParameter("error") != null) {
+    }
+    if (request.getParameter("alreadyInCart") != null) {
+%>
+<div class="alert alert-danger" role="alert">
+    <strong>Error!</strong> You have already added this tour in <a
+        href="${pageContext.request.contextPath}/views/user/cart.jsp">your cart.</a>
+</div>
+<%
+    }
+    if (request.getParameter("error") != null) {
 %>
 <div class="alert alert-danger" role="alert">
     <strong>Error!</strong> There was an error registering for this tour.
@@ -346,27 +356,33 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                                             id="date"
                                             class="form-control"
                                             placeholder="Keyword search"
-                                    >
-                                        <%
-                                            Tour.Date[] dates = TourModel.getShownTourDates(tour).query(connection);
-                                            boolean havePreviousDate = request.getParameter("date") != null;
-                                            boolean HaveDates = dates.length > 0;
-                                            if (HaveDates) {
-                                        %>
-                                        <option value="placeholder"
-                                                <%
-                                                    if (!havePreviousDate) {
-                                                %>
-                                                selected="selected"
-                                                <%
-                                                    }
-                                                %>
-                                                disabled>
-                                            Select Date
-                                        </option>
-                                        <%
-                                        } else {
-                                        %>
+                                            <%
+                                                if (request.getParameter("edit_mode") != null) {
+                                            %>
+                                            disabled
+                                    <%
+                                        }
+                                    %>
+                                    <%
+                                        Tour.Date[] dates = TourModel.getShownTourDates(tour).query(connection);
+                                        boolean havePreviousDate = request.getParameter("date") != null;
+                                        boolean HaveDates = dates.length > 0;
+                                        if (HaveDates) {
+                                    %>
+                                    <option value="placeholder"
+                                            <%
+                                                if (!havePreviousDate) {
+                                            %>
+                                            selected="selected"
+                                            <%
+                                                }
+                                            %>
+                                            disabled>
+                                        Select Date
+                                    </option>
+                                    <%
+                                    } else {
+                                    %>
                                         <option value="placeholder" selected="selected" disabled>
                                             No Dates Available
                                         </option>
