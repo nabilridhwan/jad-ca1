@@ -60,7 +60,14 @@ public class Pay extends HttpServlet {
             String currency = "sgd";
             double amt = cart.getTotalPrice(connection, currency);
 
+            out.println("payment id: " +paymentId);
+            out.println("paid amount: " + paymentAmount);
+            out.println("cart amount: " + amt);
+            out.println("payment date: " + paymentDate);
+            out.println("payment status: " +paymentStatus);
+
             if (amt != paymentAmount) {
+
                 out.println("<h1>Payment failed</h1>");
                 out.println("<p>Payment amount does not match</p>");
                 out.println("<p>Please contact us for assistance</p>");
@@ -69,10 +76,7 @@ public class Pay extends HttpServlet {
                 return;
             }
 
-            out.println(paymentId);
-            out.println(paymentAmount);
-            out.println(paymentDate);
-            out.println(paymentStatus);
+
 
             TourModel.purchaseCart(cart, paymentId).update(connection);
             connection.close();
