@@ -177,7 +177,7 @@ public class AddNewCategory extends HttpServlet {
 			if (affectedRows > 0) {
 
 //			TODO: Change page redirection
-				response.sendRedirect(request.getContextPath() + "/views/index.jsp");
+				response.sendRedirect(request.getContextPath() + "/views/admin/all_tours.jsp");
 				return;
 			} else if (affectedRows == -1) {
 				response.sendRedirect(request.getContextPath()
