@@ -57,7 +57,7 @@
 				    //`Elements` instance that was used to create the Payment Element
 				    elements,
 				    confirmParams: {
-				      return_url: 'http://localhost:8080/CA1-Preparation/pay',
+				      return_url: '${pageContext.request.contextPath}/pay',
 				    },
 				  });
 
