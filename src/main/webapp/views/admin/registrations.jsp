@@ -73,7 +73,7 @@
 
 	Tour.Registrations[] tourRegistrations = TourModel.getRegistrationsByTourDateId(tour_dateIdStr).query(connection);
 
-	if (tourRegistrations == null || tourRegistrations.length == 0) {
+	if (tourRegistrations == null) {
 		response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
 		return;
 	}
@@ -107,7 +107,23 @@
 
 
 						<div class="row block-9">
+
+
+
 							<%
+							if (tourRegistrations.length == 0) {
+							%>
+							<div class="col-md-12">
+
+								<div class="card">
+									<div class="card-body">
+										<h5>There are no registrations for this tour</h5>
+									</div>
+								</div>
+
+							</div>
+							<%
+							} else {
 							for (Tour.Registrations tourRegistration : tourRegistrations) {
 							%>
 							<div class="col-md-12">
@@ -133,18 +149,24 @@
 										%>
 
 
-										<h4><%=user.getFullName()%></h4>
+										<h5><%=user.getFullName()%></h5>
 										<p class="muted font-bold text-bold bold">
 											Email:
 											<%=user.getEmail()%></p>
 										<p class="muted">
 											Pax:
 											<%=tourRegistration.getPax()%></p>
+
+										<p class="muted">
+											Transaction ID:
+											<%=tourRegistration.getStripe_transaction_id()%></p>
 									</div>
 								</div>
 
 							</div>
 							<%
+							}
+
 							}
 							%>
 							<!-- <div class="col-md-6" id="map"></div> -->
