@@ -218,18 +218,21 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
             <%=date.getDate().getStartString()%> - <%=date.getDate().getEndString()%> <br>
             pax: <%=date.getPax()%> <br>
             <br>
-            <%--            edit cart --%>
-            <form action="${pageContext.request.contextPath}/views/tour/detail.jsp?edit_mode=">
-                <input type="hidden" name="tour_id" value="<%=tour.getTour_id()%>">
-                <input type="hidden" name="date" value="<%=date.getDate().getId()%>">
-                <input type="hidden" name="pax" value="<%=date.getPax()%>">
-                <input type="submit" value="Edit" class="btn btn-primary">
-            </form>
+            <div class="row">
+                <%--            edit cart --%>
+                <form action="${pageContext.request.contextPath}/views/tour/detail.jsp">
+                    <input type="hidden" name="edit_mode=" value=""/>
+                    <input type="hidden" name="tour_id" value="<%=tour.getTour_id()%>">
+                    <input type="hidden" name="date" value="<%=date.getDate().getId()%>">
+                    <input type="hidden" name="pax" value="<%=date.getPax()%>">
+                    <input type="submit" value="Edit" class="btn btn-primary">
+                </form>
 
-            <form action="${pageContext.request.contextPath}/RemoveTourFromCart" method="post">
-                <input type="hidden" name="date_id" value="<%=date.getDate().getId() %>">
-                <input type="submit" value="Remove">
-            </form>
+                <form action="${pageContext.request.contextPath}/RemoveTourFromCart" method="post">
+                    <input type="hidden" name="date_id" value="<%=date.getDate().getId() %>">
+                    <input type="submit" value="Remove" class="btn btn-primary">
+                </form>
+            </div>
             <%
                 }
             %>
