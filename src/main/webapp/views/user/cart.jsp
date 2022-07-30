@@ -216,7 +216,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                     </div>
                 </div>
             </div>
-            <div class="container">
+            <div>
                 <%=dates.length%> date bookings: <br>
 
                 <%
