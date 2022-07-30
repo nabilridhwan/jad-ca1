@@ -9,6 +9,7 @@ package servlets.admin;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,6 +26,8 @@ import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 
+import cloudinary.ImageUpload;
+import cloudinary.ImageUploadType;
 import models.CategoryModel;
 import utils.DatabaseConnection;
 import utils.Util;
@@ -35,149 +38,151 @@ import utils.Util;
 @WebServlet("/addNewCategory")
 public class AddNewCategory extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddNewCategory() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public AddNewCategory() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+
 		DatabaseConnection connection = new DatabaseConnection();
 		// Get the current session
 		HttpSession session = request.getSession(false);
-		
-		if(!Util.isUserLoggedIn(session)) {
+		ImageUpload imageUpload = new ImageUpload();
+
+		if (!Util.isUserLoggedIn(session)) {
 //			TODO: Send error back
 			response.sendRedirect(request.getContextPath() + "/views/index.jsp");
 			return;
 		}
-		
+
 		Integer userID = (Integer) session.getAttribute("userID");
-		
-		if(!Util.isUserAdmin(userID)) {
+
+		if (!Util.isUserAdmin(userID)) {
 //			Redirect to the home page
 			response.sendRedirect(request.getContextPath() + "/views/index.jsp");
 			return;
 		}
-		
-		String category_img = "";
-		String category_name = "";
-		String category_desc = "";
-		
-		File file ;
-		   int maxFileSize = 5000 * 1024;
-		   int maxMemSize = 5000 * 1024;
-		   
-		   ServletContext context = request.getServletContext();
-		   String filePath = context.getInitParameter("file-upload");
-		
-		   // Verify the content type
-		   String contentType = request.getContentType();
-		   
-		   
-		   
-		   if ((contentType.indexOf("multipart/form-data") >= 0)) {
-		      DiskFileItemFactory factory = new DiskFileItemFactory();
-		      // maximum size that will be stored in memory
-		      factory.setSizeThreshold(maxMemSize);
-		      
-		      // Location to save data that is larger than maxMemSize.
-		      factory.setRepository(new File("c:\\temp"));
-		
-		      // Create a new file upload handler
-		      ServletFileUpload upload = new ServletFileUpload(factory);
-		      
-		      // maximum file size to be uploaded.
-		      upload.setSizeMax( maxFileSize );
-		      
-		      try { 
-		         // Parse the request to get file items.
-		         List fileItems = upload.parseRequest(new ServletRequestContext(request));
-		
-		         // Process the uploaded file items
-		         Iterator i = fileItems.iterator();
-		         while ( i.hasNext () ) {
-		            FileItem fi = (FileItem)i.next();
-		            
-//		            Check if the field is a form
-		            if ( !fi.isFormField () ) {
-		               // Get the uploaded file parameters
-		               String fieldName = fi.getFieldName();
-		               String fileName = fi.getName();
-		               boolean isInMemory = fi.isInMemory();
-		               long sizeInBytes = fi.getSize();
-		            
-		               // Write the file
-		               if( fileName.lastIndexOf("\\") >= 0 ) {
-		                  file = new File( filePath + 
-		                  fileName.substring( fileName.lastIndexOf("\\"))) ;
-		               } else {
-		                  file = new File( filePath + 
-		                  fileName.substring(fileName.lastIndexOf("\\")+1)) ;
-		               }
-		               fi.write( file ) ;
-		               
-		               
-		               // Set the category_img to be filePath and fileName
-		               category_img = "/CA1-Preparation/uploaded_images/" + fileName;
 
-		            }else {
-		            	String name = fi.getFieldName();
-		            	String value = fi.getString();
-		            	
-		            	switch (name) {
-		            		case "category_name":
-		            			category_name = value;
-		            			break;
-		            		case "category_desc":
-		            			category_desc = value;
-		            			break;
-		            	}
-		            }
-		         }
-		      } catch(Exception ex) {
-		    	  response.sendRedirect(request.getContextPath() + "/views/admin/add_category.jsp?message=The file exceeds the limit!");
-		    	  connection.close();
-		    	  return;
-		      }
-		   }
-		   
-		   System.out.println(category_img);
-		   System.out.println(category_name);
-		   System.out.println(category_desc);
-		   
-		
-		int affectedRows = CategoryModel.insertNewCategory(category_img, category_name, category_desc).update(connection);
-		
-		System.out.println(affectedRows);
-		
-		if(affectedRows > 0) {
-			
+		// Initial Parameters
+		String image_url = null;
+		String category_name = null;
+		String category_desc = null;
+
+		PrintWriter out = response.getWriter();
+
+		File file;
+		int maxFileSize = 5000 * 1024;
+		int maxMemSize = 5000 * 1024;
+		ServletContext context = request.getServletContext();
+		String filePath = context.getInitParameter("file-upload");
+
+		// Verify the content type
+		String contentType = request.getContentType();
+
+		if ((contentType.indexOf("multipart/form-data") >= 0)) {
+			DiskFileItemFactory factory = new DiskFileItemFactory();
+			// maximum size that will be stored in memory
+			factory.setSizeThreshold(maxMemSize);
+
+			// Location to save data that is larger than maxMemSize.
+			factory.setRepository(new File("c:\\temp"));
+
+			// Create a new file upload handler
+			ServletFileUpload upload = new ServletFileUpload(factory);
+
+			// maximum file size to be uploaded.
+			upload.setSizeMax(maxFileSize);
+
+			try {
+				// Parse the request to get file items.
+				List fileItems = upload.parseRequest(new ServletRequestContext(request));
+
+				// Process the uploaded file items
+				Iterator i = fileItems.iterator();
+
+				while (i.hasNext()) {
+					FileItem fi = (FileItem) i.next();
+
+					// Check if it is a file field
+					if (!fi.isFormField()) {
+						// Get the uploaded file parameters
+						String fieldName = fi.getFieldName();
+						String fileName = fi.getName();
+						boolean isInMemory = fi.isInMemory();
+						long sizeInBytes = fi.getSize();
+
+						// Write the file
+						if (fileName.lastIndexOf("\\") >= 0) {
+							file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\")));
+						} else {
+							file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\") + 1));
+						}
+						fi.write(file);
+
+						// Upload image and retrieve the URL
+						image_url = imageUpload.uploadImage(file, ImageUploadType.CATEGORY);
+					} else {
+						// Item is a normal input field
+						String fieldName = fi.getFieldName();
+						String fieldValue = fi.getString();
+						switch (fieldName) {
+						case "category_name": {
+							category_name = fieldValue;
+							break;
+						}
+						case "category_desc": {
+							category_desc = fieldValue;
+							break;
+						}
+						default:
+							System.out.println("Unknown field in multipart/form-data");
+							break;
+						}
+					}
+				}
+			} catch (Exception ex) {
+				System.out.println(ex);
+			}
+
+			int affectedRows = CategoryModel.insertNewCategory(image_url, category_name, category_desc)
+					.update(connection);
+
+			System.out.println(affectedRows);
+
+			if (affectedRows > 0) {
+
 //			TODO: Change page redirection
-			response.sendRedirect(request.getContextPath() + "/views/index.jsp");
-			return;
-		}else if(affectedRows == -1) {
-			response.sendRedirect(request.getContextPath() + "/views/admin/add_category.jsp?message=Category with that name already exists!");
-			return;
-		}
-		
-		// doGet(request, response);
-	}
+				response.sendRedirect(request.getContextPath() + "/views/index.jsp");
+				return;
+			} else if (affectedRows == -1) {
+				response.sendRedirect(request.getContextPath()
+						+ "/views/admin/add_category.jsp?message=Category with that name already exists!");
+				return;
+			}
 
+			// doGet(request, response);
+		}
+
+	}
 }
