@@ -13,7 +13,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <%@ page import="java.util.*" %>
 <html lang="en">
 <head>
-    <title>Wishlist</title>
+    <title>Cart</title>
     <meta charset="utf-8"/>
     <meta
             name="viewport"
