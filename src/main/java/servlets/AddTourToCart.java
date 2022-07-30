@@ -103,12 +103,16 @@ public class AddTourToCart extends HttpServlet {
         }
 
         db.close();
-
-        if (!cart.addItem(new Cart.Item(tourDateID, pax), request.getParameter("edit_mode") != null)) {
+        boolean editMode = request.getParameter("edit_mode") != null;
+        if (!cart.addItem(new Cart.Item(tourDateID, pax), editMode)) {
             response.sendRedirect(originalURL + "&alreadyInCart=");
             return;
         }
+        if(editMode) {
+            response.sendRedirect(originalURL + "&EditSuccess=");
+        } else {
+            response.sendRedirect(originalURL + "&CartSuccess= ");
+        }
 
-        response.sendRedirect(originalURL + "&CartSuccess=");
     }
 }
