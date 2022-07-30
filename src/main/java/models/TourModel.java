@@ -317,6 +317,33 @@ public class TourModel {
 		};
 
 	}
+	
+	public static IDatabaseQuery<Tour> getLowSlotTours(int below) {
+		return databaseConnection -> {
+			Connection conn = databaseConnection.get();
+			try {
+				PreparedStatement pstmt = conn.prepareStatement(
+						"SELECT t.* FROM tour_date td\n" + "    	INNER JOIN tour t ON t.tour_id =  td.tour_id\n"
+								+ "    	WHERE avail_slot < ?;");
+
+				pstmt.setInt(1, below);
+
+				ResultSet rs = pstmt.executeQuery();
+
+				ArrayList<Tour> list = new ArrayList<>();
+
+				if (rs != null)
+					while (rs.next())
+						list.add(new Tour(rs));
+
+				return list.toArray(new Tour[0]);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		};
+
+	}
 
 	public static IDatabaseQuery<Tour> getWorstSellingTours(int limit) {
 		return databaseConnection -> {
