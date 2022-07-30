@@ -50,9 +50,10 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <body>
 
 <%
-    String currency = "SGD";
+
     DatabaseConnection connection = new DatabaseConnection();
     Cart cart = Cart.getOrCreateCart(session, connection);
+    String currency = "SGD";
 %>
 
 <%@ include file="../misc/navbar_dark.jsp" %>

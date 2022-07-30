@@ -35,20 +35,8 @@ import java.io.IOException;
 @WebServlet("/create_payment_intent")
 public class CreatePaymentIntent extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPayment(request, response);
-    }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPayment(request, response);
-    }
-
-    private void doPayment(HttpServletRequest request,HttpServletResponse response) throws ServletException,IOException{
         Stripe.apiKey = "sk_test_51Kq9aiGruISt8Q6BxYOHpOOthVQShUJl0aMQDATmgyThOhwVwC8fFlATOGEwlYTDS9Ayx663WADGm4aRtBjDpuAH006ZTQvYCI";
 
         Cart cart = Cart.GetExisting(request.getSession());
@@ -70,9 +58,7 @@ public class CreatePaymentIntent extends HttpServlet {
 
         Client client = ClientBuilder.newClient();
 
-        String restUrl = request.getContextPath() + "/checkout/create";
-
-        WebTarget target = client.target(restUrl);
+        WebTarget target = client.target(request.getContextPath() + "/checkout/create");
 
         Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
 

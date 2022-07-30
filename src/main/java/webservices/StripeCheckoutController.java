@@ -1,36 +1,22 @@
 package webservices;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import dataStructures.GenerateNewClientSecretBody;
+import payment.StripePayment;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import com.stripe.*;
-import com.stripe.exception.StripeException;
-import com.stripe.model.PaymentIntent;
-import com.stripe.param.PaymentIntentCreateParams;
-
-import dataStructures.GenerateNewClientSecretBody;
-import payment.StripePayment;
-
-
-
-
+import java.util.HashMap;
+import java.util.Map;
 
 @Path("/checkout")
 public class StripeCheckoutController {
-	
-	
-	
-	
-	
-	
 	@POST
 	@Path("/create")
 	@Consumes(MediaType.APPLICATION_JSON)
