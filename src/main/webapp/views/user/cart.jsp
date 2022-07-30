@@ -50,7 +50,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <body>
 
 <%
-
+    String currency;
     DatabaseConnection connection = new DatabaseConnection();
     Cart cart = Cart.getOrCreateCart(session, connection);
 %>
@@ -99,6 +99,13 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 %>
 <div class="alert alert-danger" role="alert">
     <strong> Error: You need be signed in to save</strong>
+</div>
+<%
+    }
+    if (request.getParameter("error") != null) {
+%>
+<div class="alert alert-danger" role="alert">
+    <strong> Error: <%=request.getParameter("error")%></strong>
 </div>
 <%
     }
@@ -254,7 +261,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
             }
         %>
         <form action="${pageContext.request.contextPath}/create_payment_intent" method="post">
-            <input type="submit" value="Checkout (<%=cart.getTotalPriceString(connection)%>)"
+            <input type="submit" value="Checkout (<%=cart.getTotalPriceString(connection,currency)%>)"
                 <%
                      if (cartItems.length == 0 || !Util.isUserLoggedIn(session))
                      {

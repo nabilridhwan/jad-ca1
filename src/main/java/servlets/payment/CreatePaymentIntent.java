@@ -18,7 +18,6 @@ import com.stripe.Stripe;
 import dataStructures.Cart;
 import dataStructures.CreatePaymentIntentResponseBody;
 import dataStructures.GenerateNewClientSecretBody;
-import utils.DatabaseConnection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -59,8 +58,13 @@ public class CreatePaymentIntent extends HttpServlet {
         }
 
         String currency = "sgd";
-        double amt = cart.getTotalPrice(currency);
+        double amt = cart.getTotalPrice(currency) * 1.07;
 
+        if (amt == -1) {
+            //TODO: handle error
+            response.sendRedirect(request.getContextPath() + "/views/user/cart.jsp?error=cannot process payment");
+            return;
+        }
 
         GenerateNewClientSecretBody entity = new GenerateNewClientSecretBody(amt, currency);
 

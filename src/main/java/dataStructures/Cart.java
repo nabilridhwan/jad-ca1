@@ -65,13 +65,16 @@ public class Cart {
 
     public double getTotalPrice(String currency) {
         DatabaseConnection connection = new DatabaseConnection();
-        double price = getTotalPrice(connection,currency);
+        double price = getTotalPrice(connection, currency);
         connection.close();
         return price;
     }
 
-    public String getTotalPriceString(DatabaseConnection connection) {
-        return '$' + String.format("%.2f", getTotalPrice(connection));
+    public String getTotalPriceString(DatabaseConnection connection, String currency) {
+        double total = getTotalPrice(connection, currency);
+        if (total == -1) return "Error Please Try Again";
+        double gst = total * 1.07;
+        return '$' + String.format("%.2f", total / 100)  + " ($" + String.format("%.2f", gst / 100) + " with gst)";
     }
 
     public static Cart GetExisting(HttpSession session) {
