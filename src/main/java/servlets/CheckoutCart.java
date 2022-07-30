@@ -45,18 +45,13 @@ public class CheckoutCart extends HttpServlet {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Cart cart = Cart.GetExisting(request.getSession());
-        if (cart == null || cart.Size() == 0) {
-            response.sendRedirect(request.getContextPath() + "/views/user/cart.jsp?error_cartEmpty=");
-            return;
-        }
+//        Cart cart = Cart.GetExisting(request.getSession());
+//        if (cart == null || cart.Size() == 0) {
+//            response.sendRedirect(request.getContextPath() + "/views/user/cart.jsp?error_cartEmpty=");
+//            return;
+//        }
         //TODO payment logic
+        //redirect to create Payment Intent Page
 
-        String transactionId = "TEMP_TRANSACTION_ID";
-        DatabaseConnection connection = new DatabaseConnection();
-        TourModel.purchaseCart(cart,transactionId).update(connection);
-        connection.close();
-
-        response.sendRedirect(request.getContextPath() + "/views/user/cart.jsp?success_purchase=");
     }
 }

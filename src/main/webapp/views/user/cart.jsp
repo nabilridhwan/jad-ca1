@@ -61,8 +61,8 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <div class="alert alert-danger" role="alert">
     <strong>You are not logged in!</strong>
     <br>
-    <a href="${pageContext.request.contextPath}/views/user/login.jsp">Login</a> or
-    <a href="${pageContext.request.contextPath}/views/user/signup.jsp">Register</a> to save your cart or checkout.
+    <a href="${pageContext.request.contextPath}/views/user/login.jsp?redirect=${pageContext.request.contextPath}/views/user/cart.jsp">Login</a> or
+    <a href="${pageContext.request.contextPath}/views/user/signup.jsp?redirect=${pageContext.request.contextPath}/views/user/cart.jsp">Register</a> to save your cart or checkout.
 </div>
 <%
     }
@@ -134,7 +134,6 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                 Tour.Image tour_image = tour.getFirstOrDefaultImage();
                 String tour_name = tour.getTour_name();
                 String tour_brief_desc = tour.getTour_brief_desc();
-                Tour.Date tour_date = tour.getFirstOrDefaultDate();
                 String tour_location = tour.getTour_location();
                 Tour.Review[] reviews = tour.getReviews();
                 double rating = tour.getAverage_rating();
@@ -189,9 +188,6 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                                     %>
                                 </p>
                             </div>
-                            <div class="two">
-                                <span class="price">$<%=tour_date.getPrice() %></span>
-                            </div>
                         </div>
                         <p>
                             <%=tour_brief_desc %>
@@ -232,8 +228,8 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
         <%
             if (!Util.isUserLoggedIn(session)) {
         %>
-        please <a href="${pageContext.request.contextPath}/views/user/login.jsp">Login</a> or
-        <a href="${pageContext.request.contextPath}/views/user/signup.jsp">Register</a> to save your cart or checkout.
+        please <a href="${pageContext.request.contextPath}/views/user/login.jsp?redirect=${pageContext.request.contextPath}/views/user/cart.jsp">Login</a> or
+        <a href="${pageContext.request.contextPath}/views/user/signup.jsp?redirect=${pageContext.request.contextPath}/views/user/cart.jsp">Register</a> to save your cart or checkout.
         <%
             }
         %>
@@ -257,7 +253,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
         <%
             }
         %>
-        <form action="${pageContext.request.contextPath}/Checkout" method="post">
+        <form action="${pageContext.request.contextPath}/create_payment_intent" method="post">
             <input type="submit" value="Checkout (<%=cart.getTotalPriceString(connection)%>)"
                 <%
                      if (cartItems.length == 0 || !Util.isUserLoggedIn(session))

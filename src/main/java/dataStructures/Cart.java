@@ -43,6 +43,7 @@ public class Cart {
         if (items.containsKey(item.tourDateId)) items.merge(item.tourDateId, item, (oldValue, newValue) -> newValue);
         else items.put(item.tourDateId, item);
         updatedSinceLastSave = true;
+        save();
     }
 
     public void removeItem(int tourDateId) {

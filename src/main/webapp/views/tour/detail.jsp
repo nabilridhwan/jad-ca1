@@ -468,7 +468,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                             <div class="form-group">
                                 <input
                                         type="submit"
-                                        value="AddToCart"
+                                        value="Add To Cart"
                                         class="btn btn-primary py-3 px-5"
                                         <%
                                             if (!HaveDates) {

@@ -398,7 +398,7 @@ public class TourModel {
                 PreparedStatement pstmt = conn.prepareStatement("" +
                         "SELECT tr.* " +
                         "FROM tour_registration tr,tour_date td  " +
-                        "WHERE tr.user_id = ? AND td.tour_id = ? AND tr.purchased = 1 AND tr.tour_date_id = td.tour_date_id");
+                        "WHERE tr.user_id = ? AND td.tour_id = ? AND tr.stripe_transaction_id != '' AND tr.tour_date_id = td.tour_date_id");
                 pstmt.setInt(1, userID);
                 pstmt.setInt(2, tourID);
 
