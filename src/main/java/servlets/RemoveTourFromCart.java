@@ -48,7 +48,8 @@ public class RemoveTourFromCart extends HttpServlet {
         Cart cart = Cart.getOrCreateCart(request.getSession());
 
         cart.removeItem(Integer.parseInt(dateid));
-
-        response.sendRedirect( request.getHeader("Referer") + "?CartRemoveSuccess=");
+        String baseUrl = request.getHeader("Referer");
+        baseUrl = baseUrl.substring(0, baseUrl.indexOf("?"));
+        response.sendRedirect(baseUrl + "?CartRemoveSuccess=");
     }
 }
