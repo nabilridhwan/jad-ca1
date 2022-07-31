@@ -160,6 +160,10 @@
 										<p class="muted">
 											Transaction ID:
 											<%=tourRegistration.getStripe_transaction_id()%></p>
+
+										<a class="btn btn-primary"
+											href="${pageContext.request.contextPath}/views/admin/transaction_details.jsp?tourDateId=<%=tour_dateIdStr %>&transaction_id=<%=tourRegistration.getStripe_transaction_id()%>">
+											View transaction details </a>
 									</div>
 								</div>
 
