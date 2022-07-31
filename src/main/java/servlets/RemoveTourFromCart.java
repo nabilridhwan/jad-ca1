@@ -53,7 +53,6 @@ public class RemoveTourFromCart extends HttpServlet {
         if (subStringIndex != -1) {
             baseUrl = baseUrl.substring(0, subStringIndex);
         }
-        baseUrl = baseUrl.substring(0, subStringIndex);
         response.sendRedirect(baseUrl + "?CartRemoveSuccess=");
     }
 }
