@@ -7,29 +7,28 @@
 
 package servlets;
 
-import dataStructures.Tour;
+import dataStructures.Cart;
 import models.TourModel;
 import utils.DatabaseConnection;
-import utils.Util;
 
-import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * Servlet implementation class RegisterForTour
  */
-@WebServlet("/RegisterForTour")
-public class RegisterForTour extends HttpServlet {
+@WebServlet("/AddTourToCart")
+public class AddTourToCart extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RegisterForTour() {
+    public AddTourToCart() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,7 +45,6 @@ public class RegisterForTour extends HttpServlet {
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
         String date = request.getParameter("date");
         String paxStr = request.getParameter("pax");
 
@@ -56,62 +54,65 @@ public class RegisterForTour extends HttpServlet {
 
         String originalURL = baseUrl + "?tour_id=" + request.getParameter("id");
         String previousURL = originalURL;
+
+        boolean isValid = true;
+        int pax = 0;
+        int tourDateID = 0;
+
         if (paxStr == null) {
+            isValid = false;
             previousURL += "&InvalidPax=true";
-            response.sendRedirect(previousURL);
-            return;
+        } else {
+            try {
+                pax = Integer.parseInt(paxStr);
+                previousURL += "&pax=" + pax;
+            } catch (NumberFormatException e) {
+                isValid = false;
+                previousURL += "&InvalidPax=true";
+            }
         }
-        int pax = Integer.parseInt(paxStr);
-        previousURL += "&pax=" + pax;
 
         if (date == null || date.equals("placeholder")) {
             previousURL += "&InvalidDate=";
-            response.sendRedirect(previousURL);
-            return;
-        }
-        previousURL += "&date=" + date;
-        int tourDateID = Integer.parseInt(date);
-
-        int userID = Util.forceLogin(request.getSession(), response, previousURL);
-        if (userID == -1) {
-            return;
-        } //doesn't work sometimes if you don't return
-
-        DatabaseConnection conn = new DatabaseConnection();
-
-        Tour.Date[] tourDate = TourModel.getTourDateById(tourDateID).query(conn);
-
-        System.out.println("length:" + tourDate.length);
-        System.out.println("id: " + tourDateID);
-        if (tourDate.length != 1) {
-            response.sendRedirect(previousURL + "&InvalidDate=");
-            return;
+            isValid = false;
+        } else {
+            try {
+                tourDateID = Integer.parseInt(date);
+                previousURL += "&date=" + date;
+            } catch (NumberFormatException e) {
+                previousURL += "&InvalidDate=";
+                isValid = false;
+            }
         }
 
-        if (tourDate[0].getAvail_slot() < pax) {
-            response.sendRedirect(previousURL + "&InvalidPax=");
-            return;
-        }
-
-        boolean registered = TourModel.getPaxForTour(userID, tourDateID).query(conn).length > 0;
-
-        if (registered) {
-            conn.close();
-            previousURL += "&alreadyRegistered=";
+        if (!isValid) {
             response.sendRedirect(previousURL);
             return;
         }
 
-        boolean success = TourModel.registerUserForTour(userID, tourDateID, pax).update(conn) == 1;
-        conn.close();
 
-        if (!success) {
-            originalURL += "&error=";
-            response.sendRedirect(originalURL);
+        DatabaseConnection db = new DatabaseConnection();
+
+        Cart cart = Cart.getOrCreateCart(request.getSession(), db);
+
+        //check if tour is in database
+        if (TourModel.getPaxForTour(cart.getUserid(), tourDateID).query(db).length > 0) {
+            db.close();
+            response.sendRedirect(originalURL + "&alreadyRegistered=");
             return;
         }
-        originalURL += "&success=";
-        response.sendRedirect(originalURL);
+
+        db.close();
+        boolean editMode = request.getParameter("edit_mode") != null;
+        if (!cart.addItem(new Cart.Item(tourDateID, pax), editMode)) {
+            response.sendRedirect(originalURL + "&alreadyInCart=");
+            return;
+        }
+        if(editMode) {
+            response.sendRedirect(request.getContextPath() + "/views/user/cart.jsp?EditSuccess=");
+        } else {
+            response.sendRedirect(originalURL + "&CartSuccess= ");
+        }
+
     }
-
 }

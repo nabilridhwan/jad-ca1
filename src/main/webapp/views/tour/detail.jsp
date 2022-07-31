@@ -1,17 +1,17 @@
-<!-- 
-	Name: Nabil Ridhwanshah Bin Rosli
-	Admin No: P2007421
-	Class: DIT/FT/2A/01
-	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI 
- -->
+<!--
+Name: Nabil Ridhwanshah Bin Rosli
+Admin No: P2007421
+Class: DIT/FT/2A/01
+Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
+-->
 
 
-<!-- 
-	Name: Xavier Tay Cher Yew
-	Admin No: P2129512
-	Class: DIT/FT/2A/01
-	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI 
- -->
+<!--
+Name: Xavier Tay Cher Yew
+Admin No: P2129512
+Class: DIT/FT/2A/01
+Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
+-->
 
 <%@page import="dataStructures.User" %>
 <%@page import="models.UserModel" %>
@@ -45,25 +45,44 @@
     }
     Tour tour = tours[0];
 
-    if (request.getParameter("success") != null) {
-        out.print("<div class=\"alert alert-success\" role=\"alert\">");
-        out.print("<strong>Success!</strong> You have successfully registered for this tour.");
-        out.print("</div>");
-    } else if (request.getParameter("alreadyRegistered") != null) {
-        out.print("<div class=\"alert alert-danger\" role=\"alert\">");
-        out.print("<strong>Error!</strong> You have already registered for this tour.");
-        out.print("</div>");
-    } else if (request.getParameter("error") != null) {
-        out.print("<div class=\"alert alert-danger\" role=\"alert\">");
-        out.print("<strong>Error!</strong> There was an error registering for this tour.");
-        out.print("</div>");
+    if (request.getParameter("CartSuccess") != null) {
+%>
+<div class="alert alert-success" role="alert">
+    <strong>Success!</strong> You have successfully added this tour to <a
+        href="${pageContext.request.contextPath}/views/user/cart.jsp" style="text-underline: auto"> your cart.</a>
+</div>
+<%
+    }
+    if (request.getParameter("alreadyRegistered") != null) {
+%>
+<div class="alert alert-danger" role="alert">
+    <strong>Error!</strong> You have already registered for this tour.
+</div>
+<%
+    }
+    if (request.getParameter("alreadyInCart") != null) {
+%>
+<div class="alert alert-danger" role="alert">
+    <strong>Error!</strong> You have already added this tour in <a
+        href="${pageContext.request.contextPath}/views/user/cart.jsp">your cart.</a>
+</div>
+<%
+    }
+    if (request.getParameter("error") != null) {
+%>
+<div class="alert alert-danger" role="alert">
+    <strong>Error!</strong> There was an error registering for this tour.
+</div>
+<%
     }
     {
         String msg = request.getParameter("message");
         if (msg != null) {
-            out.print("<div class=\"alert alert-danger\" role=\"alert\">");
-            out.print("<strong>Error!</strong> " + msg);
-            out.print("</div>");
+%>
+<div class="alert alert-danger" role="alert">
+    <strong>Error!</strong> <%= msg %>
+</div>
+<%
         }
     }
 %>
@@ -237,19 +256,22 @@
                               style="margin-bottom: 50px">
                             <div class="form-group">
 
-                                <input
-                                        type="text"
-                                        hidden="true"
-                                        class="form-control"
-                                        placeholder="Enter your review"
-                                        name="tour_id"
-                                        value="<%=tour_id %>"
-                                        required
-                                />
+                                <label>
+                                    <input
+                                            type="text"
+                                            hidden
+                                            class="form-control"
+                                            placeholder="Enter your review"
+                                            name="tour_id"
+                                            value="<%=tour_id %>"
+                                            required
+                                    />
+                                </label>
 
                                 <label for="review">Review</label>
 
                                 <input
+                                        id ="review"
                                         type="text"
                                         class="form-control"
                                         placeholder="Enter your review"
@@ -261,6 +283,7 @@
                             <div class="form-group">
                                 <label for="rating">Rating</label>
                                 <input
+                                        id="rating"
                                         type="number"
                                         class="form-control"
                                         min="1"
@@ -320,23 +343,52 @@
             <!-- Sidebar -->
             <div class="col-lg-4 sidebar">
                 <div class="sidebar-wrap bg-light ftco-animate">
+                    <%
+                        if (request.getParameter("edit_mode") != null) {
+                    %>
+                    <h3 class="heading mb-4">Edit tour</h3>
+                    <%
+                    } else {
+                    %>
                     <h3 class="heading mb-4">Book for tour</h3>
-                    <form action="${pageContext.request.contextPath}/RegisterForTour" method="POST">
+                    <%
+                        }
+                    %>
+                    <form action="${pageContext.request.contextPath}/AddTourToCart" method="POST">
+                        <%
+                            if (request.getParameter("edit_mode") != null) {
+                        %>
+                        <input type="hidden" name="edit_mode" value=""/>
+                        <%
+                            }
+                        %>
                         <div class="fields">
                             <div class="form-group">
                                 <div class="select-wrap one-third">
+                                    <%
+                                        if (request.getParameter("edit_mode") == null) {
+                                    %>
                                     <div class="icon">
-                                                <span
-                                                        class="ion-ios-arrow-down"
-                                                ></span>
+                                        <span class="ion-ios-arrow-down"></span>
                                     </div>
-                                    <label for="date"></label>
+                                    <label for="date">Date</label>
+                                    <%
+                                        }
+                                    %>
+
                                     <select
                                             required
                                             name="date"
                                             id="date"
                                             class="form-control"
                                             placeholder="Keyword search"
+                                            <%
+                                                if (request.getParameter("edit_mode") != null) {
+                                            %>
+                                            hidden
+                                            <%
+                                                }
+                                            %>
                                     >
                                         <%
                                             Tour.Date[] dates = TourModel.getShownTourDates(tour).query(connection);
@@ -348,16 +400,16 @@
                                                 <%
                                                     if (!havePreviousDate) {
                                                 %>
-                                                selected="selected"
-                                                <%
-                                                    }
-                                                %>
-                                                disabled>
-                                            Select Date
-                                        </option>
-                                        <%
-                                        } else {
-                                        %>
+                                            selected="selected"
+                                            <%
+                                                }
+                                            %>
+                                            disabled>
+                                        Select Date
+                                    </option>
+                                    <%
+                                    } else {
+                                    %>
                                         <option value="placeholder" selected="selected" disabled>
                                             No Dates Available
                                         </option>
@@ -404,7 +456,7 @@
 
                             <div class="form-group">
                                 <div class="select-wrap">
-                                    <label for="pax"></label>
+                                    <label for="pax">Pax</label>
                                     <input
                                             id="pax"
                                             required
@@ -459,7 +511,17 @@
                             <div class="form-group">
                                 <input
                                         type="submit"
-                                        value="Book"
+                                        <%
+                                            if (request.getParameter("edit_mode") != null) {
+                                        %>
+                                        value="Edit Cart"
+                                        <%
+                                        } else {
+                                        %>
+                                        value="Add To Cart"
+                                        <%
+                                            }
+                                        %>
                                         class="btn btn-primary py-3 px-5"
                                         <%
                                             if (!HaveDates) {
@@ -621,7 +683,7 @@
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     Copyright &copy;
                     <script>
-                        document.write(new Date().getFullYear());
+                        document.write(new Date().getFullYear().toLocaleString());
                     </script>
                     All rights reserved | This template is made with
                     <i class="icon-heart" aria-hidden="true"></i> by
@@ -670,7 +732,6 @@
 <script src="${pageContext.request.contextPath}/js/aos.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery.animateNumber.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap-datepicker.js"></script>
-<script src="${pageContext.request.contextPath}/js/jquery.timepicker.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/scrollax.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
 <script src="${pageContext.request.contextPath}/js/google-map.js"></script>

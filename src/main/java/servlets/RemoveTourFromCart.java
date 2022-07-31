@@ -1,35 +1,32 @@
 /*
- * 	Name: Nabil Ridhwanshah Bin Rosli
-	Admin No: P2007421
+ * 	Name: Xavier Tay Cher Yew
+	Admin No: P2129512
 	Class: DIT/FT/2A/01
-	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI 
+	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI  
  * */
 
 package servlets;
 
 import dataStructures.Cart;
-import utils.DatabaseConnection;
-import utils.Util;
 
-import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
- * Servlet implementation class LogOut
+ * Servlet implementation class RegisterForTour
  */
-@WebServlet("/logout")
-public class LogOut extends HttpServlet {
+@WebServlet("/RemoveTourFromCart")
+public class RemoveTourFromCart extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LogOut() {
+    public RemoveTourFromCart() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,21 +35,21 @@ public class LogOut extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-
-        Cart cart = Cart.GetExisting(session);
-        if (cart != null) cart.save();
-
-        session.invalidate();
-        response.sendRedirect("/CA1-Preparation/views/index.jsp");
+        // TODO Auto-generated method stub
+        response.getWriter().append("Served at: ").append(request.getContextPath());
     }
 
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        doGet(request, response);
-    }
+        String dateid = request.getParameter("date_id");
 
+        Cart cart = Cart.getOrCreateCart(request.getSession());
+
+        cart.removeItem(Integer.parseInt(dateid));
+        String baseUrl = request.getHeader("Referer");
+        baseUrl = baseUrl.substring(0, baseUrl.indexOf("?"));
+        response.sendRedirect(baseUrl + "?CartRemoveSuccess=");
+    }
 }

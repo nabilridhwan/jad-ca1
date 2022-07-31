@@ -7,22 +7,19 @@
 
 package servlets;
 
-import java.io.IOException;
+import dataStructures.Cart;
+import dataStructures.User;
+import models.UserModel;
+import org.mindrot.jbcrypt.BCrypt;
+import utils.DatabaseConnection;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.mindrot.jbcrypt.BCrypt;
-
-import dataStructures.User;
-import models.UserModel;
-import utils.DatabaseConnection;
-import utils.Password;
+import java.io.IOException;
 
 /**
  * Servlet implementation class Login
@@ -59,7 +56,6 @@ public class Login extends HttpServlet {
 
         DatabaseConnection connection = new DatabaseConnection();
         User[] users = UserModel.getUserByEmail(email).query(connection);
-        connection.close();
 
 //				Redirect
         String redirect = request.getParameter("redirect");
@@ -76,32 +72,39 @@ public class Login extends HttpServlet {
             
             // Check if the password matches
             if(BCrypt.checkpw(password, user.getPassword())) {
-            	
-            	// Successful in login
+
+                // Successful in login
 //  				Get the user ID
-              int userID = user.getUserID();
+                int userID = user.getUserID();
 
 //  				Set in the session
-              HttpSession session = request.getSession(true);
-              session.setAttribute("userID", userID);
-              
+                HttpSession session = request.getSession(true);
+                session.setAttribute("userID", userID);
+
 //  				Redirect
 
-              System.out.println(redirect);
-              if (redirect == null) {
-                  redirect = "/views/index.jsp";
-              }
-              System.out.println(redirect);
+                System.out.println(redirect);
+                if (redirect == null) {
+                    redirect = "/views/index.jsp";
+                }
+                System.out.println(redirect);
 
-              if (redirect == null || redirect.equals("null")) redirect = "/CA1-Preparation/views/index.jsp";
-              response.sendRedirect(redirect);
-              return;
+                if (redirect.equals("null")) redirect = "/CA1-Preparation/views/index.jsp";
+                Cart cart = Cart.GetExisting(session);
+                if (cart != null) cart.linkToUser(userID, connection);
+
+                response.sendRedirect(redirect);
+
+                connection.close();
+                return;
             }else {
-            	request.setAttribute("error", "invalid_credentials");
+                request.setAttribute("error", "invalid_credentials");
 //				Dispatch
                 String url = "/views/user/login.jsp?error=invalid_credentials";
                 if (redirect != null) url += "&redirect=" + redirect;
                 request.getRequestDispatcher(url).forward(request, response);
+
+                connection.close();
             }
             
 
