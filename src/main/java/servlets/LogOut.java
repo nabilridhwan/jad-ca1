@@ -1,5 +1,5 @@
 /*
- * 	Name: Nabil Ridhwanshah Bin Rosli
+ * 	Name: Nabil Ridhwanshah Bin Rosli , Xavier Tay Cher Yew
 	Admin No: P2007421
 	Class: DIT/FT/2A/01
 	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI 
@@ -25,14 +25,6 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/logout")
 public class LogOut extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public LogOut() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
