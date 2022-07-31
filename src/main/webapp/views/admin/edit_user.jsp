@@ -83,6 +83,8 @@
 	String address_2 = user.getAddress2();
 	String apt_suite = user.getAptSuite();
 	String postal_code = user.getPostalCode();
+
+	String role = user.getRole();
 	%>
 
 	<div class="hero-wrap"
@@ -138,6 +140,12 @@
 									</div>
 
 									<div class="form-group">
+										<label for="email">Phone</label> <input type="text"
+											class="form-control" placeholder="Phone" name="phone"
+											value="<%=phone%>" />
+									</div>
+
+									<div class="form-group">
 										<label for="email">Address 1</label> <input type="text"
 											class="form-control" placeholder="Address 1" name="address_1"
 											value="<%=address_1%>" />
@@ -159,6 +167,16 @@
 										<label for="email">Postal Code</label> <input type="text"
 											class="form-control" placeholder="Postal Code"
 											name="postal_code" value="<%=postal_code%>" />
+									</div>
+
+									<div class="form-group">
+										<label for="role">Role</label> <select class="form-control"
+											id="role" name="role">
+											<option value="user"
+												<%=role.equals("user") ? "selected" : ""%>>User</option>
+											<option value="admin"
+												<%=role.equals("admin") ? "selected" : ""%>>Admin</option>
+										</select>
 									</div>
 
 									<h2 class="h5">Change your password</h2>
