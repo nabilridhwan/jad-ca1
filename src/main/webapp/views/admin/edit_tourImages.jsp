@@ -101,9 +101,7 @@
 		//message box to confirm deletion
 		let x = confirm("Are you sure you want to delete this image?");
 		if (x) window.location.href = "/CA1-Preparation/views/admin/edit_tourImages.jsp?tourId=<%=tourId%>&tourImageId=<%=tourImage_id%>&delete=confirm";
-		else window.location.href = "/CA1-Preparation/views/admin/edit_tourImages.jsp?tourId=
-		<%=tourId%>
-
+		else window.location.href = "/CA1-Preparation/views/admin/edit_tourImages.jsp?tourId=<%=tourId%>";
 	</script>
 	<%
 			}
