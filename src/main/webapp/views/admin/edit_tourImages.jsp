@@ -92,29 +92,27 @@
 		if (request.getParameter("delete") != null) {
 			//Double check if the user really wants to delete the category use an alert box
 			if (request.getParameter("delete").equals("confirm")) {
-		TourModel.deleteTourImage(tourImage_id).update(connection);
-		response.sendRedirect("/CA1-Preparation/views/admin/edit_tour.jsp?tourId=" + tourId);
-		return;
+				TourModel.deleteTourImage(tourImage_id).update(connection);
+				response.sendRedirect("/CA1-Preparation/views/admin/edit_tour.jsp?tourId=" + tourId);
+				return;
 			}
 	%>
 	<script>
-    //message box to confirm deletion
-    let x = confirm("Are you sure you want to delete this tour image?");
-    if (x) {
-        window.location.href = "/CA1-Preparation/views/admin/edit_tourImages.jsp?tourId=<%=tourId%>&tourImageId=<%=tourImage_id%>&delete=confirm";
-    } else {
-        window.location.href = "/CA1-Preparation/views/admin/edit_tourImages.jsp?tourId=<%=tourId%>
-		";
-		}
+		//message box to confirm deletion
+		let x = confirm("Are you sure you want to delete this image?");
+		if (x) window.location.href = "/CA1-Preparation/views/admin/edit_tourImages.jsp?tourId=<%=tourId%>&tourImageId=<%=tourImage_id%>&delete=confirm";
+		else window.location.href = "/CA1-Preparation/views/admin/edit_tourImages.jsp?tourId=
+		<%=tourId%>
+
 	</script>
 	<%
-	}
-	}
+			}
+		}
 
-	if (tourImages == null || tourImages.length == 0) {
-	response.sendRedirect("/CA1-Preparation/views/admin/edit_tour.jsp?tourId=" + tourId);
-	return;
-	}
+		if (tourImages == null || tourImages.length == 0) {
+			response.sendRedirect("/CA1-Preparation/views/admin/edit_tour.jsp?tourId=" + tourId);
+			return;
+		}
 
 	Tour.Image tourImage = tourImages[0];
 	%>
