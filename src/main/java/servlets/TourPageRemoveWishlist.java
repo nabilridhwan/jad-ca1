@@ -27,14 +27,6 @@ public class TourPageRemoveWishlist extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public TourPageRemoveWishlist() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-    /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -45,8 +37,9 @@ public class TourPageRemoveWishlist extends HttpServlet {
         //previous page
         String previousPage = request.getHeader("Referer");
         //remove message parameter from the previous page if it exists
-        if (previousPage.contains("&message")) {
-            previousPage = previousPage.substring(0, previousPage.indexOf("&message"));
+        int msgIndex = previousPage.indexOf("&message");
+        if (msgIndex != -1) {
+            previousPage = previousPage.substring(0, msgIndex);
         }
 
         // Get the user id

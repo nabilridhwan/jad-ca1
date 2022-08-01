@@ -45,8 +45,9 @@ public class TourPageAddWishlist extends HttpServlet {
         //previous page
         String previousPage = request.getHeader("Referer");
         //remove message parameter from the previous page if it exists
-        if (previousPage.contains("&message")) {
-            previousPage = previousPage.substring(0, previousPage.indexOf("&message"));
+        int msgIndex = previousPage.indexOf("&message");
+        if (msgIndex != -1) {
+            previousPage = previousPage.substring(0, msgIndex);
         }
 
         // Get the user id

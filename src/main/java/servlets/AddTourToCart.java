@@ -50,7 +50,10 @@ public class AddTourToCart extends HttpServlet {
 
         String baseUrl = request.getHeader("Referer");
         //remove all the parameters from the url
-        baseUrl = baseUrl.substring(0, baseUrl.indexOf("?"));
+        int subStringIndex = baseUrl.indexOf("?");
+        if (subStringIndex != -1) {
+            baseUrl = baseUrl.substring(0, subStringIndex);
+        }
 
         String originalURL = baseUrl + "?tour_id=" + request.getParameter("id");
         String previousURL = originalURL;
