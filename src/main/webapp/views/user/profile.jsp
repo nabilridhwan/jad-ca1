@@ -303,9 +303,7 @@ String postal_code = user.getPostalCode();
 											<%=registration.getStripe_transaction_id()%>
 										</p>
 
-										<a class="btn btn-primary"
-											href="${pageContext.request.contextPath}/views/user/transaction_details.jsp?transaction_id=<%=registration.getStripe_transaction_id()%>">
-											View transaction details </a>
+										<a class="btn btn-primary"> View transaction details </a>
 										<%
 										}
 										%>

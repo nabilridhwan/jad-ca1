@@ -5,7 +5,6 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.Address;
 import com.stripe.model.Customer;
 import com.stripe.model.PaymentIntent;
-import com.stripe.model.PaymentMethod;
 import com.stripe.param.CustomerCreateParams;
 import com.stripe.param.CustomerUpdateParams;
 import com.stripe.param.PaymentIntentCreateParams;
@@ -26,35 +25,35 @@ public class StripePayment {
 	public static Customer createNewCustomer(String name, String email, String phone) throws StripeException {
 		Stripe.apiKey = "sk_test_51Kq9aiGruISt8Q6BxYOHpOOthVQShUJl0aMQDATmgyThOhwVwC8fFlATOGEwlYTDS9Ayx663WADGm4aRtBjDpuAH006ZTQvYCI";
 
-		CustomerCreateParams params = CustomerCreateParams.builder().setName(name).setEmail(email).setPhone(phone)
-				.build();
+		CustomerCreateParams params = CustomerCreateParams.builder().setName(name)
+				.setEmail(email).setPhone(phone).build();
 
 		// Get customer details by user id, including address
 		Customer customer = Customer.create(params);
 
 		return customer;
 	}
-
+	
 	public static Customer updateCustomer(String cust_id, String name, String email, String phone) {
 		Stripe.apiKey = "sk_test_51Kq9aiGruISt8Q6BxYOHpOOthVQShUJl0aMQDATmgyThOhwVwC8fFlATOGEwlYTDS9Ayx663WADGm4aRtBjDpuAH006ZTQvYCI";
 		Customer customer = null;
 		try {
 			customer = getCustomer(cust_id);
-
-			CustomerUpdateParams params = CustomerUpdateParams.builder().setName(name).setEmail(email).setPhone(phone)
-					.build();
-
+			
+			CustomerUpdateParams params = CustomerUpdateParams.builder().setName(name)
+					.setEmail(email).setPhone(phone).build();
+			
 			customer.update(params);
-
+			
 			return customer;
 		} catch (StripeException e) {
-
+			
 			e.printStackTrace();
 		}
-
+		
 		return customer;
 	}
-
+	
 	public static Customer getCustomer(String cust_id) {
 		Stripe.apiKey = "sk_test_51Kq9aiGruISt8Q6BxYOHpOOthVQShUJl0aMQDATmgyThOhwVwC8fFlATOGEwlYTDS9Ayx663WADGm4aRtBjDpuAH006ZTQvYCI";
 		Customer customer = null;
@@ -62,23 +61,16 @@ public class StripePayment {
 			customer = Customer.retrieve(cust_id);
 			return customer;
 		} catch (StripeException e) {
-
+			
 			e.printStackTrace();
 		}
-
+		
 		return customer;
 	}
-
+	
 	public static PaymentIntent retrievePayment(String payment_intent_client_secret) throws StripeException {
-		Stripe.apiKey = "sk_test_51Kq9aiGruISt8Q6BxYOHpOOthVQShUJl0aMQDATmgyThOhwVwC8fFlATOGEwlYTDS9Ayx663WADGm4aRtBjDpuAH006ZTQvYCI";
 		PaymentIntent intent = PaymentIntent.retrieve(payment_intent_client_secret);
 		return intent;
-	}
-
-	public static PaymentMethod retrievePaymentMethod(String payment_method) throws StripeException {
-		Stripe.apiKey = "sk_test_51Kq9aiGruISt8Q6BxYOHpOOthVQShUJl0aMQDATmgyThOhwVwC8fFlATOGEwlYTDS9Ayx663WADGm4aRtBjDpuAH006ZTQvYCI";
-		PaymentMethod pm = PaymentMethod.retrieve(payment_method);
-		return pm;
 	}
 
 }
