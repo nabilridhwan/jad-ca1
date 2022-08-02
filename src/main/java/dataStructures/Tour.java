@@ -135,6 +135,34 @@ public class Tour {
         DB.close();
     }
 
+    public void setTour_id(int tour_id) {
+        this.tour_id = tour_id;
+    }
+
+    public void setTour_desc(String tour_desc) {
+        this.tour_desc = tour_desc;
+    }
+
+    public void setTour_location(String tour_location) {
+        this.tour_location = tour_location;
+    }
+
+    public void setImages(Image[] images) {
+        this.images = images;
+    }
+
+    public void setRegistrations(Registrations[] registrations) {
+        this.registrations = registrations;
+    }
+
+    public void setReviews(Review[] reviews) {
+        this.reviews = reviews;
+    }
+
+    public void setRefreshed(boolean refreshed) {
+        this.refreshed = refreshed;
+    }
+
     public static class Image {
         public int getId() {
             return id;
@@ -165,6 +193,14 @@ public class Tour {
 
         public String getUrl() {
             return url;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
         }
     }
 
@@ -283,6 +319,30 @@ public class Tour {
                     + " days";
         }
 
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public void setTour_id(int tour_id) {
+            this.tour_id = tour_id;
+        }
+
+        public void setStart(java.util.Date start) {
+            this.start = start;
+        }
+
+        public void setEnd(java.util.Date end) {
+            this.end = end;
+        }
+
+        public void setShown(boolean shown) {
+            this.shown = shown;
+        }
+
+        public void setPrice(double price) {
+            this.price = price;
+        }
+
         public static class Pair {
             Date date;
             int pax;
@@ -323,6 +383,13 @@ public class Tour {
             }
         }
 
+        public Review() {
+            user_id = 0;
+            review_text = "";
+            rating = 0;
+            helpful_score = 0;
+        }
+
         public int getUser_id() {
             return user_id;
         }
@@ -338,6 +405,15 @@ public class Tour {
         public int getHelpful_score() {
             return helpful_score;
         }
+
+        public void setUser_id(int user_id) {
+            this.user_id = user_id;
+        }
+
+        public void setRating(int rating) {
+            this.rating = rating;
+        }
+
     }
 
     public static class Registrations {
@@ -373,6 +449,15 @@ public class Tour {
 
         private java.util.Date created_at;
 
+        public Registrations() {
+            id = 0;
+            user_id = 0;
+            tour_date_id = 0;
+            pax = 0;
+            stripe_transaction_id = "";
+            created_at = new java.util.Date();
+        }
+
         public Registrations(ResultSet rs) {
             try {
                 id = rs.getInt("tour_registration_id");
@@ -385,6 +470,18 @@ public class Tour {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public void setUser_id(int user_id) {
+            this.user_id = user_id;
+        }
+
+        public void setCreated_at(java.util.Date created_at) {
+            this.created_at = created_at;
         }
     }
 

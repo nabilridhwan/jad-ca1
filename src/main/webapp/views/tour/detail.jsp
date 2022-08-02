@@ -34,10 +34,10 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
         response.sendRedirect("/CA1-Preparation/views/tour/view_all.jsp");
         return;
     }
-    IDatabaseQuery<Tour> tourQuery = TourModel.getTourById(tour_id);
+
     DatabaseConnection connection = new DatabaseConnection();
 
-    Tour[] tours = tourQuery.query(connection);
+    Tour[] tours = TourModel.getTourById(tour_id).query(connection);
 
     if (tours == null || tours.length != 1) {
         response.sendRedirect("/CA1-Preparation/views/tour/view_all.jsp");
