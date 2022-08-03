@@ -24,14 +24,6 @@ public class Pay extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Pay() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-    /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -57,7 +49,7 @@ public class Pay extends HttpServlet {
 
 
             DatabaseConnection connection = new DatabaseConnection();
-            String currency = "sgd";
+            String currency = (String) request.getSession().getAttribute("currency");
             double amt = cart.getTotalPrice(connection, currency) * 1.07;
 
             out.println("payment id: " +paymentId);

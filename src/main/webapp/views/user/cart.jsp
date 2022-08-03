@@ -11,6 +11,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <%@page import="utils.Util" %>
 <%@ page import="dataStructures.Cart" %>
 <%@ page import="java.util.*" %>
+<%@ page import="dataStructures.CurrencyExchangeRates" %>
 <html lang="en">
 <head>
     <title>Cart</title>
@@ -53,7 +54,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 
     DatabaseConnection connection = new DatabaseConnection();
     Cart cart = Cart.getOrCreateCart(session, connection);
-    String currency = "SGD";
+    String currency = (String) request.getSession().getAttribute("currency");
 %>
 
 <%@ include file="../misc/navbar_dark.jsp" %>

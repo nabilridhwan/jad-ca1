@@ -69,11 +69,14 @@ public class Cart {
     }
 
     public double getTotalPrice(DatabaseConnection connection, String currency) {
-        double total = 0;
-        Item[] itemsArray = getAllItems();
-        for (Item item : itemsArray) total += item.getPrice(connection);
-        //todo: convert to currency
-        return total * 100;
+        try {
+            double total = 0;
+            Item[] itemsArray = getAllItems();
+            for (Item item : itemsArray) total += item.getPrice(connection);
+            return total * CurrencyExchangeRates.GetCurrentRates().getRates().get(currency);
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     public double getTotalPrice(String currency) {
