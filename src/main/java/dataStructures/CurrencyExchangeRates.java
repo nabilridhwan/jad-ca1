@@ -67,7 +67,7 @@ public class CurrencyExchangeRates {
 			}
 			if (!exchange.isSuccess()) {
 				System.out.println("Currency exchange rates unsuccessful");
-				return null;
+				return exchange;
 			}
 			exchange.getRates().put(exchange.getBase(), 1.0);
 			return exchange;
