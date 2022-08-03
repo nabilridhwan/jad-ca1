@@ -78,4 +78,24 @@ public class CurrencyExchangeRates {
 			return null;
 		}
 	}
+
+	public void SetBase(String base) {
+		this.base = base;
+	}
+
+	public void SetDate(String date) {
+		this.date = date;
+	}
+
+	public void SetRates(HashMap<String, Double> rates) {
+		this.rates = rates;
+	}
+
+	public void SetSuccess(boolean success) {
+		this.success = success;
+	}
+
+	public void SetTimestamp(int timestamp) {
+		this.timestamp = timestamp;
+	}
 }
