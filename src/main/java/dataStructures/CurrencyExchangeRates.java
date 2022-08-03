@@ -7,8 +7,6 @@
 
 package dataStructures;
 
-import java.util.HashMap;
-
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
@@ -16,6 +14,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.HashMap;
 
 public class CurrencyExchangeRates {
 
@@ -32,10 +31,6 @@ public class CurrencyExchangeRates {
 		return base;
 	}
 
-	public void setBase(String base) {
-		this.base = base;
-	}
-
 	public String getDate() {
 		return date;
 	}
@@ -45,12 +40,10 @@ public class CurrencyExchangeRates {
 	}
 
 	public HashMap<String, Double> getRates() {
+		if (!rates.containsKey(getBase())) rates.put(getBase(), 1.0);
 		return rates;
 	}
 
-	public void setRates(HashMap<String, Double> rates) {
-		this.rates = rates;
-	}
 
 	public boolean isSuccess() {
 		return success;
@@ -62,10 +55,6 @@ public class CurrencyExchangeRates {
 
 	public int getTimestamp() {
 		return timestamp;
-	}
-
-	public void setTimestamp(int timestamp) {
-		this.timestamp = timestamp;
 	}
 
 
