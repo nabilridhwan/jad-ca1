@@ -50,12 +50,45 @@ public class CurrencyExchangeRates {
 
 
 	public static CurrencyExchangeRates GetCurrentRates(){
+//		Client client = ClientBuilder.newClient();
+//		String restUrl = "http://localhost:8080/CA2-Webservices/currency";
+//		WebTarget target = client.target(restUrl).path("/");
+//
+//		Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
+//		Response resp = invocationBuilder.get();
+//
+//		if (resp.getStatus() != Response.Status.OK.getStatusCode()) return null;
+//		try {
+//			CurrencyExchangeRates exchange = resp.readEntity(CurrencyExchangeRates.class);
+//			if (exchange == null) {
+//				System.out.println("Currency exchange rates null");
+//				return null;
+//			}
+//			if (!exchange.isSuccess()) {
+//				System.out.println("Currency exchange rates unsuccessful");
+//				System.out.println(exchange.getBase() + " " + exchange.getDate() + " " + exchange.getTimestamp());
+//				System.out.println(exchange.getRates());
+//				return exchange;
+//			}
+//			exchange.getRates().put(exchange.getBase(), 1.0);
+//			return exchange;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return null;
+//		}
 		Client client = ClientBuilder.newClient();
-		String restUrl = "http://localhost:8080/CA2-Webservices/currency";
-		WebTarget target = client.target(restUrl).path("/");
+
+		String restUrl = "https://api.apilayer.com/exchangerates_data/latest?symbols=USD%2CEUR&base=SGD";
+
+		WebTarget target = client.target(restUrl);
 
 		Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
-		Response resp = invocationBuilder.get();
+
+		HashMap<String, String> h = new HashMap<String, String>();
+
+		h.put("apikey", "m4nEJVld876oMcySYvrKV5MMLfZUNhW8");
+
+		Response resp = invocationBuilder.header("apikey", "m4nEJVld876oMcySYvrKV5MMLfZUNhW8").get();
 
 		if (resp.getStatus() != Response.Status.OK.getStatusCode()) return null;
 		try {
