@@ -113,48 +113,50 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                 <%
                         }
                     }
-                    {
-                        CurrencyExchangeRates currencyExchangeRates = CurrencyExchangeRates.GetCurrentRates();
-                        if (currencyExchangeRates != null) {
-                            if (currencyExchangeRates.isSuccess()) {
-                                Set<String> currencies = currencyExchangeRates.getRates().keySet();
+                    //Start currency drop down menu
+<%--                    {--%>
+<%--                        CurrencyExchangeRates currencyExchangeRates = CurrencyExchangeRates.GetCurrentRates();--%>
+<%--                        if (currencyExchangeRates != null) {--%>
+<%--                            if (currencyExchangeRates.isSuccess()) {--%>
+<%--                                Set<String> currencies = currencyExchangeRates.getRates().keySet();--%>
 
-                                String currentCurrency = request.getParameter("currency");
-                                //set currency if null
-                                if (currentCurrency == null) {
-                                    currentCurrency = (String) request.getSession().getAttribute("currency");
-                                    if (!currencies.contains(currentCurrency))
-                                        currentCurrency = currencyExchangeRates.getBase();
-                                } else session.setAttribute("currency", currentCurrency);
+<%--                                String currentCurrency = request.getParameter("currency");--%>
+<%--                                //set currency if null--%>
+<%--                                if (currentCurrency == null) {--%>
+<%--                                    currentCurrency = (String) request.getSession().getAttribute("currency");--%>
+<%--                                    if (!currencies.contains(currentCurrency))--%>
+<%--                                        currentCurrency = currencyExchangeRates.getBase();--%>
+<%--                                } else session.setAttribute("currency", currentCurrency);--%>
 
-                %>
-                <%--                drop down menu--%>
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-                       aria-haspopup="true" aria-expanded="false">
-                        <%=currentCurrency%>
-                    </a>
-                    <div class="dropdown-menu">
-                        <%
-                            for (String currency : currencies) {
-                                if (!currency.equals(currentCurrency)) {
-                        %>
-                        <a href="?currency=<%=currency%>" class="dropdown-item">
-                            <%=currency%>
-                        </a>
-                        <%
-                                }
-                            }
-                        %>
-                    </div>
-                        <%
-                            }else{
-                                System.out.println("Currency exchange rates not successfully retrieved");
-                            }
-                        }else {
-                            System.out.println("Currency exchange rates not available");
-                        }
-                    }
+<%--                %>--%>
+<%--                &lt;%&ndash;                drop down menu&ndash;%&gt;--%>
+<%--                <li class="nav-item dropdown">--%>
+<%--                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"--%>
+<%--                       aria-haspopup="true" aria-expanded="false">--%>
+<%--                        <%=currentCurrency%>--%>
+<%--                    </a>--%>
+<%--                    <div class="dropdown-menu">--%>
+<%--                        <%--%>
+<%--                            for (String currency : currencies) {--%>
+<%--                                if (!currency.equals(currentCurrency)) {--%>
+<%--                        %>--%>
+<%--                        <a href="?currency=<%=currency%>" class="dropdown-item">--%>
+<%--                            <%=currency%>--%>
+<%--                        </a>--%>
+<%--                        <%--%>
+<%--                                }--%>
+<%--                            }--%>
+<%--                        %>--%>
+<%--                    </div>--%>
+<%--                        <%--%>
+<%--                            }else{--%>
+<%--                                System.out.println("Currency exchange rates not successfully retrieved");--%>
+<%--                            }--%>
+<%--                        }else {--%>
+<%--                            System.out.println("Currency exchange rates not available");--%>
+<%--                        }--%>
+<%--                    }--%>
+                    //End currency drop down menu
                 %>
             </ul>
         </div>
