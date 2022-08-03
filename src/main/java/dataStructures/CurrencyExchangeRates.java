@@ -61,7 +61,7 @@ public class CurrencyExchangeRates {
 		try {
 			CurrencyExchangeRates exchange = resp.readEntity(new GenericType<CurrencyExchangeRates>() {
 			});
-			if (exchange == null || !exchange.isSuccess()) {
+			if (exchange == null) {
 				System.out.println("Currency exchange rates not available");
 				return null;
 			}
