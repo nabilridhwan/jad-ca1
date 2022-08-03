@@ -17,6 +17,9 @@ public class CurrencyExchangeRates {
 	boolean success;
 	int timestamp;
 
+	public CurrencyExchangeRates() {
+	}
+
 	public String getBase() {
 		return base;
 	}
