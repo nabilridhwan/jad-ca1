@@ -9,7 +9,7 @@ package dataStructures;
 
 import java.util.HashMap;
 
-public class CurrencyApiBody {
+public class CurrencyExchangeRates {
 
 	String base;
 	String date;
@@ -55,6 +55,26 @@ public class CurrencyApiBody {
 
 	public void setTimestamp(int timestamp) {
 		this.timestamp = timestamp;
+	}
+
+
+	public static CurrencyExchangeRates GetCurrentRates(){
+		Client client = ClientBuilder.newClient();
+		String restUrl = "http://localhost:8080/CA2-Webservices/currency";
+		WebTarget target = client.target(restUrl).path("/");
+
+		Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
+		Response resp = invocationBuilder.get();
+
+		if (resp.getStatus() != Response.Status.OK.getStatusCode()) return null;
+		try {
+			CurrencyExchangeRates exchange = resp.readEntity(new GenericType<CurrencyExchangeRates>() {
+			});
+			return exchange;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }
