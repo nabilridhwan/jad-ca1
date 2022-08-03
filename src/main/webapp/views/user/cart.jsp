@@ -11,7 +11,6 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <%@page import="utils.Util" %>
 <%@ page import="dataStructures.Cart" %>
 <%@ page import="java.util.*" %>
-<%@ page import="dataStructures.CurrencyExchangeRates" %>
 <html lang="en">
 <head>
     <title>Cart</title>
@@ -133,13 +132,14 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
     <div class="container">
 
         <%
-            HashMap<Tour, Tour.Date.Pair[]> hashMap = cart.toHashMap(connection);
-            if (hashMap.size() == 0) {
+
+            if (cart.Size() == 0) {
         %>
         <h3>No Tours added to cart :( </h3>
         Click <a href="${pageContext.request.contextPath}/views/tour/view_all.jsp">here</a> to add tours to your cart.
         <%
         } else {
+            HashMap<Tour, Tour.Date.Pair[]> hashMap = cart.toHashMap(connection);
             Set<Tour> keySet = hashMap.keySet();
             for (Tour tour : keySet) {
                 Tour.Date.Pair[] dates = hashMap.get(tour);
@@ -275,7 +275,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
         </form>
 
         <%
-            if (hashMap.size() == 0) {
+            if (cart.Size() == 0) {
         %>
         You have no tours in your cart.
         <%
@@ -284,7 +284,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
         <form action="${pageContext.request.contextPath}/create_payment_intent" method="post">
             <input type="submit" value="Checkout (<%=cart.getTotalPriceString(connection,currency)%>)"
                 <%
-                     if (hashMap.size() == 0 || !Util.isUserLoggedIn(session))
+                     if (cart.Size() == 0 || !Util.isUserLoggedIn(session))
                      {
                %>
                    disabled
