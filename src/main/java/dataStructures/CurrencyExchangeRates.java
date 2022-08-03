@@ -59,8 +59,7 @@ public class CurrencyExchangeRates {
 
 		if (resp.getStatus() != Response.Status.OK.getStatusCode()) return null;
 		try {
-			CurrencyExchangeRates exchange = resp.readEntity(new GenericType<CurrencyExchangeRates>() {
-			});
+			CurrencyExchangeRates exchange = resp.readEntity(CurrencyExchangeRates.class);
 			if (exchange == null) {
 				System.out.println("Currency exchange rates null");
 				return null;
