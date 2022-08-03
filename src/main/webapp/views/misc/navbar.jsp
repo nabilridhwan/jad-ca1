@@ -17,6 +17,8 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <%@page import="dataStructures.User" %>
 <%@page import="models.UserModel" %>
 <%@page import="utils.Util" %>
+<%@ page import="dataStructures.CurrencyExchangeRates" %>
+<%@ page import="java.util.Set" %>
 
 <%
     {
@@ -108,6 +110,19 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                         href="${pageContext.request.contextPath}/logout" class="nav-link">Logout</a>
                 </li>
                 <%
+                        }
+                    }
+                    {
+                        CurrencyExchangeRates currencyExchangeRates = CurrencyExchangeRates.GetCurrentRates();
+                        if (currencyExchangeRates != null) {
+                            Set<String> currencies = currencyExchangeRates.getRates().keySet();
+                            String baseCurrency = currencyExchangeRates.getBase();
+                            for (String currency : currencies) {
+                                if (currency.equals(baseCurrency)) {
+                %>
+                UwU
+                <%
+                            }
                         }
                     }
                 %>
