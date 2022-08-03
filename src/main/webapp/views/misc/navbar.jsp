@@ -116,6 +116,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                     {
                         CurrencyExchangeRates currencyExchangeRates = CurrencyExchangeRates.GetCurrentRates();
                         if (currencyExchangeRates != null) {
+                            if(!currencyExchangeRates.isSuccess()) return;
                             Set<String> currencies = currencyExchangeRates.getRates().keySet();
 
                             String currentCurrency = request.getParameter("currency");
