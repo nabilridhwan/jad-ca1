@@ -40,7 +40,7 @@ public class CurrencyExchangeRates {
 	}
 
 	public HashMap<String, Double> getRates() {
-		if (!rates.containsKey(getBase())) rates.put(getBase(), 1.0);
+		if (rates !=null && !rates.containsKey(getBase())) rates.put(getBase(), 1.0);
 		return rates;
 	}
 
