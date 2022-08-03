@@ -118,12 +118,12 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                             Set<String> currencies = currencyExchangeRates.getRates().keySet();
                             String baseCurrency = currencyExchangeRates.getBase();
                             for (String currency : currencies) {
-                                if (currency.equals(baseCurrency)) {
+//                                if (currency.equals(baseCurrency)) {
                 %>
-                UwU
+                <%=currency%>
                 <%
-                            }
-                        }
+
+                }
                     }
                 %>
 
