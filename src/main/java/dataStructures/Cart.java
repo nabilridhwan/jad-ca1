@@ -73,7 +73,7 @@ public class Cart {
             double total = 0;
             Item[] itemsArray = getAllItems();
             for (Item item : itemsArray) total += item.getPrice(connection);
-            return total * CurrencyExchangeRates.GetCurrentRates().getRates().get(currency);
+            return total * CurrencyExchangeRates.GetCurrentRates().getRates().get(currency) * 100;
         } catch (Exception e) {
             return -1;
         }
