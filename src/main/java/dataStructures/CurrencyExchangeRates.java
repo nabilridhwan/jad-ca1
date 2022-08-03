@@ -18,11 +18,11 @@ import java.util.HashMap;
 
 public class CurrencyExchangeRates {
 
-	String base;
-	String date;
-	HashMap<String, Double> rates;
-	boolean success;
-	int timestamp;
+	private String base;
+	private String date;
+	private HashMap<String, Double> rates;
+	private boolean success;
+	private int timestamp;
 
 	public CurrencyExchangeRates() {
 	}
@@ -35,22 +35,13 @@ public class CurrencyExchangeRates {
 		return date;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
-	}
-
 	public HashMap<String, Double> getRates() {
-		if (rates !=null && !rates.containsKey(getBase())) rates.put(getBase(), 1.0);
 		return rates;
 	}
 
 
 	public boolean isSuccess() {
 		return success;
-	}
-
-	public void setSuccess(boolean success) {
-		this.success = success;
 	}
 
 	public int getTimestamp() {
@@ -70,11 +61,11 @@ public class CurrencyExchangeRates {
 		try {
 			CurrencyExchangeRates exchange = resp.readEntity(new GenericType<CurrencyExchangeRates>() {
 			});
+			exchange.getRates().put(exchange.getBase(), 1.0);
 			return exchange;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-
 }
