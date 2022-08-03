@@ -45,7 +45,7 @@ public class CreatePaymentIntent extends HttpServlet {
             return;
         }
 
-        String currency = "sgd";
+        String currency = (String) request.getSession().getAttribute("currency");
         double amt = cart.getTotalPrice(currency) * 1.07;
 
         if (amt == -1) {
