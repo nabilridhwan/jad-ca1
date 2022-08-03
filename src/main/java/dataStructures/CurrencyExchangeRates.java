@@ -18,11 +18,11 @@ import java.util.HashMap;
 
 public class CurrencyExchangeRates {
 
-	private String base;
-	private String date;
-	private HashMap<String, Double> rates;
-	private boolean success;
-	private int timestamp;
+	String base;
+	String date;
+	HashMap<String, Double> rates;
+	boolean success;
+	int timestamp;
 
 	public CurrencyExchangeRates() {
 	}
@@ -77,25 +77,5 @@ public class CurrencyExchangeRates {
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	public void SetBase(String base) {
-		this.base = base;
-	}
-
-	public void SetDate(String date) {
-		this.date = date;
-	}
-
-	public void SetRates(HashMap<String, Double> rates) {
-		this.rates = rates;
-	}
-
-	public void SetSuccess(boolean success) {
-		this.success = success;
-	}
-
-	public void SetTimestamp(int timestamp) {
-		this.timestamp = timestamp;
 	}
 }
