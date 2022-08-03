@@ -116,16 +116,16 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                     {
                         CurrencyExchangeRates currencyExchangeRates = CurrencyExchangeRates.GetCurrentRates();
                         if (currencyExchangeRates != null) {
-                            if(!currencyExchangeRates.isSuccess()) return;
-                            Set<String> currencies = currencyExchangeRates.getRates().keySet();
+                            if (currencyExchangeRates.isSuccess()) {
+                                Set<String> currencies = currencyExchangeRates.getRates().keySet();
 
-                            String currentCurrency = request.getParameter("currency");
-                            //parse currency
-                            if (currentCurrency == null) {
-                                currentCurrency = (String) request.getSession().getAttribute("currency");
-                                if (!currencies.contains(currentCurrency))
-                                    currentCurrency = currencyExchangeRates.getBase();
-                            } else session.setAttribute("currency", currentCurrency);
+                                String currentCurrency = request.getParameter("currency");
+                                //set currency if null
+                                if (currentCurrency == null) {
+                                    currentCurrency = (String) request.getSession().getAttribute("currency");
+                                    if (!currencies.contains(currentCurrency))
+                                        currentCurrency = currencyExchangeRates.getBase();
+                                } else session.setAttribute("currency", currentCurrency);
 
                 %>
                 <%--                drop down menu--%>
@@ -148,13 +148,14 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                         %>
                     </div>
                         <%
+                            }else{
+                                System.out.println("Currency exchange rates not successfully retrieved");
+                            }
                         }else {
                             System.out.println("Currency exchange rates not available");
                         }
                     }
                 %>
-
-
             </ul>
         </div>
     </div>
