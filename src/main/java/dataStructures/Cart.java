@@ -164,6 +164,7 @@ public class Cart {
             int tourDateId = item.getTourDateId();
 
             System.out.println("tourDate ID (part 1) " + tourDateId);
+            //This not working
             Tour.Date[] tours = TourModel.getTourDateById(tourDateId).query(connection);
 
             if (tours.length != 1) continue;

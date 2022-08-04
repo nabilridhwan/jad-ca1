@@ -288,12 +288,13 @@ public class TourModel {
 
             Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
             Response resp = invocationBuilder.get();
-
+            System.out.println("Tour Date Webservice response: " + resp.getStatus());
             if (resp.getStatus() != Response.Status.OK.getStatusCode()) return null;
             try {
                 Tour.Date[] tours = resp.readEntity(new GenericType<Tour.Date[]>() {
                 });
-                System.out.println(tours.length);
+                System.out.println("Tour Date Webservice tourDate: " + Arrays.toString(tours));
+
                 if (tours == null) tours = new Tour.Date[0];
                 return tours;
             } catch (Exception e) {
