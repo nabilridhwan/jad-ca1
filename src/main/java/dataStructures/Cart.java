@@ -180,7 +180,6 @@ public class Cart {
         for (Integer key : dateDictionary.keySet()) {
             System.out.println("Tour ID (part 2) " + key);
             Tour[] tours = TourModel.getTourById(key).query(connection);
-            System.out.println("Tour Name (part 2) " + tours[0].tour_name);
             if (tours.length != 1) continue;
             result.put(tours[0], dateDictionary.get(key).toArray(new Tour.Date.Pair[0]));
         }
