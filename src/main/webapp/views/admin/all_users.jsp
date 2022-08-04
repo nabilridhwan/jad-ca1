@@ -89,6 +89,9 @@
 		</form>
 
 		<div class="container-fluid">
+			<a class="btn btn-primary w-100 my-5"
+				href="${pageContext.request.contextPath}/views/admin/add_user.jsp">Add
+				User</a>
 			<div class="row">
 
 
@@ -98,7 +101,9 @@
 					String full_name = usersRs.getString("full_name");
 					String profile_pic_url = usersRs.getString("profile_pic_url");
 					String email = usersRs.getString("email");
-					String full_address = usersRs.getString("full_address").isEmpty() ? "No Address" : usersRs.getString("full_address");
+					String full_address = usersRs.getString("full_address").isEmpty()
+					? "No Address"
+					: usersRs.getString("full_address");
 				%>
 				<div class="col-sm-4 col-lg-3 ftco-animate">
 					<div class="card">
