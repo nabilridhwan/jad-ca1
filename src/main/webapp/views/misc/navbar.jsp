@@ -143,6 +143,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                             StringBuilder redirect = new StringBuilder("?currency=" + currentCurrency);
                             for (Map.Entry<String, String[]> entry : map.entrySet()) {
                                 String k = entry.getKey();
+                                if(k.equals("currency")) continue;
                                 String[] v = entry.getValue();
                                 redirect.append("&").append(k).append("=").append(v[0]);
                             }
