@@ -231,7 +231,6 @@ public class Tour {
         }
 
         public Date(ResultSet rs) {
-            DatabaseConnection conn = new DatabaseConnection();
             try {
                 id = rs.getInt("tour_date_id");
                 tour_id = rs.getInt("tour_id");
@@ -244,7 +243,6 @@ public class Tour {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            conn.close();
         }
 
         public Date() {

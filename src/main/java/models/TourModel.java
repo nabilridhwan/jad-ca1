@@ -284,7 +284,7 @@ public class TourModel {
         return databaseConnection -> {
             Client client = ClientBuilder.newClient();
             String restUrl = "http://localhost:8080/CA2-Webservices/tours";
-            WebTarget target = client.target(restUrl).path("/dates").queryParam("id", tourDateID);
+            WebTarget target = client.target(restUrl).path("/date").queryParam("id", tourDateID);
 
             Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
             Response resp = invocationBuilder.get();
