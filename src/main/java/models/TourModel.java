@@ -98,11 +98,12 @@ public class TourModel {
             Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
             Response resp = invocationBuilder.get();
 
+            System.out.println("Web Service Response: " + resp.getStatus());
             if (resp.getStatus() != Response.Status.OK.getStatusCode()) return null;
             try {
                 Tour[] tours = resp.readEntity(new GenericType<Tour[]>() {
                 });
-
+                System.out.println("Web Service Response: " + Arrays.toString(tours));
                 if (tours == null) tours = new Tour[0];
                 return tours;
             } catch (Exception e) {
