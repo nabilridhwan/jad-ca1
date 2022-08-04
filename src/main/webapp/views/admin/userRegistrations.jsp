@@ -65,18 +65,26 @@
 		Util.forceAdmin(session, response);
 
 		int tourId = -1;
+		int tourDateId = -1;
 		String tourIdStr = request.getParameter("tourId");
+		String tourDateIdStr = request.getParameter("tourDateId");
 
 		if (tourIdStr == null || tourIdStr.isEmpty()) {
 			response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
 			return;
 		}
+		
 		try {
 			tourId = Integer.parseInt(tourIdStr);
 		} catch (NumberFormatException e) {
 			response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
 			return;
 		}
+		try {
+			if (tourDateIdStr != null && !tourDateIdStr.isEmpty()) tourDateId = Integer.parseInt(tourDateIdStr);
+		} catch (NumberFormatException ignored) {
+		}
+
 		if (tourId < 0) {
 			response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
 			return;
@@ -84,18 +92,8 @@
 
 		DatabaseConnection connection = new DatabaseConnection();
 
-		Tour.Date[] dates = TourModel.getTourDates(tourId).query(connection);
-		int tourDateId = -1;
-		String tourDateIdStr = request.getParameter("tourDateId");
-
-		try {
-			tourDateId = Integer.parseInt(tourDateIdStr);
-		} catch (NumberFormatException e) {
-			response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
-			return;
-		}
-
 		Tour.Date selectedDate = null;
+		Tour.Date[] dates = TourModel.getTourDates(tourId).query(connection);
 		if (tourDateId < 0) {
 			//use the first date
 			tourDateId = dates[0].getId();
@@ -112,7 +110,7 @@
 
 		Tour.Registrations[] tourRegistrations = TourModel.getTourRegistrationsByTourDate(tourDateId).query(connection);
 
-		if (tourRegistrations == null || selectedDate == null) {
+		if (tourRegistrations == null) {
 			response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
 			return;
 		}
