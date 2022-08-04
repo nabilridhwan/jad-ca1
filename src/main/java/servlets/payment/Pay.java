@@ -50,7 +50,7 @@ public class Pay extends HttpServlet {
 
             DatabaseConnection connection = new DatabaseConnection();
             String currency = (String) request.getSession().getAttribute("currency");
-            double amt = cart.getTotalPrice(connection, currency) * 1.07;
+            long amt = (long) (cart.getTotalPrice(connection, currency) * 1.07);
 
             out.println("payment id: " +paymentId);
             out.println("paid amount: " + paymentAmount);
