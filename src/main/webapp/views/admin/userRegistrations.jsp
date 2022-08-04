@@ -125,7 +125,7 @@
 					data-scrollax-parent="true">
 				<section
 						class="ftco-section contact-section ftco-degree-bg bg-white rounded">
-					<div class="nav-item dropdown">
+					<div class="nav-item dropdown" style="margin: auto; outline: #0b0b0b;">
 						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
 						   aria-haspopup="true" aria-expanded="false">
 							<%=selectedDate.getStartString() + " - " + selectedDate.getEndString()%>
