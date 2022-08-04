@@ -139,12 +139,12 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                     <div class="dropdown-menu">
                         <%
                             //check if url contains any parameter
-                            Map<String, String> map = request.getParameterMap();
+                            Map<String, String[]> map = request.getParameterMap();
                             StringBuilder redirect = new StringBuilder("?currency=" + currentCurrency);
-                            for (Map.Entry<String, String> entry : map.entrySet()) {
+                            for (Map.Entry<String, String[]> entry : map.entrySet()) {
                                 String k = entry.getKey();
-                                String v = entry.getValue();
-                                redirect.append("&").append(k).append("=").append(v);
+                                String[] v = entry.getValue();
+                                redirect.append("&").append(k).append("=").append(v[0]);
                             }
                             for (String currency : currencies) {
                                 if (!currency.equals(currentCurrency)) {
