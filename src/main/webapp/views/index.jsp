@@ -257,6 +257,8 @@
                     Tour[] tours = TourModel.getAllTours(5).query(connection);
                 connection.close();
 
+                String currency = (String) request.getAttribute("currency");
+                double rates =CurrencyExchangeRates.GetCurrentRates().getRates().get(currency);
                 if (tours != null)
                     for (Tour tour : tours) {
                         int tour_id = tour.getTour_id();
@@ -318,7 +320,7 @@
                                 </p>
                             </div>
                             <div class="two">
-                                <span class="price">$<%=tour_date.getPrice() %></span>
+                                <span class="price">$<%=tour_date.getPrice() * rates%></span>
                             </div>
                         </div>
                         <p>

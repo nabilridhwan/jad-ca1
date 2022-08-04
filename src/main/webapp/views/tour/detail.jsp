@@ -22,6 +22,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <%@ page import="utils.Util" %>
 <%@ page import="models.WishlistModel" %>
 <%@ page import="dataStructures.Wishlist" %>
+<%@ page import="dataStructures.CurrencyExchangeRates" %>
 <%@ page contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <!DOCTYPE html>
 <html>
@@ -419,6 +420,10 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                                             if (havePreviousDate)
                                                 prevDateID = Integer.parseInt(request.getParameter("date"));
 
+
+                                            String currency = (String) request.getAttribute("currency");
+                                            double rates = CurrencyExchangeRates.GetCurrentRates().getRates().get(currency);
+
                                             for (Tour.Date date : dates) {
                                         %>
                                         <option value="<%=date.getId()%>"
@@ -435,6 +440,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                                                     }
                                                 %>
                                         >
+                                            $<%=date.getPrice() * rates%>
                                             <%=date.getStartString()%> - <%=date.getEndString()%>
                                             (<%=date.getAvail_slot()%> slots available)
                                         </option>
