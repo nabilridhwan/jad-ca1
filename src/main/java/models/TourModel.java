@@ -161,28 +161,6 @@ public class TourModel {
         };
     }
 
-    public static IDatabaseQuery<Tour.Date> getTourDateById(int tourDateID) {
-        return databaseConnection -> {
-            Client client = ClientBuilder.newClient();
-            String restUrl = "http://localhost:8080/CA2-Webservices/tours";
-            WebTarget target = client.target(restUrl).path("/dates").queryParam("id", tourDateID);
-
-            Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
-            Response resp = invocationBuilder.get();
-
-            if (resp.getStatus() != Response.Status.OK.getStatusCode()) return null;
-            try {
-                Tour.Date[] tours = resp.readEntity(new GenericType<Tour.Date[]>() {
-                });
-                if (tours == null) tours = new Tour.Date[0];
-                return tours;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        };
-    }
-
     public static IDatabaseQuery<Tour.Image> getTourImages(Tour tour) {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
@@ -299,6 +277,31 @@ public class TourModel {
             }
         };
     }
+
+
+    public static IDatabaseQuery<Tour.Date> getTourDateById(int tourDateID) {
+        return databaseConnection -> {
+            Client client = ClientBuilder.newClient();
+            String restUrl = "http://localhost:8080/CA2-Webservices/tours";
+            WebTarget target = client.target(restUrl).path("/dates").queryParam("id", tourDateID);
+
+            Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
+            Response resp = invocationBuilder.get();
+
+            if (resp.getStatus() != Response.Status.OK.getStatusCode()) return null;
+            try {
+                Tour.Date[] tours = resp.readEntity(new GenericType<Tour.Date[]>() {
+                });
+                System.out.println(tours.length);
+                if (tours == null) tours = new Tour.Date[0];
+                return tours;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
+
 
     public static IDatabaseQuery<Tour> getBestSellingTours(int limit) {
         return databaseConnection -> {
