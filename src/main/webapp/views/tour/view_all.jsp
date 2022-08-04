@@ -125,7 +125,7 @@
                     <h3>No tour found</h3>
                     <%
                     } else {
-                        String currency = (String) request.getAttribute("currency");
+                        String currency = (String) request.getSession().getAttribute("currency");
                         double rates =CurrencyExchangeRates.GetCurrentRates().getRates().get(currency);
 
                         for (Tour tour : tours) {

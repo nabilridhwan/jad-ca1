@@ -421,7 +421,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                                                 prevDateID = Integer.parseInt(request.getParameter("date"));
 
 
-                                            String currency = (String) request.getAttribute("currency");
+                                            String currency = (String) request.getSession().getAttribute("currency");
                                             double rates = CurrencyExchangeRates.GetCurrentRates().getRates().get(currency);
 
                                             for (Tour.Date date : dates) {

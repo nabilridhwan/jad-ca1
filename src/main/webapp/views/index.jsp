@@ -257,7 +257,7 @@
                     Tour[] tours = TourModel.getAllTours(5).query(connection);
                 connection.close();
 
-                String currency = (String) request.getAttribute("currency");
+                String currency = (String) request.getSession().getAttribute("currency");
                 double rates =CurrencyExchangeRates.GetCurrentRates().getRates().get(currency);
                 if (tours != null)
                     for (Tour tour : tours) {
