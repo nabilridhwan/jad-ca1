@@ -140,17 +140,22 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                         <%
                             //check if url contains any parameter
                             Map<String, String[]> map = request.getParameterMap();
-                            StringBuilder redirect = new StringBuilder("?currency=" + currentCurrency);
+                            StringBuilder redirect = new StringBuilder();
                             for (Map.Entry<String, String[]> entry : map.entrySet()) {
                                 String k = entry.getKey();
-                                if(k.equals("currency")) continue;
+                                if (k.equals("currency")) continue;
                                 String[] v = entry.getValue();
-                                redirect.append("&").append(k).append("=").append(v[0]);
+                                if (redirect.length() > 1) redirect.append("&");
+                                else redirect.append("?");
+                                redirect.append(k).append("=").append(v[0]);
                             }
                             for (String currency : currencies) {
                                 if (!currency.equals(currentCurrency)) {
+                                    String href = redirect.toString();
+                                    href += href.length() > 1 ? "&" : "?";
+                                    href += "currency=" + currency;
                         %>
-                        <a href="<%=redirect.toString()%>" class="dropdown-item">
+                        <a href="<%=href%>" class="dropdown-item">
                             <%=currency%>
                         </a>
                         <%
