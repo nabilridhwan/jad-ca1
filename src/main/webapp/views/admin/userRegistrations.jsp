@@ -10,6 +10,7 @@
 <%@ page import="models.TourModel"%>
 <%@ page import="dataStructures.Tour"%>
 <%@ page import="utils.DatabaseConnection"%>
+<%@ page import="java.util.Arrays" %>
 <html lang="en">
 <head>
 <title>Registrations</title>
@@ -61,33 +62,93 @@
 	<%@ include file="../misc/navbar.jsp"%>
 
 	<%
-	Util.forceAdmin(session, response);
+		Util.forceAdmin(session, response);
 
-	String tour_dateIdStr = request.getParameter("tourDateId");
+		int tourId = -1;
+		String tourIdStr = request.getParameter("tourId");
 
-	if (tour_dateIdStr == null || tour_dateIdStr.isEmpty()) {
-		response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
-		return;
-	}
-	DatabaseConnection connection = new DatabaseConnection();
+		if (tourIdStr == null || tourIdStr.isEmpty()) {
+			response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
+			return;
+		}
+		try {
+			tourId = Integer.parseInt(tourIdStr);
+		} catch (NumberFormatException e) {
+			response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
+			return;
+		}
+		if (tourId < 0) {
+			response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
+			return;
+		}
 
-	Tour.Registrations[] tourRegistrations = TourModel.getRegistrationsByTourDateId(tour_dateIdStr).query(connection);
+		DatabaseConnection connection = new DatabaseConnection();
 
-	if (tourRegistrations == null) {
-		response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
-		return;
-	}
+		Tour.Date[] dates = TourModel.getTourDates(tourId).query(connection);
+		int tourDateId = -1;
+		String tourDateIdStr = request.getParameter("tourDateId");
+
+		try {
+			tourDateId = Integer.parseInt(tourDateIdStr);
+		} catch (NumberFormatException e) {
+			response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
+			return;
+		}
+
+		Tour.Date selectedDate = null;
+		if (tourDateId < 0) {
+			//use the first date
+			tourDateId = dates[0].getId();
+			selectedDate = dates[0];
+		} else {
+			for (Tour.Date date : dates) {
+				if (date.getId() == tourDateId) {
+					selectedDate = date;
+					break;
+				}
+			}
+		}
+
+
+		Tour.Registrations[] tourRegistrations = TourModel.getTourRegistrationsByTourDate(tourDateId).query(connection);
+
+		if (tourRegistrations == null || selectedDate == null) {
+			response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
+			return;
+		}
 	%>
 
 	<div class="hero-wrap"
-		style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
+		 style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
 		<div class="overlay"></div>
 		<div class="container" style="padding: 7em 0">
 			<div
-				class="row no-gutters js-fullheight align-items-center justify-content-center"
-				data-scrollax-parent="true">
+					class="row no-gutters js-fullheight align-items-center justify-content-center"
+					data-scrollax-parent="true">
 				<section
-					class="ftco-section contact-section ftco-degree-bg bg-white rounded">
+						class="ftco-section contact-section ftco-degree-bg bg-white rounded">
+					<div class="nav-item dropdown">
+						<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+						   aria-haspopup="true" aria-expanded="false">
+							<%=selectedDate.getStartString() + " - " + selectedDate.getEndString()%>
+						</a>
+						<div class="dropdown-menu">
+							<%--					dropdown--%>
+							<%
+								//dropdown menu with tour dates as values
+								for (Tour.Date date : dates) {
+									if (date.getId() == tourDateId) continue;
+									String dateStr = date.getStartString() + " - " + date.getEndString();
+									String dateUrl = "?tourId=" + tourId + "&tourDateId=" + date.getId();
+							%>
+							<a href="${pageContext.request.contextPath}/views/admin/registrations.jsp<%=dateUrl%>"
+							   class="dropdown-item"><%=dateStr%>
+							</a>
+							<%
+								}
+							%>
+						</div>
+					</div>
 					<div class="container px-5 ">
 						<div class="row d-flex contact-info">
 							<div class="col-md-12 mb-4">
@@ -97,7 +158,7 @@
 							<div class="col-md-12">
 								<p class="text-danger">
 									<%
-									String message = request.getParameter("message") != null ? request.getParameter("message") : "";
+										String message = request.getParameter("message") != null ? request.getParameter("message") : "";
 									%>
 									<%=message%>
 								</p>
@@ -105,13 +166,11 @@
 						</div>
 
 
-
 						<div class="row block-9">
 
 
-
 							<%
-							if (tourRegistrations.length == 0) {
+								if (tourRegistrations.length == 0) {
 							%>
 							<div class="col-md-12">
 
@@ -124,7 +183,7 @@
 							</div>
 							<%
 							} else {
-							for (Tour.Registrations tourRegistration : tourRegistrations) {
+								for (Tour.Registrations tourRegistration : tourRegistrations) {
 							%>
 							<div class="col-md-12">
 
@@ -187,34 +246,34 @@
 	<!-- loader -->
 	<div id="ftco-loader" class="show fullscreen">
 		<svg class="circular" width="48px" height="48px">
-        <circle class="path-bg" cx="24" cy="24" r="22" fill="none"
-				stroke-width="4" stroke="#eeeeee"></circle>
-        <circle class="path" cx="24" cy="24" r="22" fill="none"
-				stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"></circle>
-    </svg>
+			<circle class="path-bg" cx="24" cy="24" r="22" fill="none"
+					stroke-width="4" stroke="#eeeeee"></circle>
+			<circle class="path" cx="24" cy="24" r="22" fill="none"
+					stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"></circle>
+		</svg>
 	</div>
 
 	<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 	<script
-		src="${pageContext.request.contextPath}/js/jquery-migrate-3.0.1.min.js"></script>
+			src="${pageContext.request.contextPath}/js/jquery-migrate-3.0.1.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/popper.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 	<script
-		src="${pageContext.request.contextPath}/js/jquery.easing.1.3.js"></script>
+			src="${pageContext.request.contextPath}/js/jquery.easing.1.3.js"></script>
 	<script
-		src="${pageContext.request.contextPath}/js/jquery.waypoints.min.js"></script>
+			src="${pageContext.request.contextPath}/js/jquery.waypoints.min.js"></script>
 	<script
-		src="${pageContext.request.contextPath}/js/jquery.stellar.min.js"></script>
+			src="${pageContext.request.contextPath}/js/jquery.stellar.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/owl.carousel.min.js"></script>
 	<script
-		src="${pageContext.request.contextPath}/js/jquery.magnific-popup.min.js"></script>
+			src="${pageContext.request.contextPath}/js/jquery.magnific-popup.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/aos.js"></script>
 	<script
-		src="${pageContext.request.contextPath}/js/jquery.animateNumber.min.js"></script>
+			src="${pageContext.request.contextPath}/js/jquery.animateNumber.min.js"></script>
 	<script
-		src="${pageContext.request.contextPath}/js/bootstrap-datepicker.js"></script>
+			src="${pageContext.request.contextPath}/js/bootstrap-datepicker.js"></script>
 	<script
-		src="${pageContext.request.contextPath}/js/jquery.timepicker.min.js"></script>
+			src="${pageContext.request.contextPath}/js/jquery.timepicker.min.js"></script>
 	<script src="${pageContext.request.contextPath}/js/scrollax.min.js"></script>
 
 	<script src="${pageContext.request.contextPath}/js/main.js"></script>
@@ -223,5 +282,5 @@
 </html>
 
 <%
-connection.close();
+	connection.close();
 %>

@@ -232,7 +232,7 @@
                          
                          <div class="row my-3">
                                 <div class="col-md-12">
-                                    <a href="./registrations.jsp?tourId=<%=tour_id%>" class="btn btn-primary w-100  mb-1">
+                                    <a href="userRegistrations.jsp?tourId=<%=tour_id%>" class="btn btn-primary w-100  mb-1">
                                         View registered users.
                                     </a>
 

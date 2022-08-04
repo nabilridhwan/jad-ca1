@@ -114,13 +114,16 @@ public class TourModel {
     }
 
     public static IDatabaseQuery<Tour.Date> getTourDates(Tour tour) {
+        return getTourDates(tour.getTour_id());
+    }
+    public static IDatabaseQuery<Tour.Date> getTourDates(int tourId) {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
                 PreparedStatement prepStatement = conn
                         .prepareStatement("SELECT *" + " FROM tour_date" + " WHERE tour_id = ?;");
 
-                prepStatement.setInt(1, tour.getTour_id());
+                prepStatement.setInt(1, tourId);
                 ResultSet rs = prepStatement.executeQuery();
 
                 ArrayList<Tour.Date> list = new ArrayList<>();
@@ -914,6 +917,30 @@ public class TourModel {
             } catch (Exception e) {
                 e.printStackTrace();
                 return -1;
+            }
+        };
+    }
+    public static IDatabaseQuery<Tour.Registrations> getTourRegistrationsByTourDate(int tourDateId) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+                PreparedStatement prepStatement = conn
+                        .prepareStatement("SELECT * FROM tour_registration WHERE tour_date_id = ?;");
+
+                prepStatement.setInt(1, tourDateId);
+
+                ResultSet rs = prepStatement.executeQuery();
+
+                ArrayList<Tour.Registrations> list = new ArrayList<>();
+
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour.Registrations(rs));
+
+                return list.toArray(new Tour.Registrations[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
             }
         };
     }

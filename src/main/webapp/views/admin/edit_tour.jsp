@@ -234,7 +234,7 @@
                                                     Edit
                                                 </a>
                                                 
-                                                <a href="./registrations.jsp?tourDateId=<%=date.getId()%>"
+                                                <a href="userRegistrations.jsp?tourDateId=<%=date.getId()%>"
                                                    class=" btn btn-primary w-100 mb-1">
                                                     Registrations
                                                 </a>
