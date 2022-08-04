@@ -133,45 +133,48 @@
 
 
 										<%
-										int userId = tourRegistration.getUser_id();
+											int userId = tourRegistration.getUser_id();
 
-										User[] users = UserModel.getUserByUserID(userId).query(connection);
+											User[] users = UserModel.getUserByUserID(userId).query(connection);
 
-										if (users == null || users.length == 0) {
+											if (users == null || users.length == 0) {
 										%>
 
 										<p>Problem Loading User</p>
 
 										<%
-										}
-
-										User user = users[0];
+										} else {
+											User user = users[0];
 										%>
 
 
-										<h5><%=user.getFullName()%></h5>
+										<h5><%=user.getFullName()%>
+										</h5>
 										<p class="muted font-bold text-bold bold">
 											Email:
-											<%=user.getEmail()%></p>
+											<%=user.getEmail()%>
+										</p>
 										<p class="muted">
 											Pax:
-											<%=tourRegistration.getPax()%></p>
+											<%=tourRegistration.getPax()%>
+										</p>
 
 										<p class="muted">
 											Transaction ID:
-											<%=tourRegistration.getStripe_transaction_id()%></p>
+											<%=tourRegistration.getStripe_transaction_id()%>
+										</p>
 
 										<a class="btn btn-primary"
-											href="${pageContext.request.contextPath}/views/admin/transaction_details.jsp?tourDateId=<%=tour_dateIdStr %>&transaction_id=<%=tourRegistration.getStripe_transaction_id()%>">
+										   href="${pageContext.request.contextPath}/views/admin/transaction_details.jsp?tourDateId=<%=tour_dateIdStr %>&transaction_id=<%=tourRegistration.getStripe_transaction_id()%>">
 											View transaction details </a>
 									</div>
 								</div>
 
 							</div>
 							<%
-							}
-
-							}
+										}
+									}
+								}
 							%>
 							<!-- <div class="col-md-6" id="map"></div> -->
 						</div>
