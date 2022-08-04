@@ -73,7 +73,7 @@
 			response.sendRedirect("/CA1-Preparation/views/admin/all_tours.jsp");
 			return;
 		}
-		
+
 		try {
 			tourId = Integer.parseInt(tourIdStr);
 		} catch (NumberFormatException e) {
@@ -139,7 +139,7 @@
 									String dateStr = date.getStartString() + " - " + date.getEndString();
 									String dateUrl = "?tourId=" + tourId + "&tourDateId=" + date.getId();
 							%>
-							<a href="${pageContext.request.contextPath}/views/admin/registrations.jsp<%=dateUrl%>"
+							<a href="${pageContext.request.contextPath}/views/admin/userRegistrations.jsp<%=dateUrl%>"
 							   class="dropdown-item"><%=dateStr%>
 							</a>
 							<%
