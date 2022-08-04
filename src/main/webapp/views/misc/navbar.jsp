@@ -137,10 +137,12 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                     </a>
                     <div class="dropdown-menu">
                         <%
+                            //check if url contains any parameter
+                            char prefix = request.getRequestURI().contains("?") ? '&' : '?';
                             for (String currency : currencies) {
                                 if (!currency.equals(currentCurrency)) {
                         %>
-                        <a href="?currency=<%=currency%>" class="dropdown-item">
+                        <a href="<%=prefix%>currency=<%=currency%>" class="dropdown-item">
                             <%=currency%>
                         </a>
                         <%

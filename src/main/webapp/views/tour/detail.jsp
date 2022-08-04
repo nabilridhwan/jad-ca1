@@ -440,7 +440,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                                                     }
                                                 %>
                                         >
-                                            $<%=date.getPrice() * rates%>
+                                            $<%=Math.round(tour_date.getPrice() * rates * 100) / 100%>
                                             <%=date.getStartString()%> - <%=date.getEndString()%>
                                             (<%=date.getAvail_slot()%> slots available)
                                         </option>

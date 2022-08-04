@@ -18,6 +18,7 @@
 <%@ page import="dataStructures.Category" %>
 <%@ page import="dataStructures.Tour" %>
 <%@ page import="utils.DatabaseConnection" %>
+<%@ page import="dataStructures.CurrencyExchangeRates" %>
 <%@ page contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -258,7 +259,7 @@
                 connection.close();
 
                 String currency = (String) request.getSession().getAttribute("currency");
-                double rates =CurrencyExchangeRates.GetCurrentRates().getRates().get(currency);
+                double rates = CurrencyExchangeRates.GetCurrentRates().getRates().get(currency);
                 if (tours != null)
                     for (Tour tour : tours) {
                         int tour_id = tour.getTour_id();
@@ -320,7 +321,7 @@
                                 </p>
                             </div>
                             <div class="two">
-                                <span class="price">$<%=tour_date.getPrice() * rates%></span>
+                                <span class="price">$<%=Math.round(tour_date.getPrice() * rates * 100) / 100%></span>
                             </div>
                         </div>
                         <p>
