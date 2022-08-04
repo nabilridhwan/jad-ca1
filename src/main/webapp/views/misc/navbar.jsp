@@ -20,6 +20,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <%@ page import="dataStructures.CurrencyExchangeRates" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="javax.jms.Session" %>
+<%@ page import="java.util.Map" %>
 
 <%
     {
@@ -138,12 +139,17 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                     <div class="dropdown-menu">
                         <%
                             //check if url contains any parameter
-                            char prefix = request.getParameterNames().hasMoreElements()
-                                    ? '&' : '?';
+                            Map<String, String> map = request.getParameterMap();
+                            StringBuilder redirect = new StringBuilder("?currency=" + currentCurrency);
+                            for (Map.Entry<String, String> entry : map.entrySet()) {
+                                String k = entry.getKey();
+                                String v = entry.getValue();
+                                redirect.append("&").append(k).append("=").append(v);
+                            }
                             for (String currency : currencies) {
                                 if (!currency.equals(currentCurrency)) {
                         %>
-                        <a href="<%=prefix%>currency=<%=currency%>" class="dropdown-item">
+                        <a href="<%=redirect.toString()%>" class="dropdown-item">
                             <%=currency%>
                         </a>
                         <%
