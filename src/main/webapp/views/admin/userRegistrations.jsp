@@ -224,7 +224,7 @@
 										</p>
 
 										<a class="btn btn-primary"
-										   href="${pageContext.request.contextPath}/views/admin/transaction_details.jsp?tourDateId=<%=tour_dateIdStr %>&transaction_id=<%=tourRegistration.getStripe_transaction_id()%>">
+										   href="${pageContext.request.contextPath}/views/admin/transaction_details.jsp?tourDateId=<%=tourDateId %>&transaction_id=<%=tourRegistration.getStripe_transaction_id()%>">
 											View transaction details </a>
 									</div>
 								</div>
