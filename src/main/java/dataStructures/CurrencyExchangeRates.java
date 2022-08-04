@@ -42,6 +42,9 @@ public class CurrencyExchangeRates {
 	}
 
 	public HashMap<String, Double> getRates() {
+		if(rates == null) {
+			rates = new HashMap<String, Double>();
+		}
 		return rates;
 	}
 
