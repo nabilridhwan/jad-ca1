@@ -141,7 +141,9 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
         } else {
             HashMap<Tour, Tour.Date.Pair[]> hashMap = cart.toHashMap(connection);
             Set<Tour> keySet = hashMap.keySet();
+            System.out.println("Keys:" + keySet.size());
             for (Tour tour : keySet) {
+                System.out.println("Tour: " + tour.getTour_name());
                 Tour.Date.Pair[] dates = hashMap.get(tour);
                 int tour_id = tour.getTour_id();
                 Tour.Image tour_image = tour.getFirstOrDefaultImage();
