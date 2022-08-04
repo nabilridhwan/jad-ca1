@@ -157,29 +157,29 @@ public class Cart {
         HashMap<Integer, ArrayList<Tour.Date.Pair>> dateDictionary = new HashMap<>();
 
         Item[] itemsArray = getAllItems();
+        System.out.println("HashMap");
+
         for (Item item : itemsArray) {
             // Get the tour_id
             int tourDateId = item.getTourDateId();
 
+            System.out.println("tourDate ID (part 1) " + tourDateId);
             Tour.Date[] tours = TourModel.getTourDateById(tourDateId).query(connection);
 
             if (tours.length != 1) continue;
             Tour.Date.Pair pair = new Tour.Date.Pair(tours[0], item.getPax());
             int tourId = tours[0].getTour_id();
-            System.out.println("Part1 " + tourId);
-            if (dateDictionary.containsKey(tourId)) {
-                dateDictionary.get(tourId).add(pair);
-            } else {
-                ArrayList<Tour.Date.Pair> dates = new ArrayList<>();
-                dates.add(pair);
-                dateDictionary.put(tourId, dates);
-            }
+
+            System.out.println("tour ID (part 1) " + tourId);
+            //Debugging
+            if (!dateDictionary.containsKey(tourId)) dateDictionary.put(tourId, new ArrayList<>());
+            dateDictionary.get(tourId).add(pair);
         }
         HashMap<Tour, Tour.Date.Pair[]> result = new HashMap<>();
         for (Integer key : dateDictionary.keySet()) {
-            System.out.println("Part2 " + key);
+            System.out.println("Tour ID (part 2) " + key);
             Tour[] tours = TourModel.getTourById(key).query(connection);
-            System.out.println("Part2b " + tours.length);
+            System.out.println("Tour Name (part 2) " + tours[0].tour_name);
             if (tours.length != 1) continue;
             result.put(tours[0], dateDictionary.get(key).toArray(new Tour.Date.Pair[0]));
         }
