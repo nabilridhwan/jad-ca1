@@ -138,7 +138,8 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                     <div class="dropdown-menu">
                         <%
                             //check if url contains any parameter
-                            char prefix = request.getRequestURI().contains("?") ? '&' : '?';
+                            char prefix = request.getParameterNames().hasMoreElements()
+                                    ? '&' : '?';
                             for (String currency : currencies) {
                                 if (!currency.equals(currentCurrency)) {
                         %>

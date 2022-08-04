@@ -321,7 +321,7 @@
                                 </p>
                             </div>
                             <div class="two">
-                                <span class="price">$<%=Math.round(tour_date.getPrice() * rates * 100) / 100%></span>
+                                <span class="price">$<%=Math.round(tour_date.getPrice() * rates * 100) / 100d%></span>
                             </div>
                         </div>
                         <p>
