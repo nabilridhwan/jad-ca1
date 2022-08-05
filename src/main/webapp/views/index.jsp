@@ -19,6 +19,7 @@
 <%@ page import="dataStructures.Tour" %>
 <%@ page import="utils.DatabaseConnection" %>
 <%@ page import="dataStructures.CurrencyExchangeRates" %>
+<%@ page import="java.util.Objects" %>
 <%@ page contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -259,7 +260,7 @@
                 connection.close();
 
                 String currency = (String) request.getSession().getAttribute("currency");
-                double rates = CurrencyExchangeRates.GetCurrentRates().getRates().get(currency);
+                double rates = Objects.requireNonNull(CurrencyExchangeRates.GetCurrentRates()).getRates().get(currency);
                 if (tours != null)
                     for (Tour tour : tours) {
                         int tour_id = tour.getTour_id();
@@ -270,6 +271,8 @@
                         String tour_location = tour.getTour_location();
                         Tour.Review[] reviews = tour.getReviews();
                         double rating = tour.getAverage_rating();
+                        System.out.println("Tour Details: " + tour_id + " | " + tour_name + " | " + tour_brief_desc + " | " + tour_date + " | " + tour_location + " | " + rating);
+
             %>
             <div class="col-sm col-md-6 col-lg ftco-animate">
                 <div class="destination">

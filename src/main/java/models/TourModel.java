@@ -252,6 +252,17 @@ public class TourModel {
                 Tour[] tours = resp.readEntity(new GenericType<Tour[]>() {
                 });
                 if (tours == null) tours = new Tour[0];
+                for (Tour tour : tours) {
+                    int tour_id = tour.getTour_id();
+                    Tour.Image tour_image = tour.getFirstOrDefaultImage();
+                    String tour_name = tour.getTour_name();
+                    String tour_brief_desc = tour.getTour_brief_desc();
+                    Tour.Date tour_date = tour.getFirstOrDefaultDate();
+                    String tour_location = tour.getTour_location();
+                    Tour.Review[] reviews = tour.getReviews();
+                    double rating = tour.getAverage_rating();
+                    System.out.println("Tour Details: " + tour_id + " | " + tour_name + " | " + tour_brief_desc + " | " + tour_date + " | " + tour_location + " | " + rating);
+                }
                 return tours;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -261,25 +272,7 @@ public class TourModel {
     }
 
     public static IDatabaseQuery<Tour> getAllTours(int limit) {
-        return databaseConnection -> {
-            Client client = ClientBuilder.newClient();
-            String restUrl = "http://localhost:8080/CA2-Webservices/tours";
-            WebTarget target = client.target(restUrl).path("/all");
-
-            Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
-            Response resp = invocationBuilder.get();
-
-            if (resp.getStatus() != Response.Status.OK.getStatusCode()) return null;
-            try {
-                Tour[] tours = resp.readEntity(new GenericType<Tour[]>() {
-                });
-                if (tours == null) tours = new Tour[0];
-                return Arrays.stream(tours).limit(limit).toArray(Tour[]::new);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        };
+        return databaseConnection -> Arrays.stream(getAllTours().query(databaseConnection)).limit(limit).toArray(Tour[]::new);
     }
 
 
