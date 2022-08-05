@@ -42,9 +42,7 @@ public class CurrencyExchangeRates {
 	}
 
 	public HashMap<String, Double> getRates() {
-		if(rates == null) {
-			rates = new HashMap<String, Double>();
-		}
+		if (rates == null) rates = new HashMap<>();
 		return rates;
 	}
 
@@ -66,6 +64,11 @@ public class CurrencyExchangeRates {
 
 	public void setTimestamp(int timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public double tryGet(String currency) {
+		HashMap<String, Double> map = getRates();
+		return map.getOrDefault(currency, -1d);
 	}
 
 

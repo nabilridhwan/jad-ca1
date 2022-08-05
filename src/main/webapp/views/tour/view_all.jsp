@@ -126,8 +126,8 @@
                     <%
                     } else {
                         String currency = (String) request.getSession().getAttribute("currency");
-                        double rates =CurrencyExchangeRates.GetCurrentRates().getRates().get(currency);
-
+                        double  rates  =CurrencyExchangeRates.GetCurrentRates().tryGet(currency);
+                 
                         for (Tour tour : tours) {
                             int tour_id = tour.getTour_id();
                             Tour.Image tour_image = tour.getFirstOrDefaultImage();
@@ -185,7 +185,19 @@
                                     </div>
                                     <span class="star">
 	                                    <div class="two">
+	                                    <%
+	                                    if(rates == -1){
+	                                    	 
+	                                    %>
+	                                     <span class="price">Error Obtaining Price</span>
+	                                     <%
+	                                    }else{
+	                                     %>
+	                                
 	                                        <span class="price">$<%=Math.round(tour_date.getPrice() * rates * 100) / 100d%></span>
+	                                        <%
+	                                    }
+	                                        %>
 	                                    </div>
                                     </span>
                                 </div>

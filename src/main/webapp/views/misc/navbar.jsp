@@ -19,8 +19,9 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <%@page import="utils.Util" %>
 <%@ page import="dataStructures.CurrencyExchangeRates" %>
 <%@ page import="java.util.Set" %>
-<%@ page import="javax.jms.Session" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="java.util.Objects" %>
+<%@ page import="com.mysql.cj.Session" %>
 
 <%
     {
@@ -117,18 +118,25 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                     //Start currency drop down menu
                     {
                         CurrencyExchangeRates currencyExchangeRates = CurrencyExchangeRates.GetCurrentRates();
-                        if (currencyExchangeRates != null) {
-                            if (currencyExchangeRates.isSuccess()) {
-                                Set<String> currencies = currencyExchangeRates.getRates().keySet();
+                        assert currencyExchangeRates != null;
+                        Set<String> currencies = currencyExchangeRates.getRates().keySet();
+                        {
+                            String currentCurrency = request.getParameter("currency");
+                            if (currentCurrency != null) {
+                                //set new session
+                                if (currencies.contains(currentCurrency))
+                                    session.setAttribute("currency", currentCurrency);
+                            }
+                        }
+                        {
+                            String currentCurrency = (String) request.getSession().getAttribute("currency");
+                            if (currentCurrency == null)
+                                currentCurrency = currencyExchangeRates.getBase();
+                        }
 
-                                String currentCurrency = request.getParameter("currency");
-                                //set currency if null or doesnt match
-                                if (!currencies.contains(currentCurrency)) {
-                                    currentCurrency = (String) request.getSession().getAttribute("currency");
-                                    if (!currencies.contains(currentCurrency))
-                                        currentCurrency = currencyExchangeRates.getBase();
-                                } else session.setAttribute("currency", currentCurrency);
 
+                        if (currencyExchangeRates.isSuccess()) {
+                            String currentCurrency = (String) request.getSession().getAttribute("currency");
                 %>
                 <%--                drop down menu--%>
                 <li class="nav-item dropdown">
@@ -164,13 +172,9 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                         %>
                     </div>
                         <%
-                            }else{
-                                System.out.println("Currency exchange rates not successfully retrieved");
-                            }
-                        }else {
-                            System.out.println("Currency exchange rates not available");
+                        }else{
+                            System.out.println("Currency exchange rates not successfully retrieved");
                         }
-                    }
                     //End currency drop down menu
                 %>
             </ul>
@@ -178,5 +182,6 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
     </div>
 </nav>
 <%
+        }
     }
 %>

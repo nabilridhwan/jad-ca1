@@ -321,7 +321,19 @@
                                 </p>
                             </div>
                             <div class="two">
-                                <span class="price">$<%=Math.round(tour_date.getPrice() * rates * 100) / 100d%></span>
+                                                   <%
+	                                    if(rates == -1){
+	                                    	 
+	                                    %>
+	                                     <span class="price">Error Obtaining Price</span>
+	                                     <%
+	                                    }else{
+	                                     %>
+	                                
+	                                        <span class="price">$<%=Math.round(tour_date.getPrice() * rates * 100) / 100d%></span>
+	                                        <%
+	                                    }
+	                                        %>
                             </div>
                         </div>
                         <p>
