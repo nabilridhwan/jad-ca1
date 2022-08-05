@@ -122,7 +122,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                         Set<String> currencies = currencyExchangeRates.getRates().keySet();
                         {
                             String currentCurrency = request.getParameter("currency");
-                            if (currentCurrency != null) {
+                            if (currentCurrency != null && !currentCurrency.equals("") && !currentCurrency.equals("null")) {
                                 //set new session
                                 if (currencies.contains(currentCurrency))
                                     session.setAttribute("currency", currentCurrency);
@@ -130,8 +130,10 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                         }
                         {
                             String currentCurrency = (String) request.getSession().getAttribute("currency");
-                            if (currentCurrency == null)
+                            if (currentCurrency == null) {
                                 currentCurrency = currencyExchangeRates.getBase();
+                                session.setAttribute("currency", currentCurrency);
+                            }
                         }
 
 
