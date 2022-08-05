@@ -13,6 +13,10 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class CurrencyExchangeRates {
@@ -33,8 +37,12 @@ public class CurrencyExchangeRates {
 		this.base = base;
 	}
 
-	public String getDate() {
-		return date;
+	public Date getDate() {
+		try {
+			return new SimpleDateFormat("dd/MM/yyyy").parse(date);
+		} catch (ParseException e) {
+			return null;
+		}
 	}
 
 	public void setDate(String date) {
@@ -71,8 +79,16 @@ public class CurrencyExchangeRates {
 		return map.getOrDefault(currency, -1d);
 	}
 
-
+	private static CurrencyExchangeRates currencyExchangeRateInstance;
 	public static CurrencyExchangeRates GetCurrentRates() {
+//		Calendar cal = Calendar.getInstance();
+//		cal.add(Calendar.HOUR, 5);
+//		Date date = cal.getTime();
+
+		//TODO implement discarding of old rates after a certain time
+		if (currencyExchangeRateInstance != null)
+			return currencyExchangeRateInstance;
+
 		Client client = ClientBuilder.newClient();
 		String restUrl = "http://localhost:8080/CA2-Webservices/currency";
 		WebTarget target = client.target(restUrl).path("/");
@@ -93,6 +109,7 @@ public class CurrencyExchangeRates {
 				System.out.println(exchange.getRates());
 				return exchange;
 			}
+			currencyExchangeRateInstance = exchange;
 			exchange.getRates().put(exchange.getBase(), 1.0);
 			return exchange;
 		} catch (Exception e) {
