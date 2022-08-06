@@ -100,7 +100,7 @@
                         String q = (request.getParameter("q") != null) ? request.getParameter("q") : "";
                     %>
 
-                    <form action="${pageContext.request.contextPath}/views/tour/view_all.jsp" method="GET">
+                    <form action="${pageContext.request.contextPath}/search" method="GET">
                         <div class="fields">
                             <div class="form-group">
                                 <label>
