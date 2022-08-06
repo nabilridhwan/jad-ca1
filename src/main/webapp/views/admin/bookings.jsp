@@ -69,13 +69,14 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
     LocalDate startDate;
     LocalDate endDate;
     if (startDateString == null) {
-        startDate = LocalDate.MIN;
+        //set default to year 0
+        startDate = LocalDate.of(0, 1, 1);
     } else {
         try {
             startDate = LocalDate.parse(startDateString);
         } catch (Exception e) {
             //set start date to min date
-            startDate = LocalDate.MIN;
+            startDate = LocalDate.of(0, 1, 1);
 %>
 <div class="alert alert-danger" role="alert">
     <strong>Error!</strong> Start Date Invalid date format.
@@ -85,13 +86,14 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
     }
 
     if (endDateString == null) {
-        endDate = LocalDate.MAX;
+        //set default to year 9999
+        endDate = LocalDate.of(9999, 12, 31);
     } else {
         try {
             endDate = LocalDate.parse(endDateString);
         } catch (Exception e) {
             //set start date to min date
-            endDate = LocalDate.MAX;
+            endDate = LocalDate.of(9999, 12, 31);
 %>
 <div class="alert alert-danger" role="alert">
     <strong>Error!</strong> End Date Invalid date format.
