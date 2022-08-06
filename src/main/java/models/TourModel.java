@@ -930,8 +930,9 @@ public class TourModel {
             try {
 
                 PreparedStatement prepStatement = conn
-                        .prepareStatement("SELECT * FROM tour_registration WHERE created_at between ? and ?;");
+                        .prepareStatement("SELECT * FROM tour_registration WHERE stripe_transaction_id = '' AND created_at between ? and ?;");
 
+                System.out.println("TOUR REGISTRATIONS BY DATE RANGE: " + start + " " + end);
                 prepStatement.setDate(1, java.sql.Date.valueOf(start));
                 prepStatement.setDate(2, java.sql.Date.valueOf(end));
                 ResultSet rs = prepStatement.executeQuery();
@@ -952,7 +953,7 @@ public class TourModel {
             try {
 
                 PreparedStatement prepStatement = conn
-                        .prepareStatement("SELECT td.* FROM tour_registration tr, tour_date td WHERE tr.tour_date_id = td.tour_date_id AND tr.created_at between ? and ?;");
+                        .prepareStatement("SELECT td.* FROM tour_registration tr, tour_date td WHERE tr.stripe_transaction_id = '' AND tr.tour_date_id = td.tour_date_id AND tr.created_at between ? and ?;");
 
                 prepStatement.setDate(1, java.sql.Date.valueOf(start));
                 prepStatement.setDate(2, java.sql.Date.valueOf(end));
