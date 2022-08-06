@@ -119,7 +119,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
             <section
                     class="ftco-section contact-section ftco-degree-bg bg-white rounded">
                 <%--DatePicker--%>
-                <div class="row" style="padding: 2%">
+                <form id="datePicker" action="/bookingSearch" class="row" style="padding: 2%">
                     <div class="col-md-6" style="margin: auto;">
                         <div class="form-group">
                             <label for="startDate">Start Date</label>
@@ -127,8 +127,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                                    class="form-control"
                                    id="startDate"
                                    name="startDate"
-                                   value="<%=startDateString%>"
-                                   onchange="this.form.submit()">
+                                   value="<%=startDateString%>">
                         </div>
                     </div>
                     <div class="col-md-6" style="margin: auto;">
@@ -138,11 +137,12 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                                    class="form-control"
                                    id="endDate"
                                    name="endDate"
-                                   value="<%=endDateString%>"
-                                   onchange="this.form.submit()">
+                                   value="<%=endDateString%>">
                         </div>
                     </div>
-                </div>
+                    <div class="col-md-12" style="margin: auto;">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
 
                 <div class="container px-5 ">
                     <div class="row d-flex contact-info">
