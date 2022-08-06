@@ -68,20 +68,41 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
     String endDateString = request.getParameter("endDate");
     LocalDate startDate;
     LocalDate endDate;
-    try {
-        startDate = LocalDate.parse(startDateString);
-        endDate = LocalDate.parse(endDateString);
-    } catch (Exception e) {
-        startDate = null;
-        endDate = null;
+    if (startDateString == null) {
+        startDate = LocalDate.MIN;
+    } else {
+        try {
+            startDate = LocalDate.parse(startDateString);
+        } catch (Exception e) {
+            //set start date to min date
+            startDate = LocalDate.MIN;
 %>
 <div class="alert alert-danger" role="alert">
-    <strong>Error!</strong> Invalid date format.
+    <strong>Error!</strong> Start Date Invalid date format.
 </div>
 <%
+        }
     }
+
+    if (endDateString == null) {
+        endDate = LocalDate.MAX;
+    } else {
+        try {
+            endDate = LocalDate.parse(endDateString);
+        } catch (Exception e) {
+            //set start date to min date
+            endDate = LocalDate.MAX;
+%>
+<div class="alert alert-danger" role="alert">
+    <strong>Error!</strong> End Date Invalid date format.
+</div>
+<%
+        }
+    }
+
+
     DatabaseConnection connection = new DatabaseConnection();
-    
+
     Tour.Date[] dates = TourModel.getTourDateRegistrationsByDateRange(startDate, endDate).query(connection);
     Tour.Registrations[] tourRegistrations = TourModel.getTourRegistrationsByDateRange(startDate, endDate).query(connection);
 %>
