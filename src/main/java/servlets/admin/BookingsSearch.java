@@ -30,7 +30,7 @@ public class BookingsSearch extends HttpServlet {
 		//check for other parameters
 		//get url from referer
 
-		String url = request.getHeader("/views/admin/bookings.jsp");
+		String url = "/views/admin/bookings.jsp";
 		if (startDate != null) {
 			url += "?startDate=" + startDate;
 			if (endDate != null) {
