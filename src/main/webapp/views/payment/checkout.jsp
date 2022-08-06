@@ -1,3 +1,5 @@
+<%@page import="com.stripe.model.PaymentIntent"%>
+<%@page import="payment.StripePayment"%>
 <%@page import="dataStructures.Cart"%>
 <%@page import="utils.DatabaseConnection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -62,15 +64,16 @@
 		DatabaseConnection connection = new DatabaseConnection();
 		Cart cart = Cart.getOrCreateCart(session, connection);
 		String currency = "SGD";
+		
 		%>
 
 		<div class="card my-5 p-4">
 
 			<h4>You are paying</h4>
 			<h2 class="font-weight-bold">
-				$<%=String.format("%.2f", cart.getTotalPrice(currency) / 100)%></h2>
+				$<%=String.format("%.2f", ((cart.getTotalPrice(currency) / 100) * 1.07))%></h2>
 			<p class="text-muted">
-				Inclusive of $<%=String.format("%.2f", (cart.getTotalPrice(currency) / 100) * 0.07)%>
+				Inclusive of <%=currency%>$<%=String.format("%.2f", (cart.getTotalPrice(currency) / 100) * 0.07)%>
 				(7% GST)
 			</p>
 
