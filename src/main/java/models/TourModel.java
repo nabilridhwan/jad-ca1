@@ -472,7 +472,8 @@ public class TourModel {
         return databaseConnection -> {
             Connection conn = databaseConnection.get();
             try {
-                PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM tour WHERE t.name LIKE '%" + name + "%';");
+                PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM tour t WHERE t.name LIKE '%" + name + "%';");
+                System.out.println(pstmt.toString());
                 ResultSet rs = pstmt.executeQuery();
 
                 ArrayList<Tour> list = new ArrayList<>();
