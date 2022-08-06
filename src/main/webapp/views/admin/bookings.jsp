@@ -60,59 +60,57 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 
 
 <%@ include file="../misc/navbar.jsp" %>
-
-<%
-    Util.forceAdmin(session, response);
-
-    String startDateString = request.getParameter("startDate");
-    String endDateString = request.getParameter("endDate");
-    LocalDate startDate;
-    LocalDate endDate;
-    if (startDateString == null) {
-        //set default to year 0
-        startDate = LocalDate.of(0, 1, 1);
-    } else {
-        try {
-            startDate = LocalDate.parse(startDateString);
-        } catch (Exception e) {
-            //set start date to min date
-            startDate = LocalDate.of(0, 1, 1);
-%>
-<div class="alert alert-danger" role="alert">
-    <strong>Error!</strong> Start Date Invalid date format.
-</div>
-<%
-        }
-    }
-
-    if (endDateString == null) {
-        //set default to year 9999
-        endDate = LocalDate.of(9999, 12, 31);
-    } else {
-        try {
-            endDate = LocalDate.parse(endDateString);
-        } catch (Exception e) {
-            //set start date to min date
-            endDate = LocalDate.of(9999, 12, 31);
-%>
-<div class="alert alert-danger" role="alert">
-    <strong>Error!</strong> End Date Invalid date format.
-</div>
-<%
-        }
-    }
-
-
-    DatabaseConnection connection = new DatabaseConnection();
-
-    Tour.Date[] dates = TourModel.getTourDateRegistrationsByDateRange(startDate, endDate).query(connection);
-    Tour.Registrations[] tourRegistrations = TourModel.getTourRegistrationsByDateRange(startDate, endDate).query(connection);
-%>
-
 <div class="hero-wrap"
      style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
     <div class="overlay"></div>
     <div class="container" style="padding: 7em 0">
+
+        <%
+            Util.forceAdmin(session, response);
+
+            String startDateString = request.getParameter("startDate");
+            String endDateString = request.getParameter("endDate");
+            LocalDate startDate;
+            LocalDate endDate;
+            if (startDateString == null  || startDateString.isEmpty()) {
+                //set default to year 0
+                startDate = LocalDate.of(0, 1, 1);
+            } else {
+                try {
+                    startDate = LocalDate.parse(startDateString);
+                } catch (Exception e) {
+                    //set start date to min date
+                    startDate = LocalDate.of(0, 1, 1);
+        %>
+        <div class="alert alert-danger" role="alert">
+            <strong>Error!</strong> Start Date Invalid date format.
+        </div>
+        <%
+                }
+            }
+
+            if (endDateString == null || endDateString.isEmpty()) {
+                //set default to year 9999
+                endDate = LocalDate.of(9999, 12, 31);
+            } else {
+                try {
+                    endDate = LocalDate.parse(endDateString);
+                } catch (Exception e) {
+                    //set start date to min date
+                    endDate = LocalDate.of(9999, 12, 31);
+        %>
+        <div class="alert alert-danger" role="alert">
+            <strong>Error!</strong> End Date Invalid date format.
+        </div>
+        <%
+                }
+            }
+
+
+            DatabaseConnection connection = new DatabaseConnection();
+
+            Tour.Registrations[] tourRegistrations = TourModel.getTourRegistrationsByDateRange(startDate, endDate).query(connection);
+        %>
         <div
                 class="row no-gutters js-fullheight align-items-center justify-content-center"
                 data-scrollax-parent="true">
