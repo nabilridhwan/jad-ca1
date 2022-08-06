@@ -24,6 +24,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -917,6 +918,51 @@ public class TourModel {
                         list.add(new Tour.Registrations(rs));
 
                 return list.toArray(new Tour.Registrations[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
+    public static IDatabaseQuery<Tour.Registrations> getTourRegistrationsByDateRange(LocalDate start, LocalDate end) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+
+                PreparedStatement prepStatement = conn
+                        .prepareStatement("SELECT * FROM tour_registration WHERE stripe_transaction_id = '' AND created_at between ? and ?;");
+
+                System.out.println("TOUR REGISTRATIONS BY DATE RANGE: " + start + " " + end);
+                prepStatement.setDate(1, java.sql.Date.valueOf(start));
+                prepStatement.setDate(2, java.sql.Date.valueOf(end));
+                ResultSet rs = prepStatement.executeQuery();
+                ArrayList<Tour.Registrations> list = new ArrayList<>();
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour.Registrations(rs));
+                return list.toArray(new Tour.Registrations[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        };
+    }
+    public static IDatabaseQuery<Tour.Date> getTourDateRegistrationsByDateRange(LocalDate start, LocalDate end) {
+        return databaseConnection -> {
+            Connection conn = databaseConnection.get();
+            try {
+
+                PreparedStatement prepStatement = conn
+                        .prepareStatement("SELECT td.* FROM tour_registration tr, tour_date td WHERE tr.stripe_transaction_id = '' AND tr.tour_date_id = td.tour_date_id AND tr.created_at between ? and ?;");
+
+                prepStatement.setDate(1, java.sql.Date.valueOf(start));
+                prepStatement.setDate(2, java.sql.Date.valueOf(end));
+                ResultSet rs = prepStatement.executeQuery();
+                ArrayList<Tour.Date> list = new ArrayList<>();
+                if (rs != null)
+                    while (rs.next())
+                        list.add(new Tour.Date(rs));
+                return list.toArray(new Tour.Date[0]);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;

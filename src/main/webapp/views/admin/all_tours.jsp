@@ -275,6 +275,22 @@
 		</div>
 	</section>
 
+	<!-- Tour Bookings -->
+	<section class="ftco-section bg-light">
+		<div class="container">
+			<div class="row justify-content-start mb-5 pb-3">
+				<div class="col-md-7 heading-section ftco-animate">
+					<span class="subheading">Administrator</span>
+					<h2 class="mb-4">
+						<strong>Bookings</strong>
+					</h2>
+
+					<a href="./bookings.jsp" class="btn btn-primary">
+						View Bookings </a>
+				</div>
+			</div>
+		</div>
+	</section>
 	<!-- <section
         class="ftco-section ftco-counter img"
         id="section-counter"
