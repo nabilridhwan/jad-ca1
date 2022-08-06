@@ -81,8 +81,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <%
     }
     DatabaseConnection connection = new DatabaseConnection();
-
-
+    
     Tour.Date[] dates = TourModel.getTourDateRegistrationsByDateRange(startDate, endDate).query(connection);
     Tour.Registrations[] tourRegistrations = TourModel.getTourRegistrationsByDateRange(startDate, endDate).query(connection);
 %>
@@ -96,30 +95,32 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                 data-scrollax-parent="true">
             <section
                     class="ftco-section contact-section ftco-degree-bg bg-white rounded">
-                <%--                <div class="nav-item dropdown"--%>
-                <%--                     style="margin-left: 25%; margin-right: 25%; outline: #0b0b0b;">--%>
-                <%--                    <a href="#" class="nav-link dropdown-toggle"--%>
-                <%--                       data-toggle="dropdown" role="button" aria-haspopup="true"--%>
-                <%--                       aria-expanded="false" style="margin: auto; outline: #0b0b0b;">--%>
-                <%--                        <%=selectedDate.getStartString() + " - " + selectedDate.getEndString()%>--%>
-                <%--                    </a>--%>
-                <%--                    <div class="dropdown-menu">--%>
-                <%--                        &lt;%&ndash;					dropdown&ndash;%&gt;--%>
-                <%--                        <%--%>
-                <%--                            //dropdown menu with tour dates as values--%>
-                <%--                            for (Tour.Date date : dates) {--%>
-                <%--                                String dateStr = date.getStartString() + " - " + date.getEndString();--%>
-                <%--                                String dateUrl = "?tourId=" + tourId + "&tourDateId=" + date.getId();--%>
-                <%--                        %>--%>
-                <%--                        <a--%>
-                <%--                                href="${pageContext.request.contextPath}/views/admin/userRegistrations.jsp<%=dateUrl%>"--%>
-                <%--                                class="dropdown-item"><%=dateStr%>--%>
-                <%--                        </a>--%>
-                <%--                        <%--%>
-                <%--                            }--%>
-                <%--                        %>--%>
-                <%--                    </div>--%>
-                <%--                </div>--%>
+                <%--DatePicker--%>
+                <div class="row">
+                    <div class="col-md-6" style="margin: auto;">
+                        <div class="form-group">
+                            <label for="startDate">Start Date</label>
+                            <input type="date"
+                                   class="form-control"
+                                   id="startDate"
+                                   name="startDate"
+                                   value="<%=startDateString%>"
+                                   onchange="this.form.submit()">
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="margin: auto;">
+                        <div class="form-group">
+                            <label for="endDate">End Date</label>
+                            <input type="date"
+                                   class="form-control"
+                                   id="endDate"
+                                   name="endDate"
+                                   value="<%=endDateString%>"
+                                   onchange="this.form.submit()">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="container px-5 ">
                     <div class="row d-flex contact-info">
                         <div class="col-md-12 mb-4">
