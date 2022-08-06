@@ -10,7 +10,6 @@ package servlets;
 import models.UserModel;
 import utils.DatabaseConnection;
 import utils.IDatabaseUpdate;
-import utils.Password;
 import utils.Util;
 
 import javax.servlet.ServletException;

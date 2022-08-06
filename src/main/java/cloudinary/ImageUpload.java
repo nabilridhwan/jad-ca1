@@ -1,4 +1,10 @@
 package cloudinary;
+/*
+ * 	Name: Nabil Ridhwanshah Bin Rosli
+	Admin No: P2007421
+	Class: DIT/FT/2A/01
+	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI 
+ * */
 
 import java.io.File;
 import java.io.IOException;
