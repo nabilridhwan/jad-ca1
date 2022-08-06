@@ -214,6 +214,10 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                                     </p>
 
                                     <p class="muted">
+                                        Date Registered:
+                                        <%=tourRegistration.getCreatedAt()%>
+                                    </p>
+                                    <p class="muted">
                                         Transaction ID:
                                         <%=tourRegistration.getStripe_transaction_id()%>
                                     </p>
