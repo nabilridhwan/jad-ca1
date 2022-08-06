@@ -119,7 +119,7 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
             <section
                     class="ftco-section contact-section ftco-degree-bg bg-white rounded">
                 <%--DatePicker--%>
-                <form id="datePicker" action="/bookingSearch" class="row" style="padding: 2%">
+                <form id="datePicker" action="/CA1-Preparation/bookingSearch" class="row" style="padding: 2%">
                     <div class="col-md-6" style="margin: auto;">
                         <div class="form-group">
                             <label for="startDate">Start Date</label>
