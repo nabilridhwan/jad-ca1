@@ -1,11 +1,12 @@
 <!-- 
-	Name: Xavier Tay Cher Yew
-	Admin No: P2129512
+	Name: Nabil Ridhwanshah Bin Rosli , Xavier Tay Cher Yew
+	Admin No: P2007421, P2129512
 	Class: DIT/FT/2A/01
 	Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI 
  -->
 
 <!DOCTYPE html>
+<%@page import="java.sql.Timestamp"%>
 <%@page import="utils.Util" %>
 <%@ page import="models.TourModel" %>
 <%@ page import="dataStructures.Tour" %>
@@ -164,22 +165,22 @@
                                 <div class="form-group">
                                     <label> Start Date</label>
                                     <input
-                                            type="text"
+                                            type="datetime-local"
                                             class="form-control"
                                             placeholder="start"
                                             name="start"
-                                            value="<%=tourDate.getStart() %>"
+                                            value="<%=new Timestamp(tourDate.getStart().getTime()).toString() %>"
                                     />
 
                                 </div>
                                 <div class="form-group">
                                     <label> End Date</label>
                                     <input
-                                            type="text"
+                                            type="datetime-local"
                                             class="form-control"
                                             placeholder="end"
                                             name="end"
-                                            value="<%=tourDate.getEnd() %>"
+                                            value="<%=new Timestamp(tourDate.getEnd().getTime()).toString() %>"
                                     />
 
                                 </div>
