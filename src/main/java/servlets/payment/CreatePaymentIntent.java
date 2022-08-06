@@ -45,16 +45,15 @@ public class CreatePaymentIntent extends HttpServlet {
             return;
         }
 
-        String currency = "sgd";
-        double amt = cart.getTotalPrice(currency) * 1.07;
+        String currency = (String) request.getSession().getAttribute("currency");
+        double amt = cart.getTotalPrice(currency);
 
-        if (amt == -1) {
-            //TODO: handle error
+        if (amt <= -1) {
             response.sendRedirect(request.getContextPath() + "/views/user/cart.jsp?error=cannot process payment");
             return;
         }
 
-        GenerateNewClientSecretBody entity = new GenerateNewClientSecretBody(amt, currency);
+        GenerateNewClientSecretBody entity = new GenerateNewClientSecretBody(amt * 1.07, currency);
 
         Client client = ClientBuilder.newClient();
         String restUrl = "http://localhost:8080/CA1-Preparation/checkout/create";

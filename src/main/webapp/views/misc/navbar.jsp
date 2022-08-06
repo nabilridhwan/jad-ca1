@@ -17,6 +17,11 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
 <%@page import="dataStructures.User" %>
 <%@page import="models.UserModel" %>
 <%@page import="utils.Util" %>
+<%@ page import="dataStructures.CurrencyExchangeRates" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.Objects" %>
+<%@ page import="com.mysql.cj.Session" %>
 
 <%
     {
@@ -110,13 +115,75 @@ Group Number: Group 4 - TAY CHER YEW XAVIER, NABIL RIDHWANSHAH BIN ROSLI
                 <%
                         }
                     }
+                    //Start currency drop down menu
+                    {
+                        CurrencyExchangeRates currencyExchangeRates = CurrencyExchangeRates.GetCurrentRates();
+                        assert currencyExchangeRates != null;
+                        Set<String> currencies = currencyExchangeRates.getRates().keySet();
+                        {
+                            String currentCurrency = request.getParameter("currency");
+                            if (currentCurrency != null && !currentCurrency.equals("") && !currentCurrency.equals("null")) {
+                                //set new session
+                                if (currencies.contains(currentCurrency))
+                                    session.setAttribute("currency", currentCurrency);
+                            }
+                        }
+                        {
+                            String currentCurrency = (String) request.getSession().getAttribute("currency");
+                            if (currentCurrency == null) {
+                                currentCurrency = currencyExchangeRates.getBase();
+                                session.setAttribute("currency", currentCurrency);
+                            }
+                        }
+
+
+                        if (currencyExchangeRates.isSuccess()) {
+                            String currentCurrency = (String) request.getSession().getAttribute("currency");
                 %>
-
-
+                <%--                drop down menu--%>
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                       aria-haspopup="true" aria-expanded="false">
+                        <%=currentCurrency%>
+                    </a>
+                    <div class="dropdown-menu">
+                        <%
+                            //check if url contains any parameter
+                            Map<String, String[]> map = request.getParameterMap();
+                            StringBuilder redirect = new StringBuilder();
+                            for (Map.Entry<String, String[]> entry : map.entrySet()) {
+                                String k = entry.getKey();
+                                if (k.equals("currency")) continue;
+                                String[] v = entry.getValue();
+                                if (redirect.length() > 1) redirect.append("&");
+                                else redirect.append("?");
+                                redirect.append(k).append("=").append(v[0]);
+                            }
+                            for (String currency : currencies) {
+                                if (!currency.equals(currentCurrency)) {
+                                    String href = redirect.toString();
+                                    href += href.length() > 1 ? "&" : "?";
+                                    href += "currency=" + currency;
+                        %>
+                        <a href="<%=href%>" class="dropdown-item">
+                            <%=currency%>
+                        </a>
+                        <%
+                                }
+                            }
+                        %>
+                    </div>
+                        <%
+                        }else{
+                            System.out.println("Currency exchange rates not successfully retrieved");
+                        }
+                    //End currency drop down menu
+                %>
             </ul>
         </div>
     </div>
 </nav>
 <%
+        }
     }
 %>

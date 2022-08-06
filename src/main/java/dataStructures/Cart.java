@@ -69,11 +69,14 @@ public class Cart {
     }
 
     public double getTotalPrice(DatabaseConnection connection, String currency) {
-        double total = 0;
-        Item[] itemsArray = getAllItems();
-        for (Item item : itemsArray) total += item.getPrice(connection);
-        //todo: convert to currency
-        return total * 100;
+        try {
+            double total = 0;
+            Item[] itemsArray = getAllItems();
+            for (Item item : itemsArray) total += item.getPrice(connection);
+            return total * CurrencyExchangeRates.GetCurrentRates().getRates().get(currency) * 100;
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     public double getTotalPrice(String currency) {
@@ -154,26 +157,28 @@ public class Cart {
         HashMap<Integer, ArrayList<Tour.Date.Pair>> dateDictionary = new HashMap<>();
 
         Item[] itemsArray = getAllItems();
+        System.out.println("HashMap");
+
         for (Item item : itemsArray) {
             // Get the tour_id
-
             int tourDateId = item.getTourDateId();
 
+            System.out.println("tourDate ID (part 1) " + tourDateId);
+            //This not working
             Tour.Date[] tours = TourModel.getTourDateById(tourDateId).query(connection);
 
             if (tours.length != 1) continue;
             Tour.Date.Pair pair = new Tour.Date.Pair(tours[0], item.getPax());
             int tourId = tours[0].getTour_id();
-            if (dateDictionary.containsKey(tourId)) {
-                dateDictionary.get(tourId).add(pair);
-            } else {
-                ArrayList<Tour.Date.Pair> dates = new ArrayList<>();
-                dates.add(pair);
-                dateDictionary.put(tourId, dates);
-            }
+
+            System.out.println("tour ID (part 1) " + tourId);
+            //Debugging
+            if (!dateDictionary.containsKey(tourId)) dateDictionary.put(tourId, new ArrayList<>());
+            dateDictionary.get(tourId).add(pair);
         }
         HashMap<Tour, Tour.Date.Pair[]> result = new HashMap<>();
         for (Integer key : dateDictionary.keySet()) {
+            System.out.println("Tour ID (part 2) " + key);
             Tour[] tours = TourModel.getTourById(key).query(connection);
             if (tours.length != 1) continue;
             result.put(tours[0], dateDictionary.get(key).toArray(new Tour.Date.Pair[0]));

@@ -17,6 +17,7 @@
 <%@page import="dataStructures.Tour" %>
 <%@page import="utils.DatabaseConnection" %>
 <%@page import="models.TourModel" %>
+<%@ page import="dataStructures.CurrencyExchangeRates" %>
 <html lang="en">
 
 <head>
@@ -124,8 +125,9 @@
                     <h3>No tour found</h3>
                     <%
                     } else {
-
-
+                        String currency = (String) request.getSession().getAttribute("currency");
+                        double  rates  =CurrencyExchangeRates.GetCurrentRates().tryGet(currency);
+                 
                         for (Tour tour : tours) {
                             int tour_id = tour.getTour_id();
                             Tour.Image tour_image = tour.getFirstOrDefaultImage();
@@ -183,7 +185,19 @@
                                     </div>
                                     <span class="star">
 	                                    <div class="two">
-	                                        <span class="price">$<%=tour_date.getPrice() %></span>
+	                                    <%
+	                                    if(rates == -1){
+	                                    	 
+	                                    %>
+	                                     <span class="price">Error Obtaining Price</span>
+	                                     <%
+	                                    }else{
+	                                     %>
+	                                
+	                                        <span class="price">$<%=Math.round(tour_date.getPrice() * rates * 100) / 100d%></span>
+	                                        <%
+	                                    }
+	                                        %>
 	                                    </div>
                                     </span>
                                 </div>

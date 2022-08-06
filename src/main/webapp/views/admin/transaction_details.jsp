@@ -68,7 +68,7 @@
 	Tour.Registrations[] registrations = TourModel.getTourRegistrationByTransactionId(transaction_id).query(connection);
 
 	if (registrations.length == 0) {
-		response.sendRedirect(request.getContextPath() + "/views/admin/registrations.jsp?tourDateId=" + tourDateId);
+		response.sendRedirect(request.getContextPath() + "/views/admin/userRegistrations.jsp?tourDateId=" + tourDateId);
 		return;
 	}
 
@@ -102,7 +102,7 @@
 		transaction = StripePayment.retrievePayment(registration.getStripe_transaction_id());
 		paymentMethod = StripePayment.retrievePaymentMethod(transaction.getPaymentMethod());
 	} catch (StripeException se) {
-		response.sendRedirect(request.getContextPath() + "/views/admin/registrations.jsp?tourDateId=" + tourDateId);
+		response.sendRedirect(request.getContextPath() + "/views/admin/userRegistrations.jsp?tourDateId=" + tourDateId);
 		return;
 	}
 	%>
