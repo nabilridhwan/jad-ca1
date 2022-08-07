@@ -166,7 +166,8 @@ public class AddNewCategory extends HttpServlet {
 					}
 				}
 			} catch (Exception ex) {
-				System.out.println(ex);
+				ex.printStackTrace();
+				
 			}
 
 			int affectedRows = CategoryModel.insertNewCategory(image_url, category_name, category_desc)
