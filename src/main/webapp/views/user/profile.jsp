@@ -1,4 +1,4 @@
-<<!-- 
+<!-- 
 	Name: Nabil Ridhwanshah Bin Rosli , Xavier Tay Cher Yew
 	Admin No: P2007421, P2129512
 	Class: DIT/FT/2A/01
@@ -90,11 +90,13 @@ String address_2 = user.getAddress2();
 String apt_suite = user.getAptSuite();
 String postal_code = user.getPostalCode();
 %>
-
-<%@ include file="../misc/navbar.jsp"%>
 <body>
-	<div class="hero-wrap"
+	<%@ include file="../misc/navbar.jsp"%>
+
+	<div
+		class="hero-wrap"
 		style="background-image: url('${pageContext.request.contextPath}/images/bg_2.jpg')">
+
 		<div class="overlay"></div>
 
 		<%--    Profile--%>
